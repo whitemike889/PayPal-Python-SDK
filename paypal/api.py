@@ -17,6 +17,7 @@ class Api:
     self.token          = args.get("token")
     self.ssl_options    = args.get("ssl_options", {})
 
+  # Default endpoint
   def default_endpoint(self):
     if self.mode == "live" :
       return "https://api.paypal.com"

@@ -1,6 +1,6 @@
 import httplib2, base64, json
 import paypal.util as util
-
+import logging
 
 class Api:
 
@@ -43,7 +43,10 @@ class Api:
   def request(self, url, method, body = None, headers = None):
     http = httplib2.Http(**self.ssl_options)
     headers = headers or self.headers()
+
+    logging.info('Request[%s]: %s'%(method, url))
     response, data = http.request(url, method, body= body, headers= headers)
+    logging.info('Response[%d]: %s'%(response.status, response.reason))
 
     if(response.status >= 200 and response.status <= 299):
       return json.loads(data)

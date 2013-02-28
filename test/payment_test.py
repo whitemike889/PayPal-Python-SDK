@@ -1,11 +1,7 @@
 import paypal, os, unittest
+import test_helper
 
 class Payment(unittest.TestCase):
-
-  def setUp(self):
-    paypal.set_config(
-      client_id= os.environ['PAYPAL_CLIENT_ID'],
-      client_secret= os.environ['PAYPAL_CLIENT_SECRET'] )
 
   def test_all(self):
     payment_histroy = paypal.Payment.all({"count": 1 })

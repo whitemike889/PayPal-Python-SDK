@@ -1,11 +1,24 @@
 import paypal, os, unittest
+import test_helper
 
 class Api(unittest.TestCase):
 
-  def setUp(self):
-    self.api = paypal.Api(
-      client_id= os.environ['PAYPAL_CLIENT_ID'],
-      client_secret= os.environ['PAYPAL_CLIENT_SECRET'] )
+  api = paypal.Api(
+    client_id= test_helper.client_id,
+    client_secret= test_helper.client_secret )
+
+  def test_endpoint(self):
+    new_api = paypal.Api(mode="live")
+    self.assertEqual(new_api.endpoint, "https://api.paypal.com")
+    self.assertEqual(new_api.token_endpoint, "https://api.paypal.com")
+
+    new_api = paypal.Api(mode="sandbox")
+    self.assertEqual(new_api.endpoint, "https://api.sandbox.paypal.com")
+    self.assertEqual(new_api.token_endpoint, "https://api.sandbox.paypal.com")
+
+    new_api = paypal.Api(endpoint="https://custom-endpoint.paypal.com")
+    self.assertEqual(new_api.endpoint, "https://custom-endpoint.paypal.com")
+    self.assertEqual(new_api.token_endpoint, "https://custom-endpoint.paypal.com")
 
   def test_get(self):
     payment_history = self.api.get("/v1/payments/payment?count=1")

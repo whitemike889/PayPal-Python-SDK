@@ -1,8 +1,9 @@
 from distutils.core import setup
+from paypal import version
 
 setup(
     name='paypal',
-    version='0.1.0',
+    version= version,
     author='PayPal',
     author_email='DL-PP-Platform-Ruby-SDK@ebay.com',
     packages=['paypal'],

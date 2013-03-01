@@ -11,7 +11,7 @@ class Payment(unittest.TestCase):
     payment_history = paypal.Payment.all({"count": 1 })
     payment_id = payment_history.payments[0]['id']
     payment = paypal.Payment.find(payment_id)
-    self.assertEqual(payment.attributes['id'], payment_id)
+    self.assertEqual(payment.id, payment_id)
 
   def test_create(self):
     payment = paypal.Payment({

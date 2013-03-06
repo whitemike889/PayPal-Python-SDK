@@ -1,11 +1,11 @@
-import logging, os, paypal
+import logging, os, paypal, unittest
 
 # Logging
 logging.basicConfig(level=logging.DEBUG)
 
 # Credential
-client_id     = os.environ['PAYPAL_CLIENT_ID']
-client_secret = os.environ['PAYPAL_CLIENT_SECRET']
+client_id     = "EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM"
+client_secret = "EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM"
 
 # Set credential for default api
 paypal.set_config( client_id= client_id, client_secret= client_secret )

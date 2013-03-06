@@ -1,6 +1,4 @@
-import paypal, os, unittest
-import test_helper
-import httplib2
+from test_helper import paypal, unittest
 
 class TestPayment(unittest.TestCase):
 

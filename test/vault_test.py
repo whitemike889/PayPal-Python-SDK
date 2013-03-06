@@ -1,5 +1,4 @@
-import paypal, os, unittest
-import test_helper
+from test_helper import paypal, unittest
 
 class TestCreditCard(unittest.TestCase):
 

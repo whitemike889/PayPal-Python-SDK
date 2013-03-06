@@ -5,8 +5,8 @@ from paypal.resource import List, Find, Create, Post
 #  payment = Payment.find("PAY-1234")
 #  payment = Payment.new({"intent": "sale"})
 #
-#  payment.create     # return True or False
-#  payment.execute({"payer_id": 1234})  # return True or false
+#  payment.create()     # return True or False
+#  payment.execute({"payer_id": 1234})  # return True or False
 class Payment(List, Find, Create, Post):
 
   path = "v1/payments/payment"

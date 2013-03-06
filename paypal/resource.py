@@ -60,15 +60,15 @@ class Create(Resource):
 
 class Post(Resource):
   def self_post(self, name, attributes = {}):
-    url = util.join_url(Payment.path, str(self['id']))
+    url = util.join_url(self.path, str(self['id']))
     url = util.join_url(url, name)
-    new_attributes = api.default().post(url, params)
+    new_attributes = api.default().post(url, attributes)
     self['error'] = None
     self.merge(new_attributes)
     return self.success()
 
   def post(self, name, attributes = {}, klass = Resource):
-    url = util.join_url(Payment.path, str(self['id']))
+    url = util.join_url(self.path, str(self['id']))
     url = util.join_url(url, name)
-    new_attributes = api.default().post(url, params)
+    new_attributes = api.default().post(url, attributes)
     return klass(new_attributes)

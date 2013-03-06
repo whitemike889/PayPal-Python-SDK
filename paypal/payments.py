@@ -1,4 +1,4 @@
-from paypal.resource import List, Find, Create, Post, Resource
+from paypal.resource import List, Find, Create, Post
 
 # == Example
 #  payment_histroy = Payment.all({"count": 5})
@@ -11,11 +11,11 @@ class Payment(List, Find, Create, Post):
 
   path = "v1/payments/payment"
 
-  def execute(self, attributes = {}):
+  def execute(self, attributes):
     return self.self_post('execute', attributes)
 
-Resource.convert_resources['payments'] = Payment
-Resource.convert_resources['payment']  = Payment
+Payment.convert_resources['payments'] = Payment
+Payment.convert_resources['payment']  = Payment
 
 # == Example
 #  sale = Sale.find("98765432")
@@ -25,8 +25,8 @@ class Sale(Find, Post):
 
   path = "v1/payments/sale"
 
-  def refund(self, attributes = {}):
+  def refund(self, attributes):
     return self.post('refund', attributes)
 
-Resource.convert_resources['sales'] = Sale
-Resource.convert_resources['sale'] = Sale
+Sale.convert_resources['sales'] = Sale
+Sale.convert_resources['sale']  = Sale

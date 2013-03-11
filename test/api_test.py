@@ -35,3 +35,17 @@ class Api(unittest.TestCase):
       "last_name": "Shopper" })
     self.assertEqual(credit_card.get('error'), None)
     self.assertNotEqual(credit_card.get('id'), None)
+
+  def test_bad_request(self):
+    credit_card = self.api.post("v1/vault/credit-card", {})
+    self.assertNotEqual(credit_card.get('error'), None)
+
+  def test_expired_token(self):
+    self.assertNotEqual(self.api.get_token(), None)
+    self.api.token = "ExpiredToken"
+    self.assertEqual(self.api.get_token(), "ExpiredToken")
+    payment_history = self.api.get("/v1/payments/payment?count=1")
+    self.assertEqual(payment_history['count'], 1)
+
+  def test_not_found(self):
+    self.assertRaises(paypal.ResourceNotFound, self.api.get, ("/v1/payments/payment/PAY-1234"))

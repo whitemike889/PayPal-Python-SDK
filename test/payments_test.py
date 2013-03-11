@@ -23,6 +23,10 @@ class TestPayment(unittest.TestCase):
         "description": "This is the payment transaction description." }]})
     self.assertEqual(payment.create(), True)
 
+  def test_validation(self):
+    payment = paypal.Payment({})
+    self.assertEqual(payment.create(), False)
+
   def test_all(self):
     payment_histroy = paypal.Payment.all({"count": 1 })
     self.assertEqual(payment_histroy.count, 1)
@@ -39,12 +43,28 @@ class TestPayment(unittest.TestCase):
     self.assertEqual(payment.id, payment_id)
 
   def test_execute(self):
-    None
+    payment = paypal.Payment({
+      "intent": "sale",
+      "payer": {
+        "payment_method": "paypal" },
+      "redirect_urls": {
+        "return_url": "http://localhost:3000/payment/execute",
+        "cancel_url": "http://localhost:3000/" },
+      "transactions": [{
+        "amount": {
+          "total": "1.00",
+          "currency": "USD" },
+        "description": "This is the payment transaction description." }]})
+    self.assertEqual(payment.create(), True)
+    payment.execute({ 'payer_id': 'HZH2W8NPXUE5W' })
 
 class TestSale(unittest.TestCase):
 
   def test_find(self):
-    None
+    sale = paypal.Sale.find("7DY409201T7922549")
+    self.assertEqual(sale.__class__, paypal.Sale)
 
   def test_refund(self):
-    None
+    sale   = paypal.Sale.find("7DY409201T7922549")
+    refund = sale.refund({ "amount": { "total": "0.01", "currency": "USD" } })
+    self.assertEqual(refund.success(), True)

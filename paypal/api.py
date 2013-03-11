@@ -39,12 +39,13 @@ class Api:
 
   # Make HTTP call and Format Response
   # == Example
-  #   api.request("https://api.sandbox.paypal.com/v1/payments/payment?count=10", "GET")
-  #   api.request("https://api.sandbox.paypal.com/v1/payments/payment", "POST", "{}" )
-  def request(self, url, method, body = None, headers = None):
+  #   api.request("https://api.sandbox.paypal.com/v1/payments/payment?count=10", "GET", {})
+  #   api.request("https://api.sandbox.paypal.com/v1/payments/payment", "POST", "{}", {} )
+  def request(self, url, method, body = None, headers = {}):
     http = httplib2.Http(**self.ssl_options)
-    headers = headers or self.headers()
 
+    if headers.get('PayPal-Request-Id'):
+      logging.info('PayPal-Request-Id: %s'%(headers['PayPal-Request-Id']))
     logging.info('Request[%s]: %s'%(method, url))
     response, data = http.request(url, method, body= body, headers= headers)
     logging.info('Response[%d]: %s'%(response.status, response.reason))
@@ -73,15 +74,17 @@ class Api:
   # == Example
   #   api.get("v1/payments/payment?count=1")
   #   api.get("v1/payments/payment/PAY-1234")
-  def get(self, action):
-    return self.request(util.join_url(self.endpoint, action), 'GET' )
+  def get(self, action, headers = {} ):
+    headers = dict(self.headers().items() + headers.items())
+    return self.request(util.join_url(self.endpoint, action), 'GET', headers = headers)
 
   # Make POST request
   # == Example
   #   api.post("v1/payments/payment", { 'indent': 'sale' })
   #   api.post("v1/payments/payment/PAY-1234/execute", { 'payer_id': '1234' })
-  def post(self, action, params = {}):
-    return self.request(util.join_url(self.endpoint, action), 'POST', body= json.dumps(params) )
+  def post(self, action, params = {}, headers = {}):
+    headers = dict(self.headers().items() + headers.items())
+    return self.request(util.join_url(self.endpoint, action), 'POST', body= json.dumps(params), headers = headers )
 
 global __api__
 __api__ = None

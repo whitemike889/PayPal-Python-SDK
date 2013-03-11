@@ -12,7 +12,7 @@ class Payment(List, Find, Create, Post):
   path = "v1/payments/payment"
 
   def execute(self, attributes):
-    return self.self_post('execute', attributes)
+    return self.post('execute', attributes, self)
 
 Payment.convert_resources['payments'] = Payment
 Payment.convert_resources['payment']  = Payment

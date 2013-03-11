@@ -1,21 +1,41 @@
 import paypal.util as util
 import paypal.api  as api
+import uuid
 
 class Resource(dict):
 
   convert_resources = {}
 
   def __init__(self, attributes = {}):
+    super(Resource, self).__setattr__('error', None)
+    super(Resource, self).__setattr__('headers', {})
+    super(Resource, self).__setattr__('header', {})
+    super(Resource, self).__setattr__('request_id', None)
     self.merge(attributes)
+
+  def generate_request_id(self):
+    if self.request_id == None :
+      self.request_id = str(uuid.uuid4())
+    return self.request_id
+
+  def http_headers(self):
+    return dict(self.header.items() + self.headers.items() +
+        { 'PayPal-Request-Id': self.generate_request_id() }.items() )
 
   def __getattr__(self, name):
     return self.get(name)
 
   def __setattr__(self, name, value):
-    self[name] = self.convert(name, value)
+    value = self.convert(name, value)
+    try:
+      # Handle attributes(error, header, request_id)
+      super(Resource, self).__getattribute__(name)
+      super(Resource, self).__setattr__(name, value)
+    except AttributeError:
+      self[name] = value
 
   def success(self):
-    return self.get('error') == None
+    return self.error == None
 
   def merge(self, new_attributes):
     for k in new_attributes:
@@ -53,22 +73,21 @@ class List(Resource):
 
 class Create(Resource):
   def create(self):
-    new_attributes = api.default().post(self.path, self)
-    self['error'] = None
+    new_attributes = api.default().post(self.path, self, self.http_headers())
+    self.error = None
     self.merge(new_attributes)
     return self.success()
 
 class Post(Resource):
-  def self_post(self, name, attributes = {}):
-    url = util.join_url(self.path, str(self['id']))
-    url = util.join_url(url, name)
-    new_attributes = api.default().post(url, attributes)
-    self['error'] = None
-    self.merge(new_attributes)
-    return self.success()
-
   def post(self, name, attributes = {}, klass = Resource):
     url = util.join_url(self.path, str(self['id']))
     url = util.join_url(url, name)
-    new_attributes = api.default().post(url, attributes)
-    return klass(new_attributes)
+    if not isinstance(attributes, Resource):
+      attributes = Resource(attributes)
+    new_attributes = api.default().post(url, attributes, attributes.http_headers())
+    if isinstance(klass, Resource):
+      klass.error = None
+      klass.merge(new_attributes)
+      return self.success()
+    else:
+      return klass(new_attributes)

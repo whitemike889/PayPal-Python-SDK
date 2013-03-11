@@ -42,6 +42,9 @@ class TestPayment(unittest.TestCase):
     payment = paypal.Payment.find(payment_id)
     self.assertEqual(payment.id, payment_id)
 
+  def test_not_found(self):
+    self.assertRaises(paypal.ResourceNotFound, paypal.Payment.find, ("PAY-1234"))
+
   def test_execute(self):
     payment = paypal.Payment({
       "intent": "sale",

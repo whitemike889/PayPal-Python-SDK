@@ -1,7 +1,7 @@
 import logging, os, paypal, unittest
 
 # Logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 # Credential
 client_id     = "EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM"

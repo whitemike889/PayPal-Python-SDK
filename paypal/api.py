@@ -1,6 +1,6 @@
 import httplib2, base64, json
 import paypal.util as util
-import logging, datetime
+import logging, datetime, os
 from paypal.exceptions import *
 
 class Api:
@@ -132,7 +132,9 @@ __api__ = None
 def default():
   global __api__
   if __api__ is None :
-    __api__ = Api()
+    __api__ = Api( mode= os.environ.get("PAYPAL_MODE", "sandbox"),
+      client_id= os.environ["PAYPAL_CLIENT_ID"],
+      client_secret= os.environ["PAYPAL_CLIENT_SECRET"])
   return __api__
 
 # Create new default api object with given configuration

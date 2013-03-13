@@ -33,7 +33,7 @@ class Api:
   def get_token(self):
     if self.token == None :
       token_hash = self.http_call(util.join_url(self.token_endpoint, "/v1/oauth2/token"), "POST",
-        body = "response_type=token&grant_type=client_credentials",
+        body = "grant_type=client_credentials",
         headers = { "Authorization": ("Basic %s" % self.basic_auth()), "Accept": "application/json" } )
       self.token = token_hash['access_token']
     return self.token

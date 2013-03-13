@@ -15,7 +15,7 @@ class ConnectionError(Exception):
 
 # Raised when a Timeout::Error occurs.
 class TimeoutError(ConnectionError):
-  def __init__(message):
+  def __init__(self, message):
     self.message = message
 
   def __str__(self):
@@ -23,7 +23,7 @@ class TimeoutError(ConnectionError):
 
 # Raised when a OpenSSL::SSL::SSLError occurs.
 class SSLError(ConnectionError):
-  def __init__(message):
+  def __init__(self, message):
     self.message = message
 
   def __str__(self):
@@ -37,43 +37,33 @@ class Redirection(ConnectionError):
       message = "%s => %s"%(message, self.response.get('Location'))
     return message
 
-class MissingParam(TypeError):
-  None
+class MissingParam(TypeError): pass
 
-class MissingConfig(Exception):
-  None
+class MissingConfig(Exception): pass
 
 # 4xx Client Error
-class ClientError(ConnectionError):
-  None
+class ClientError(ConnectionError): pass
 
 # 400 Bad Request
-class BadRequest(ClientError):
-  None
+class BadRequest(ClientError): pass
 
 # 401 Unauthorized
-class UnauthorizedAccess(ClientError):
-  None
+class UnauthorizedAccess(ClientError): pass
 
 # 403 Forbidden
-class ForbiddenAccess(ClientError):
-  None
+class ForbiddenAccess(ClientError): pass
 
 # 404 Not Found
-class ResourceNotFound(ClientError):
-  None
+class ResourceNotFound(ClientError): pass
 
 # 409 Conflict
-class ResourceConflict(ClientError):
-  None
+class ResourceConflict(ClientError): pass
 
 # 410 Gone
-class ResourceGone(ClientError):
-  None
+class ResourceGone(ClientError): pass
 
 # 5xx Server Error
-class ServerError(ConnectionError):
-  None
+class ServerError(ConnectionError): pass
 
 # 405 Method Not Allowed
 class MethodNotAllowed(ClientError):

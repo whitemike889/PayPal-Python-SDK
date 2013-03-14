@@ -6,10 +6,6 @@ The PayPal REST SDK provides Python APIs to create, process and manage payment.
 
     pip install git+https://github.com/paypal/rest-api-sdk-python.git
 
-## Run Testcase
-
-    python -m unittest discover -s test/ -p '*_test.py'
-
 ## Set Log level
 
     import logging

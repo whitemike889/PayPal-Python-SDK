@@ -21,12 +21,14 @@ class TestExceptions(unittest.TestCase):
     self.assertEqual(str(error), "Failed. => http://example.com")
 
   def test_not_found(self):
-    error = ResourceNotFound(Response({ "status": 404, "reason": "Not Found" }))
-    self.assertEqual(str(error), "Failed.  Response status = 404.  Response message = Not Found.")
+    response = Response({ "status": 404, "reason": "Not Found" })
+    error = ResourceNotFound(response)
+    self.assertEqual(str(error), "Failed.  Response status = 404.  Response message = %s."%(response.reason))
 
   def test_unauthorized_access(self):
-    error = UnauthorizedAccess(Response({ "status": 401, "reason": "Unauthorized" }))
-    self.assertEqual(str(error), "Failed.  Response status = 401.  Response message = Unauthorized.")
+    response = Response({ "status": 401, "reason": "Unauthorized" })
+    error = UnauthorizedAccess(response)
+    self.assertEqual(str(error), "Failed.  Response status = 401.  Response message = %s."%(response.reason))
 
   def test_missing_param(self):
     error = MissingParam("Missing Payment Id")

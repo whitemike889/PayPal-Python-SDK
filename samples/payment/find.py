@@ -11,9 +11,9 @@ try:
   # `find` method
   # on the Payment class by passing Payment ID
   payment = paypal.Payment.find("PAY-0XL713371A312273YKE2GCNI")
-  print "Got Payment Details for Payment[%s]"%(payment.id)
+  print("Got Payment Details for Payment[%s]"%(payment.id))
 
 except paypal.ResourceNotFound as error:
   # It will through ResourceNotFound exception if the payment not found
-  print "Payment Not Found"
+  print("Payment Not Found")
 

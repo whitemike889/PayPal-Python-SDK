@@ -19,8 +19,8 @@ class Resource(dict):
     return self.request_id
 
   def http_headers(self):
-    return dict(self.header.items() + self.headers.items() +
-        { 'PayPal-Request-Id': self.generate_request_id() }.items() )
+    return util.merge_dict(self.header, self.headers,
+        { 'PayPal-Request-Id': self.generate_request_id() })
 
   def __getattr__(self, name):
     return self.get(name)
@@ -80,8 +80,7 @@ class Create(Resource):
 
 class Post(Resource):
   def post(self, name, attributes = {}, klass = Resource):
-    url = util.join_url(self.path, str(self['id']))
-    url = util.join_url(url, name)
+    url = util.join_url(self.path, str(self['id']), name)
     if not isinstance(attributes, Resource):
       attributes = Resource(attributes)
     new_attributes = api.default().post(url, attributes, attributes.http_headers())

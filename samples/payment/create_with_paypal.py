@@ -39,12 +39,12 @@ payment = paypal.Payment({
 
 # Create Payment and return status
 if payment.create():
-  print "Payment[%s] created successfully"%(payment.id)
+  print("Payment[%s] created successfully"%(payment.id))
   # Redirect the user to given approval url
   for link in payment.links:
     if link.method == "REDIRECT":
       redirect_url = link.href
-      print "Redirect for approval: %s"%(redirect_url)
+      print("Redirect for approval: %s"%(redirect_url))
 else:
-  print "Error while creating payment:"
-  print payment.error
+  print("Error while creating payment:")
+  print(payment.error)

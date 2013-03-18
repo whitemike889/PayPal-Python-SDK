@@ -27,13 +27,14 @@ class Api:
 
   # Find basic auth
   def basic_auth(self):
-    return base64.encodestring('%s:%s' % (self.client_id, self.client_secret)).replace('\n', '')
+    credentials = "%s:%s"%(self.client_id, self.client_secret)
+    return base64.b64encode(credentials.encode('utf-8')).decode('utf-8').replace("\n", "")
 
   # Generate token
   def get_token(self):
     if self.token == None :
       token_hash = self.http_call(util.join_url(self.token_endpoint, "/v1/oauth2/token"), "POST",
-        body = "response_type=token&grant_type=client_credentials",
+        body = "grant_type=client_credentials",
         headers = { "Authorization": ("Basic %s" % self.basic_auth()), "Accept": "application/json" } )
       self.token = token_hash['access_token']
     return self.token
@@ -44,7 +45,7 @@ class Api:
   #   api.request("https://api.sandbox.paypal.com/v1/payments/payment", "POST", "{}", {} )
   def request(self, url, method, body = None, headers = {}):
 
-    http_headers = dict(self.headers().items() + headers.items())
+    http_headers = util.merge_dict(self.headers(), headers)
 
     if http_headers.get('PayPal-Request-Id'):
       logging.info('PayPal-Request-Id: %s'%(http_headers['PayPal-Request-Id']))
@@ -72,7 +73,7 @@ class Api:
     response, content = http.request(url, method, **args)
     duration   = datetime.datetime.now() - start_time
     logging.info('Response[%d]: %s, Duration: %s.%ss'%(response.status, response.reason, duration.seconds, duration.microseconds))
-    return self.handle_response(response, content)
+    return self.handle_response(response, content.decode('utf-8'))
 
   # Validate HTTP response
   def handle_response(self, response, content):

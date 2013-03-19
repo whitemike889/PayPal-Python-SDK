@@ -1,9 +1,13 @@
 import httplib2, base64, json
-import paypalrestsdk.util as util
 import logging, datetime, os
+
+import paypalrestsdk.util as util
 from paypalrestsdk.exceptions import *
+from paypalrestsdk.version    import __version__
 
 class Api:
+
+  user_agent = "PayPalSDK/rest-sdk-python %s"%(__version__)
 
   # Create API object
   # == Example
@@ -35,7 +39,7 @@ class Api:
     if self.token == None :
       token_hash = self.http_call(util.join_url(self.token_endpoint, "/v1/oauth2/token"), "POST",
         body = "grant_type=client_credentials",
-        headers = { "Authorization": ("Basic %s" % self.basic_auth()), "Accept": "application/json" } )
+        headers = { "Authorization": ("Basic %s" % self.basic_auth()), "Accept": "application/json", "User-Agent": self.user_agent } )
       self.token = token_hash['access_token']
     return self.token
 
@@ -110,7 +114,7 @@ class Api:
     return { "Authorization": ("Bearer %s" % self.get_token()),
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "User-Agent": "PayPalSDK/rest-sdk-python" }
+        "User-Agent": self.user_agent }
 
   # Make GET request
   # == Example

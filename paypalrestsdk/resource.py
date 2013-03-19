@@ -1,5 +1,5 @@
-import paypal.util as util
-import paypal.api  as api
+import paypalrestsdk.util as util
+import paypalrestsdk.api  as api
 import uuid
 
 class Resource(dict):

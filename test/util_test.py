@@ -1,4 +1,4 @@
-import paypal.util as util
+import paypalrestsdk.util as util
 import unittest
 
 class TestUtil(unittest.TestCase):

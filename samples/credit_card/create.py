@@ -7,11 +7,11 @@
 # can save a Credit Card on PayPal using
 # the Vault API.
 # API used: POST /v1/vault/credit-card
-import paypal
+from paypalrestsdk import CreditCard
 import logging
 logging.basicConfig(level=logging.INFO)
 
-credit_card = paypal.CreditCard({
+credit_card = CreditCard({
    # ###CreditCard
    # A resource representing a credit card that can be
    # used to fund a payment.

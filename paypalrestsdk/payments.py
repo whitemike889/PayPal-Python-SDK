@@ -1,4 +1,4 @@
-from paypal.resource import List, Find, Create, Post
+from paypalrestsdk.resource import List, Find, Create, Post
 
 # == Example
 #  payment_histroy = Payment.all({"count": 5})

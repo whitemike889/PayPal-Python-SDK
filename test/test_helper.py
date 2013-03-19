@@ -1,4 +1,5 @@
-import logging, os, paypal, unittest
+import logging, os, unittest
+import paypalrestsdk as paypal
 
 # Logging
 logging.basicConfig(level=logging.INFO)

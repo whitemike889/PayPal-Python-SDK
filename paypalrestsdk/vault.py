@@ -1,4 +1,4 @@
-from paypal.resource import Find, Create
+from paypalrestsdk.resource import Find, Create
 
 class CreditCard(Find, Create):
 

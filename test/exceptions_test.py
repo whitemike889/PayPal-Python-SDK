@@ -1,6 +1,6 @@
 import unittest
 from httplib2 import Response
-from paypal.exceptions import *
+from paypalrestsdk.exceptions import *
 
 class TestExceptions(unittest.TestCase):
 

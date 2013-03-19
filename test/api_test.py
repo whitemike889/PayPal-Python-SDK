@@ -1,11 +1,10 @@
-import paypal, os, unittest
-import test_helper
+from test_helper import unittest, client_id, client_secret, paypal
 
 class Api(unittest.TestCase):
 
   api = paypal.Api(
-    client_id= test_helper.client_id,
-    client_secret= test_helper.client_secret )
+    client_id= client_id,
+    client_secret= client_secret )
 
   def test_endpoint(self):
     new_api = paypal.Api(mode="live")

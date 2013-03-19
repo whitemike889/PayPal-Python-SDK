@@ -6,7 +6,7 @@
 # use to filter, and paginate through the
 # payments list.
 # API used: GET /v1/payments/payments
-import paypal
+from paypalrestsdk import Payment
 import logging
 logging.basicConfig(level=logging.INFO)
 
@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO)
 # Refer the API documentation
 # for valid values for keys
 # Supported paramters are :count, :next_id
-payment_history = paypal.Payment.all({"count": 2})
+payment_history = Payment.all({"count": 2})
 
 # List Payments
 print("List Payment:")

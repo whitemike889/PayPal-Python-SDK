@@ -1,14 +1,14 @@
 import httplib2, base64, json
-import paypal.util as util
+import paypalrestsdk.util as util
 import logging, datetime, os
-from paypal.exceptions import *
+from paypalrestsdk.exceptions import *
 
 class Api:
 
   # Create API object
   # == Example
-  #   import paypal
-  #   api = paypal.Api( mode="sandbox", client_id='CLIENT_ID', client_secret='CLIENT_SECRET', ssl_options={} )
+  #   import paypalrestsdk
+  #   api = paypalrestsdk.Api( mode="sandbox", client_id='CLIENT_ID', client_secret='CLIENT_SECRET', ssl_options={} )
   def __init__(self, **args):
     self.mode           = args.get("mode", "sandbox")
     self.endpoint       = args.get("endpoint", self.default_endpoint())

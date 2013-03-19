@@ -4,36 +4,42 @@ The PayPal REST SDK provides Python APIs to create, process and manage payment.
 
 ## Installation
 
-    pip install git+https://github.com/paypal/rest-api-sdk-python.git
+```sh
+pip install git+https://github.com/paypal/rest-api-sdk-python.git
+```
 
 ## Configuration
 
-    import paypal
-    paypal.set_config(
-      endpoint="https://api.sandbox.paypal.com",
-      client_id="EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM",
-      client_secret="EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM")
+```python
+import paypalrestsdk
+paypalrestsdk.set_config(
+  endpoint="https://api.sandbox.paypal.com",
+  client_id="EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM",
+  client_secret="EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM")
+```
 
 Configure through environment variables:
 
-    PAYPAL_MODE=sandbox   # sandbox or live
-    PAYPAL_CLIENT_ID=EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM
-    PAYPAL_CLIENT_SECRET=EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM
+```sh
+export PAYPAL_MODE=sandbox   # sandbox or live
+export PAYPAL_CLIENT_ID=EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM
+export PAYPAL_CLIENT_SECRET=EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM
+```
 
 ## Example
 
 ```python
-import paypal
+import paypalrestsdk
 import logging
 
 logging.basicConfig(level=logging.INFO)
 
-paypal.set_config(
+paypalrestsdk.set_config(
   endpoint="https://api.sandbox.paypal.com",
   client_id="EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM",
   client_secret="EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM")
 
-payment = paypal.Payment({
+payment = paypalrestsdk.Payment({
   "intent": "sale",
   "payer": {
     "payment_method": "credit_card",
@@ -53,8 +59,11 @@ payment = paypal.Payment({
     "description": "This is the payment transaction description." }]})
 
 if payment.create() :
-  print "Payment created successfully"
+  print("Payment created successfully")
 else:
-  print payment.error
+  print(payment.error)
 
 ## Samples
+
+Samples avilable in `samples/` directory
+

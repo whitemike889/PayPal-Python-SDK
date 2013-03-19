@@ -2,7 +2,7 @@
 # This sample code demonstrates how you can process a
 # PayPal Account based Payment.
 # API used: /v1/payments/payment
-import paypal
+from paypalrestsdk import Payment
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 # ###Payment
 # A Payment Resource; create one using
 # the above types and intent as 'sale'
-payment = paypal.Payment({
+payment = Payment({
   "intent":  "sale",
 
   # ###Payer

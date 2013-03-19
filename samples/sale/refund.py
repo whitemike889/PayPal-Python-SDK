@@ -3,11 +3,11 @@
 # process a refund on a sale transaction created
 # using the Payments API.
 # API used: /v1/payments/sale/{sale-id}/refund
-import paypal
+from paypalrestsdk import Sale
 import logging
 logging.basicConfig(level=logging.INFO)
 
-sale = paypal.Sale.find("7DY409201T7922549")
+sale = Sale.find("7DY409201T7922549")
 
 # Make Refund API call
 # Set amount only if the refund is partial

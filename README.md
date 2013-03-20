@@ -64,6 +64,7 @@ if payment.create() :
   print("Payment created successfully")
 else:
   print(payment.error)
+```
 
 ## Samples
 

@@ -21,6 +21,7 @@ Payment.convert_resources['payment']  = Payment
 #  sale = Sale.find("98765432")
 #
 #  refund = sale.refund({"amount": {"total": "1.00", "currency": "USD"}})
+#  refund.success()   # return True or False
 class Sale(Find, Post):
 
   path = "v1/payments/sale"

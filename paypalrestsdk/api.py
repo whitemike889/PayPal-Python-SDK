@@ -137,9 +137,14 @@ __api__ = None
 def default():
   global __api__
   if __api__ is None :
+    try:
+      client_id     = os.environ["PAYPAL_CLIENT_ID"]
+      client_secret = os.environ["PAYPAL_CLIENT_SECRET"]
+    except KeyError as error :
+      raise MissingConfig("Required PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET. Refer https://github.com/paypal/rest-api-sdk-python#configuration")
+
     __api__ = Api( mode= os.environ.get("PAYPAL_MODE", "sandbox"),
-      client_id= os.environ["PAYPAL_CLIENT_ID"],
-      client_secret= os.environ["PAYPAL_CLIENT_SECRET"])
+      client_id= client_id, client_secret= client_secret)
   return __api__
 
 # Create new default api object with given configuration

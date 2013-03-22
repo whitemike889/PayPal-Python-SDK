@@ -8,7 +8,7 @@ setup(
     author_email='DL-PP-Platform-Python-SDK@ebay.com',
     packages=['paypalrestsdk'],
     scripts=[],
-    url='https://github.com/paypal/rest-api-sdk-python',
+    url='https://developer.paypal.com',
     license='LICENSE.txt',
     description='The PayPal REST SDK provides Python APIs to create, process and manage payment',
     long_description=open('README.md').read(),

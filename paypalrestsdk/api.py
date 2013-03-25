@@ -1,5 +1,5 @@
 import httplib2, base64, json
-import logging, datetime, os
+import logging, datetime, os, platform
 
 import paypalrestsdk.util as util
 from paypalrestsdk.exceptions import *
@@ -7,7 +7,8 @@ from paypalrestsdk.version    import __version__
 
 class Api:
 
-  user_agent = "PayPalSDK/rest-sdk-python %s"%(__version__)
+  # User-Agent for HTTP request
+  user_agent = "PayPalSDK/rest-sdk-python %s(httplib2 %s; python %s)"%(__version__, httplib2.__version__, platform.python_version())
 
   # Create API object
   # == Example

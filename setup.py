@@ -2,17 +2,29 @@ from distutils.core import setup
 from paypalrestsdk.version import __version__
 
 setup(
-    name='paypalrestsdk',
-    version= __version__,
-    author='PayPal',
-    author_email='DL-PP-Platform-Python-SDK@ebay.com',
-    packages=['paypalrestsdk'],
-    scripts=[],
-    url='https://developer.paypal.com',
-    license='LICENSE.txt',
-    description='The PayPal REST SDK provides Python APIs to create, process and manage payment',
-    long_description=open('README.md').read(),
-    install_requires=[
-      'httplib2'
-    ],
+  name='paypalrestsdk',
+  version= __version__,
+  author='PayPal',
+  author_email='DL-PP-Platform-Python-SDK@ebay.com',
+  packages=['paypalrestsdk'],
+  scripts=[],
+  url='https://developer.paypal.com',
+  license='LICENSE.txt',
+  description='The PayPal REST SDK provides Python APIs to create, process and manage payment',
+  long_description="""
+    The PayPal REST SDK provides Python APIs to create, process and manage payment.
+
+    1. https://github.com/paypal/rest-api-sdk-python/ - README and Samples
+    2. https://developer.paypal.com/webapps/developer/docs/api/ - API Reference
+  """,
+  install_requires=['httplib2'],
+  classifiers=[
+    'Intended Audience :: Developers',
+    'Natural Language :: English',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 2',
+    'Programming Language :: Python :: 3',
+    'Topic :: Software Development :: Libraries :: Python Modules'
+  ],
 )

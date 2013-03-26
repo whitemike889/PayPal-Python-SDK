@@ -1,4 +1,4 @@
-# PayPal REST SDK
+# PayPal REST SDK [![Build Status](https://travis-ci.org/paypal/rest-api-sdk-python.png?branch=master)](https://travis-ci.org/paypal/rest-api-sdk-python)
 
 The PayPal REST SDK provides Python APIs to create, process and manage payment.
 

@@ -10,6 +10,12 @@ Install using `pip`:
 pip install paypalrestsdk
 ```
 
+From github:
+
+```sh
+pip install git+https://github.com/paypal/rest-api-sdk-python.git
+```
+
 ## Configuration
 
 ```python

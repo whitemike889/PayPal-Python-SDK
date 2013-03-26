@@ -1,5 +1,8 @@
 from distutils.core import setup
-from paypalrestsdk.version import __version__
+
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'paypalrestsdk'))
+from version import __version__
 
 setup(
   name='paypalrestsdk',

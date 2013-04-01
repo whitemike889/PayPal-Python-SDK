@@ -71,3 +71,9 @@ class TestSale(unittest.TestCase):
     sale   = paypal.Sale.find("7DY409201T7922549")
     refund = sale.refund({ "amount": { "total": "0.01", "currency": "USD" } })
     self.assertEqual(refund.success(), True)
+
+class TestRefund(unittest.TestCase):
+
+  def test_find(self):
+    refund = paypal.Refund.find("5C377143F71265517")
+    self.assertEqual(refund.__class__, paypal.Refund)

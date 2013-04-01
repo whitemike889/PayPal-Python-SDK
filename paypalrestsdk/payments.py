@@ -27,7 +27,16 @@ class Sale(Find, Post):
   path = "v1/payments/sale"
 
   def refund(self, attributes):
-    return self.post('refund', attributes)
+    return self.post('refund', attributes, Refund)
 
 Sale.convert_resources['sales'] = Sale
 Sale.convert_resources['sale']  = Sale
+
+
+# == Example
+#  refund = Refund.find("12345678")
+class Refund(Find):
+
+  path = "v1/payments/refund"
+
+Refund.convert_resources['refund'] = Refund

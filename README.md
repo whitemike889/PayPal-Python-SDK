@@ -10,7 +10,7 @@ Install using `pip`:
 pip install paypalrestsdk
 ```
 
-From github:
+From [Github](https://github.com/paypal/rest-api-sdk-python):
 
 ```sh
 pip install git+https://github.com/paypal/rest-api-sdk-python.git
@@ -66,13 +66,11 @@ payment = paypalrestsdk.Payment({
       "currency": "USD" },
     "description": "This is the payment transaction description." }]})
 
-if payment.create() :
+if payment.create():
   print("Payment created successfully")
 else:
   print(payment.error)
 ```
 
-## Samples
-
-Samples avilable in [samples/](https://github.com/paypal/rest-api-sdk-python/tree/master/samples) directory
+For more samples [github.com/paypal/rest-api-sdk-python/tree/master/samples](https://github.com/paypal/rest-api-sdk-python/tree/master/samples)
 

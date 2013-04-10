@@ -41,10 +41,15 @@ class Api(unittest.TestCase):
 
   def test_expired_token(self):
     self.assertNotEqual(self.api.get_token(), None)
-    self.api.token = "ExpiredToken"
+    self.api.token_hash["access_token"] = "ExpiredToken"
     self.assertEqual(self.api.get_token(), "ExpiredToken")
     payment_history = self.api.get("/v1/payments/payment?count=1")
     self.assertEqual(payment_history['count'], 1)
+
+  def test_expired_time(self):
+    old_token = self.api.get_token()
+    self.api.token_hash["expires_in"] = 0
+    self.assertNotEqual(self.api.get_token(), old_token)
 
   def test_not_found(self):
     self.assertRaises(paypal.ResourceNotFound, self.api.get, ("/v1/payments/payment/PAY-1234"))

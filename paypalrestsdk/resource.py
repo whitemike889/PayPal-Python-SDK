@@ -1,13 +1,14 @@
 import paypalrestsdk.util as util
 import paypalrestsdk.api  as api
-import uuid
+import uuid, json
 
 # Base class for all REST service
-class Resource(dict):
+class Resource(object):
 
   convert_resources = {}
 
   def __init__(self, attributes = {}):
+    super(Resource, self).__setattr__('__data__', {})
     super(Resource, self).__setattr__('error', None)
     super(Resource, self).__setattr__('headers', {})
     super(Resource, self).__setattr__('header', {})
@@ -25,19 +26,24 @@ class Resource(dict):
     return util.merge_dict(self.header, self.headers,
         { 'PayPal-Request-Id': self.generate_request_id() })
 
+  def __str__(self):
+    return self.__data__.__str__()
+
+  def __repr__(self):
+    return self.__data__.__str__()
+
   # Getter
   def __getattr__(self, name):
-    return self.get(name)
+    return self.__data__.get(name)
 
   # Setter
   def __setattr__(self, name, value):
-    value = self.convert(name, value)
     try:
       # Handle attributes(error, header, request_id)
       super(Resource, self).__getattribute__(name)
       super(Resource, self).__setattr__(name, value)
     except AttributeError:
-      self[name] = value
+      self.__data__[name] = self.convert(name, value)
 
   # return True if no error
   def success(self):
@@ -60,6 +66,30 @@ class Resource(dict):
       return new_list
     else:
       return value
+
+  def __getitem__(self, key):
+    return self.__data__[key]
+
+  def __setitem__(self, key, value):
+    self.__data__[key] = self.convert(key, value)
+
+  def to_dict(self):
+
+    def parse_object(value):
+      if isinstance(value, Resource):
+        return value.to_dict()
+      elif isinstance(value, list):
+        new_list = []
+        for obj in value:
+          new_list.append(parse_object(obj))
+        return new_list
+      else:
+        return value
+
+    data = {}
+    for key in self.__data__:
+      data[key] = parse_object(self.__data__[key])
+    return data
 
 # == Example
 #   payment = Payment.find("PAY-1234")
@@ -87,7 +117,7 @@ class List(Resource):
 #   payment.create() # return True or False
 class Create(Resource):
   def create(self):
-    new_attributes = api.default().post(self.path, self, self.http_headers())
+    new_attributes = api.default().post(self.path, self.to_dict(), self.http_headers())
     self.error = None
     self.merge(new_attributes)
     return self.success()
@@ -100,7 +130,7 @@ class Post(Resource):
     url = util.join_url(self.path, str(self['id']), name)
     if not isinstance(attributes, Resource):
       attributes = Resource(attributes)
-    new_attributes = api.default().post(url, attributes, attributes.http_headers())
+    new_attributes = api.default().post(url, attributes.to_dict(), attributes.http_headers())
     if isinstance(klass, Resource):
       klass.error = None
       klass.merge(new_attributes)

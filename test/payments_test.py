@@ -17,6 +17,13 @@ class TestPayment(unittest.TestCase):
             "first_name": "Joe",
             "last_name": "Shopper" }}]},
       "transactions": [{
+        "item_list": {
+          "items": [{
+            "name": "item",
+            "sku": "item",
+            "price": "1.00",
+            "currency": "USD",
+            "quantity": 1 }]},
         "amount": {
           "total": "1.00",
           "currency": "USD" },
@@ -54,6 +61,13 @@ class TestPayment(unittest.TestCase):
         "return_url": "http://localhost:3000/payment/execute",
         "cancel_url": "http://localhost:3000/" },
       "transactions": [{
+        "item_list": {
+          "items": [{
+            "name": "item",
+            "sku": "item",
+            "price": "1.00",
+            "currency": "USD",
+            "quantity": 1 }]},
         "amount": {
           "total": "1.00",
           "currency": "USD" },

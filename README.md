@@ -34,7 +34,7 @@ export PAYPAL_CLIENT_ID=EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM
 export PAYPAL_CLIENT_SECRET=EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM
 ```
 
-## Example
+### Create Payment Example
 
 ```python
 import paypalrestsdk
@@ -61,6 +61,13 @@ payment = paypalrestsdk.Payment({
         "first_name": "Joe",
         "last_name": "Shopper" }}]},
   "transactions": [{
+    "item_list": {
+      "items": [{
+        "name": "item",
+        "sku": "item",
+        "price": "1.00",
+        "currency": "USD",
+        "quantity": 1 }]},
     "amount": {
       "total": "1.00",
       "currency": "USD" },

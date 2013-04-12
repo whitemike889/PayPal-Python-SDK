@@ -36,6 +36,15 @@ payment = Payment({
   # is fulfilling it
   "transactions": [{
 
+    # ### ItemList
+    "item_list": {
+      "items": [{
+        "name": "item",
+        "sku": "item",
+        "price": "1.00",
+        "currency": "USD",
+        "quantity": 1 }]},
+
     # ###Amount
     # Let's you specify a payment amount.
     "amount": {

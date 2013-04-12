@@ -13,15 +13,20 @@ class Api:
   # Create API object
   # == Example
   #   import paypalrestsdk
-  #   api = paypalrestsdk.Api( mode="sandbox", client_id='CLIENT_ID', client_secret='CLIENT_SECRET', ssl_options={} )
+  #   api = paypalrestsdk.Api( mode="sandbox", 
+  #          client_id='CLIENT_ID', client_secret='CLIENT_SECRET', ssl_options={} )
   def __init__(self, **args):
     self.mode           = args.get("mode", "sandbox")
     self.endpoint       = args.get("endpoint", self.default_endpoint())
     self.token_endpoint = args.get("token_endpoint", self.endpoint)
     self.client_id      = args.get("client_id")
     self.client_secret  = args.get("client_secret")
-    self.token          = args.get("token")
     self.ssl_options    = args.get("ssl_options", {})
+
+    self.token_hash       = None
+    self.token_request_at = None
+    if args.get("token"):
+      self.token_hash     = { "access_token": args.get("token"), "token_type": "Bearer" }
 
   # Default endpoint
   def default_endpoint(self):
@@ -35,14 +40,31 @@ class Api:
     credentials = "%s:%s"%(self.client_id, self.client_secret)
     return base64.b64encode(credentials.encode('utf-8')).decode('utf-8').replace("\n", "")
 
-  # Generate token
-  def get_token(self):
-    if self.token == None :
-      token_hash = self.http_call(util.join_url(self.token_endpoint, "/v1/oauth2/token"), "POST",
+  # Generate token_hash
+  def get_token_hash(self):
+    self.validate_token_hash()
+    if self.token_hash == None :
+      self.token_request_at = datetime.datetime.now()
+      self.token_hash = self.http_call(util.join_url(self.token_endpoint, "/v1/oauth2/token"), "POST",
         body = "grant_type=client_credentials",
-        headers = { "Authorization": ("Basic %s" % self.basic_auth()), "Accept": "application/json", "User-Agent": self.user_agent } )
-      self.token = token_hash['access_token']
-    return self.token
+        headers = { "Authorization": ("Basic %s" % self.basic_auth()),
+          "Accept": "application/json", "User-Agent": self.user_agent } )
+    return self.token_hash
+
+  # Validate expires_in
+  def validate_token_hash(self):
+    if self.token_request_at and self.token_hash and self.token_hash.get("expires_in") != None :
+      duration = (datetime.datetime.now() - self.token_request_at).total_seconds() 
+      if duration > self.token_hash.get("expires_in"):
+        self.token_hash = None
+
+  # Get access token
+  def get_token(self):
+    return self.get_token_hash()["access_token"]
+
+  # Get token type
+  def get_token_type(self):
+    return self.get_token_hash()["token_type"]
 
   # Make HTTP call and Format Response
   # == Example
@@ -64,8 +86,8 @@ class Api:
 
     # Handle Exipre token
     except UnauthorizedAccess as error:
-      if(self.token and self.client_id):
-        self.token = None
+      if(self.token_hash and self.client_id):
+        self.token_hash = None
         return self.request(url, method, body, headers)
       else:
         raise error
@@ -112,7 +134,7 @@ class Api:
 
   # Default HTTP headers
   def headers(self):
-    return { "Authorization": ("Bearer %s" % self.get_token()),
+    return { "Authorization": ("%s %s" %(self.get_token_type(), self.get_token())),
         "Content-Type": "application/json",
         "Accept": "application/json",
         "User-Agent": self.user_agent }

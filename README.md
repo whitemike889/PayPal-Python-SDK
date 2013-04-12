@@ -34,7 +34,7 @@ export PAYPAL_CLIENT_ID=EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM
 export PAYPAL_CLIENT_SECRET=EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM
 ```
 
-### Create Payment Example
+### Create Payment
 
 ```python
 import paypalrestsdk
@@ -77,6 +77,30 @@ if payment.create():
   print("Payment created successfully")
 else:
   print(payment.error)
+```
+
+### Get Payment details
+
+```python
+# Fetch Payment
+payment = paypalrestsdk.Payment.find("PAY-57363176S1057143SKE2HO3A")
+
+# Get List of Payments
+payment_history = paypalrestsdk.Payment.all({"count": 10})
+payment_history.payments
+```
+
+## Execute Payment
+
+Only for [Payment](https://github.com/paypal/rest-api-sdk-python/blob/master/samples/payment/create_with_paypal.py) with `payment_method` as `"paypal"`
+
+```python
+payment = paypalrestsdk.Payment.find("PAY-57363176S1057143SKE2HO3A")
+
+if payment.execute({"payer_id": "DUFRQ8GWYMJXC"}):
+  print("Payment execute successfully")
+else:
+  print(payment.error) # Error Hash
 ```
 
 For more samples [github.com/paypal/rest-api-sdk-python/tree/master/samples](https://github.com/paypal/rest-api-sdk-python/tree/master/samples)

@@ -30,10 +30,19 @@ payment = Payment({
   # is fulfilling it.
   "transactions":  [ {
 
+    # ### ItemList
+    "item_list": {
+      "items": [{
+        "name": "item",
+        "sku": "item",
+        "price": "5.00",
+        "currency": "USD",
+        "quantity": 1 }]},
+
     # ###Amount
     # Let's you specify a payment amount.
     "amount":  {
-      "total":  "5",
+      "total":  "5.00",
       "currency":  "USD" },
     "description":  "This is the payment transaction description." } ] } )
 

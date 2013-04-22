@@ -13,9 +13,11 @@ class Api:
   # Create API object
   # == Example
   #   import paypalrestsdk
-  #   api = paypalrestsdk.Api( mode="sandbox", 
+  #   api = paypalrestsdk.Api( mode="sandbox",
   #          client_id='CLIENT_ID', client_secret='CLIENT_SECRET', ssl_options={} )
-  def __init__(self, **args):
+  def __init__(self, options = {}, **args):
+    args = util.merge_dict(options, args)
+
     self.mode           = args.get("mode", "sandbox")
     self.endpoint       = args.get("endpoint", self.default_endpoint())
     self.token_endpoint = args.get("token_endpoint", self.endpoint)
@@ -27,6 +29,8 @@ class Api:
     self.token_request_at = None
     if args.get("token"):
       self.token_hash     = { "access_token": args.get("token"), "token_type": "Bearer" }
+
+    self.options = args
 
   # Default endpoint
   def default_endpoint(self):
@@ -54,7 +58,7 @@ class Api:
   # Validate expires_in
   def validate_token_hash(self):
     if self.token_request_at and self.token_hash and self.token_hash.get("expires_in") != None :
-      duration = (datetime.datetime.now() - self.token_request_at).total_seconds() 
+      duration = (datetime.datetime.now() - self.token_request_at).total_seconds()
       if duration > self.token_hash.get("expires_in"):
         self.token_hash = None
 
@@ -171,7 +175,7 @@ def default():
   return __api__
 
 # Create new default api object with given configuration
-def set_config(**config):
+def set_config(options = {}, **config):
   global __api__
-  __api__ = Api(**config)
+  __api__ = Api(options, **config)
   return __api__

@@ -179,3 +179,5 @@ def set_config(options = {}, **config):
   global __api__
   __api__ = Api(options, **config)
   return __api__
+
+configure = set_config

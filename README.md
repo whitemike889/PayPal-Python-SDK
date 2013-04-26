@@ -20,7 +20,7 @@ pip install git+https://github.com/paypal/rest-api-sdk-python.git
 
 ```python
 import paypalrestsdk
-paypalrestsdk.set_config(
+paypalrestsdk.configure(
   mode="sandbox", # sandbox or live
   client_id="EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM",
   client_secret="EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM")
@@ -42,7 +42,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-paypalrestsdk.set_config(
+paypalrestsdk.configure(
   mode="sandbox", # sandbox or live
   client_id="EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM",
   client_secret="EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM")

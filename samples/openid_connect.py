@@ -1,7 +1,7 @@
 import paypalrestsdk
 from paypalrestsdk.openid_connect import Tokeninfo
 
-paypalrestsdk.set_config({ 'openid_client_id': 'CLIENT_ID',
+paypalrestsdk.configure({ 'openid_client_id': 'CLIENT_ID',
   'openid_client_secret': 'CLIENT_SECRET',
   'openid_redirect_uri': 'http://example.com' })
 

@@ -1,14 +1,18 @@
 from paypalrestsdk.resource import Resource
 import paypalrestsdk.util as util
 import paypalrestsdk.api  as api
+from paypalrestsdk.version    import __version__
 
 class Base(Resource):
+
+  user_agent = "PayPalSDK/openid-connect-python %s (%s)"%(__version__, api.Api.library_details)
 
   @classmethod
   def post(klass, action, options = {}, headers = {}):
     url  = util.join_url(endpoint(), action)
     body = util.urlencode(options)
     headers = util.merge_dict({
+      'User-Agent': klass.user_agent,
       'Content-Type': 'application/x-www-form-urlencoded'}, headers)
     data = api.default().http_call(url, 'POST', body= body, headers= headers)
     return klass(data)

@@ -8,7 +8,8 @@ from paypalrestsdk.version    import __version__
 class Api:
 
   # User-Agent for HTTP request
-  user_agent = "PayPalSDK/rest-sdk-python %s(httplib2 %s; python %s)"%(__version__, httplib2.__version__, platform.python_version())
+  library_details = "httplib2 %s; python %s"%(httplib2.__version__, platform.python_version())
+  user_agent = "PayPalSDK/rest-sdk-python %s (%s)"%(__version__, library_details)
 
   # Create API object
   # == Example

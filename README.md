@@ -20,7 +20,7 @@ pip install git+https://github.com/paypal/rest-api-sdk-python.git
 
 ```python
 import paypalrestsdk
-paypalrestsdk.set_config(
+paypalrestsdk.configure(
   mode="sandbox", # sandbox or live
   client_id="EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM",
   client_secret="EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM")
@@ -42,7 +42,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-paypalrestsdk.set_config(
+paypalrestsdk.configure(
   mode="sandbox", # sandbox or live
   client_id="EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM",
   client_secret="EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM")
@@ -105,3 +105,35 @@ else:
 
 For more samples [github.com/paypal/rest-api-sdk-python/tree/master/samples](https://github.com/paypal/rest-api-sdk-python/tree/master/samples)
 
+
+## OpenID Connect
+
+```python
+import paypalrestsdk
+from paypalrestsdk.openid_connect import Tokeninfo, Userinfo
+
+paypalrestsdk.configure({ "openid_client_id": "CLIENT_ID",
+  'openid_client_secret': "CLIENT_SECRET",
+  'openid_redirect_uri': "http://example.com" })
+
+# Generate login url
+login_url = Tokeninfo.authorize_url({ "scope": "openid profile"})
+
+# Create tokeninfo with Authorize code
+tokeninfo = Tokeninfo.create("Replace with Authorize code")
+
+# Refresh tokeninfo
+tokeninfo = tokeninfo.refresh()
+
+# Create tokeninfo with refresh_token
+tokeninfo = Tokeninfo.create_with_refresh_token("Replace with refresh_token")
+
+# Get userinfo
+userinfo  = tokeninfo.userinfo()
+
+# Get userinfo with access_token
+userinfo  = Userinfo.get("Replace with access_token")
+
+# Generate logout url
+logout_url = tokeninfo.logout_url()
+```

@@ -123,6 +123,16 @@ class Create(Resource):
     return self.success()
 
 # == Example
+#   credit_card.delete()
+class Delete(Resource):
+  def delete(self):
+    url = util.join_url(self.path, str(self['id']))
+    new_attributes = api.default().delete(url)
+    self.error = None
+    self.merge(new_attributes)
+    return self.success()
+
+# == Example
 #   payment.post("execute", {'payer_id': '1234'}, payment)  # return True or False
 #   sale.post("refund", {'payer_id': '1234'})  # return Refund object
 class Post(Resource):

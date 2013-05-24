@@ -15,6 +15,11 @@ class TestCreditCard(unittest.TestCase):
     credit_card = paypal.CreditCard(self.credit_card_attributes)
     self.assertEqual(credit_card.create(), True)
 
+  def test_delete(self):
+    credit_card = paypal.CreditCard(self.credit_card_attributes)
+    self.assertEqual(credit_card.create(), True)
+    self.assertEqual(credit_card.delete(), True)
+
   def test_duplicate_request_id(self):
     credit_card = paypal.CreditCard(self.credit_card_attributes)
     self.assertEqual(credit_card.create(), True)

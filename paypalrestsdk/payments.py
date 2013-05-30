@@ -40,3 +40,31 @@ class Refund(Find):
   path = "v1/payments/refund"
 
 Refund.convert_resources['refund'] = Refund
+
+# == Example
+#   authorization = Authorization.find("")
+#   capture = authorization.capture({ "amount": { "currency": "USD", "total": "1.00" } })
+#   authorization.void() # return True or False
+class Authorization(Find, Post):
+
+  path = "v1/payments/authorization"
+
+  def capture(self, attributes):
+    return self.post('capture', attributes, Capture)
+
+  def void(self):
+    return self.post('void', {}, self)
+
+Authorization.convert_resources['authorization'] = Authorization
+
+# == Example
+#   capture = Capture.find("")
+#   refund = capture.refund({ "amount": { "currency": "USD", "total": "1.00" })
+class Capture(Find, Post):
+
+  path = "v1/payments/capture"
+
+  def refund(self, attributes):
+    return self.post('refund', attributes, Refund)
+
+Capture.convert_resources['capture'] = Capture

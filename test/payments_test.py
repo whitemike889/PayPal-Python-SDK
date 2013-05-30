@@ -91,3 +91,67 @@ class TestRefund(unittest.TestCase):
   def test_find(self):
     refund = paypal.Refund.find("5C377143F71265517")
     self.assertEqual(refund.__class__, paypal.Refund)
+
+
+class TestAuthorization(unittest.TestCase):
+
+  def create_authorization(self):
+    payment = paypal.Payment({
+      "intent": "authorize",
+      "payer": {
+        "payment_method": "credit_card",
+        "funding_instruments": [{
+          "credit_card": {
+            "type": "visa",
+            "number": "4417119669820331",
+            "expire_month": "11",
+            "expire_year": "2018",
+            "cvv2": "874",
+            "first_name": "Joe",
+            "last_name": "Shopper" }}]},
+      "transactions": [{
+        "item_list": {
+          "items": [{
+            "name": "item",
+            "sku": "item",
+            "price": "1.00",
+            "currency": "USD",
+            "quantity": 1 }]},
+        "amount": {
+          "total": "1.00",
+          "currency": "USD" },
+        "description": "This is the payment transaction description." }]})
+    self.assertEqual(payment.create(), True)
+    return payment.transactions[0].related_resources[0].authorization
+
+  def test_find(self):
+    authorization = paypal.Authorization.find(self.create_authorization().id)
+    self.assertEqual(authorization.__class__, paypal.Authorization)
+
+
+  def test_capture(self):
+    authorization = self.create_authorization()
+    capture = authorization.capture({ "amount": { "currency": "USD", "total": "1.00" } })
+    self.assertEqual(capture.success(), True)
+
+  def test_void(self):
+    authorization = self.create_authorization()
+    self.assertEqual(authorization.void(), True)
+
+  def test_capture_find(self):
+    authorization = self.create_authorization()
+    capture = authorization.capture({ "amount": { "currency": "USD", "total": "1.00" } })
+    self.assertEqual(capture.success(), True)
+
+    capture = paypal.Capture.find(capture.id)
+    self.assertEqual(capture.__class__, paypal.Capture)
+
+  def test_capture_refund(self):
+    authorization = self.create_authorization()
+    capture = authorization.capture({ "amount": { "currency": "USD", "total": "1.00" } })
+    self.assertEqual(capture.success(), True)
+
+    refund = capture.refund({ "amount": { "currency": "USD", "total": "1.00" } })
+    self.assertEqual(refund.success(), True)
+    self.assertEqual(refund.__class__, paypal.Refund)
+

@@ -113,7 +113,10 @@ class Api:
     if status in [ 301, 302, 303, 307 ] :
       raise Redirection(response, content)
     elif status >= 200 and status <= 299 :
-      return json.loads(content)
+      if content :
+        return json.loads(content)
+      else:
+        return {}
     elif status == 400 :
       raise BadRequest(response, content)
     elif status == 401 :
@@ -157,6 +160,11 @@ class Api:
   #   api.post("v1/payments/payment/PAY-1234/execute", { 'payer_id': '1234' })
   def post(self, action, params = {}, headers = {}):
     return self.request(util.join_url(self.endpoint, action), 'POST', body= json.dumps(params), headers = headers )
+
+  # Make DELETE request
+  def delete(self, action, headers = {}):
+    return self.request(util.join_url(self.endpoint, action), 'DELETE', headers = headers)
+
 
 global __api__
 __api__ = None

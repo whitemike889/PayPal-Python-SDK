@@ -4,7 +4,7 @@ The PayPal REST SDK provides Python APIs to create, process and manage payment.
 
 ## Installation
 
-Install using `easy_install`
+Install using `easy_install`:
 
 ```sh
 easy_install paypalrestsdk

@@ -6,8 +6,8 @@ logging.basicConfig(level=logging.INFO)
 authorization = Authorization.find("7GH53639GA425732B")
 
 authorization.amount = {
-    "currency": "USD",
-    "total": "7.00" }
+  "currency": "USD",
+  "total": "7.00" }
 
 if authorization.reauthorize():
   print("Reauthorized[%s] successfully"%(authorization.id))

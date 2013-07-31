@@ -149,8 +149,8 @@ class TestAuthorization(unittest.TestCase):
   def test_reauthorize(self):
     authorization = paypal.Authorization.find("7GH53639GA425732B")
     authorization.amount = {
-    "currency": "USD",
-    "total": "7.00" }
+      "currency": "USD",
+      "total": "7.00" }
     self.assertEqual(authorization.reauthorize(), False)
 
   def test_capture_refund(self):

@@ -82,8 +82,7 @@ class Userinfo(Base):
 
 
 def endpoint():
-    return api.default().options.get("openid_endpoint", "https://api.paypal.com/")
-
+    return api.default().options.get("openid_endpoint", api.default().endpoint)
 
 def client_id():
     return api.default().options.get("openid_client_id", api.default().client_id)
@@ -97,9 +96,15 @@ def redirect_uri():
     return api.default().options.get("openid_redirect_uri")
 
 
-start_session_path = "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize"
-end_session_path = "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/endsession"
+start_session_path = "/webapps/auth/protocol/openidconnect/v1/authorize"
+end_session_path = "/webapps/auth/protocol/openidconnect/v1/endsession"
 
+def session_url(path, options={}):
+    if api.default().mode == "live":
+        path = util.join_url("https://www.paypal.com", path)
+    else:
+        path = util.join_url("https://www.sandbox.paypal.com", path)
+    return util.join_url_params(path, options)
 
 def authorize_url(options={}):
     options = util.merge_dict({
@@ -108,12 +113,11 @@ def authorize_url(options={}):
         'client_id': client_id(),
         'redirect_uri': redirect_uri()
     }, options)
-    return util.join_url_params(start_session_path, options)
-
+    return session_url(start_session_path, options)
 
 def logout_url(options={}):
     options = util.merge_dict({
         'logout': 'true',
         'redirect_uri': redirect_uri()
     }, options)
-    return util.join_url_params(end_session_path, options)
+    return session_url(end_session_path, options)

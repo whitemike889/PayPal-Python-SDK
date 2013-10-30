@@ -113,8 +113,9 @@ import paypalrestsdk
 from paypalrestsdk.openid_connect import Tokeninfo, Userinfo
 
 paypalrestsdk.configure({
-  "openid_client_id": "LIVE_CLIENT_ID",
-  "openid_client_secret": "LIVE_CLIENT_SECRET",
+  "mode": "sandbox",
+  "client_id": "CLIENT_ID",
+  "client_secret": "CLIENT_SECRET",
   "openid_redirect_uri": "http://example.com" })
 
 # Generate login url

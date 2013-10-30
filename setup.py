@@ -12,7 +12,7 @@ setup(
   packages=['paypalrestsdk'],
   scripts=[],
   url='https://developer.paypal.com',
-  license='LICENSE.txt',
+  license='PayPal SDK License',
   description='The PayPal REST SDK provides Python APIs to create, process and manage payment',
   long_description="""
     The PayPal REST SDK provides Python APIs to create, process and manage payment.

@@ -139,3 +139,5 @@ userinfo  = Userinfo.get("Replace with access_token")
 # Generate logout url
 logout_url = tokeninfo.logout_url()
 ```
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/paypal/rest-api-sdk-python/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

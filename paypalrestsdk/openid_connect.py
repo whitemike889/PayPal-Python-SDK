@@ -9,7 +9,9 @@ class Base(Resource):
     user_agent = "PayPalSDK/openid-connect-python %s (%s)" % (__version__, api.Api.library_details)
 
     @classmethod
-    def post(cls, action, options={}, headers={}):
+    def post(cls, action, options=None, headers=None):
+        options = options or {}
+        headers = headers or {}
         url = util.join_url(endpoint(), action)
         body = util.urlencode(options)
         headers = util.merge_dict({
@@ -24,7 +26,8 @@ class Tokeninfo(Base):
     path = "v1/identity/openidconnect/tokenservice"
 
     @classmethod
-    def create(cls, options={}):
+    def create(cls, options=None):
+        options = options or {}
         if isinstance(options, str):
             options = {'code': options}
 
@@ -37,7 +40,8 @@ class Tokeninfo(Base):
         return cls.post(cls.path, options)
 
     @classmethod
-    def create_with_refresh_token(cls, options={}):
+    def create_with_refresh_token(cls, options=None):
+        options = options or {}
         if isinstance(options, str):
             options = {'refresh_token': options}
 
@@ -50,20 +54,24 @@ class Tokeninfo(Base):
         return cls.post(cls.path, options)
 
     @classmethod
-    def authorize_url(cls, options={}):
+    def authorize_url(cls, options=None):
+        options = options or {}
         return authorize_url(options)
 
-    def logout_url(self, options={}):
+    def logout_url(self, options=None):
+        options = options or {}
         options = util.merge_dict({'id_token': self.id_token}, options)
         return logout_url(options)
 
-    def refresh(self, options={}):
+    def refresh(self, options=None):
+        options = options or {}
         options = util.merge_dict({'refresh_token': self.refresh_token}, options)
         tokeninfo = self.__class__.create_with_refresh_token(options)
         self.merge(tokeninfo.to_dict())
         return self
 
-    def userinfo(self, options={}):
+    def userinfo(self, options=None):
+        options = options or {}
         options = util.merge_dict({'access_token': self.access_token}, options)
         return Userinfo.get(options)
 
@@ -73,7 +81,8 @@ class Userinfo(Base):
     path = "v1/identity/openidconnect/userinfo"
 
     @classmethod
-    def get(cls, options={}):
+    def get(cls, options=None):
+        options = options or {}
         if isinstance(options, str):
             options = {'access_token': options}
         options = util.merge_dict({'schema': 'openid'}, options)
@@ -99,14 +108,16 @@ def redirect_uri():
 start_session_path = "/webapps/auth/protocol/openidconnect/v1/authorize"
 end_session_path = "/webapps/auth/protocol/openidconnect/v1/endsession"
 
-def session_url(path, options={}):
+def session_url(path, options=None):
+    options = options or {}
     if api.default().mode == "live":
         path = util.join_url("https://www.paypal.com", path)
     else:
         path = util.join_url("https://www.sandbox.paypal.com", path)
     return util.join_url_params(path, options)
 
-def authorize_url(options={}):
+def authorize_url(options=None):
+    options = options or {}
     options = util.merge_dict({
         'response_type': 'code',
         'scope': 'openid',
@@ -115,7 +126,8 @@ def authorize_url(options={}):
     }, options)
     return session_url(start_session_path, options)
 
-def logout_url(options={}):
+def logout_url(options=None):
+    options = options or {}
     options = util.merge_dict({
         'logout': 'true',
         'redirect_uri': redirect_uri()

@@ -84,6 +84,9 @@ class ResourceConflict(ClientError):
 class ResourceGone(ClientError):
     pass
 
+#422 Invalid
+class ResourceInvalid(ClientError):
+    pass
 
 # 5xx Server Error
 class ServerError(ConnectionError):

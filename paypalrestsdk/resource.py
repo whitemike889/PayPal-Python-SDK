@@ -9,7 +9,8 @@ class Resource(object):
 
     convert_resources = {}
 
-    def __init__(self, attributes={}):
+    def __init__(self, attributes=None):
+        attributes = attributes or {}
         super(Resource, self).__setattr__('__data__', {})
         super(Resource, self).__setattr__('error', None)
         super(Resource, self).__setattr__('headers', {})
@@ -147,7 +148,8 @@ class Delete(Resource):
 #   sale.post("refund", {'payer_id': '1234'})  # return Refund object
 class Post(Resource):
 
-    def post(self, name, attributes={}, cls=Resource):
+    def post(self, name, attributes=None, cls=Resource):
+        attributes = attributes or {}
         url = util.join_url(self.path, str(self['id']), name)
         if not isinstance(attributes, Resource):
             attributes = Resource(attributes)

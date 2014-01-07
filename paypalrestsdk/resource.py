@@ -56,7 +56,7 @@ class Resource(object):
 
     # Merge new attributes
     def merge(self, new_attributes):
-        for k,v in new_attributes.iteritems():
+        for k,v in new_attributes.items():
             setattr(self, k, v)
 
     # Convert the attribute values to configured class.

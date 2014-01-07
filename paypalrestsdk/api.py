@@ -165,7 +165,9 @@ class Api:
     # == Example
     #   api.get("v1/payments/payment?count=1")
     #   api.get("v1/payments/payment/PAY-1234")
-    def get(self, action, headers={}):
+    def get(self, action, headers=None):
+        headers = headers or {}
+        print headers
         return self.request(util.join_url(self.endpoint, action), 'GET', headers=headers)
 
     # Make POST request
@@ -173,6 +175,8 @@ class Api:
     #   api.post("v1/payments/payment", { 'indent': 'sale' })
     #   api.post("v1/payments/payment/PAY-1234/execute", { 'payer_id': '1234' })
     def post(self, action, params={}, headers={}):
+        print params
+        print headers
         return self.request(util.join_url(self.endpoint, action), 'POST', body=json.dumps(params), headers=headers)
 
     # Make DELETE request

@@ -1,14 +1,19 @@
 from test_helper import unittest, client_id, client_secret, paypal
-from mock import patch
+from mock import patch, Mock, ANY
 import logging
+import paypalrestsdk
 logging.basicConfig(filename='eg.log',level=logging.DEBUG)
+
+#TODO: REPLACE GETT
 
 class Api(unittest.TestCase):
 
-  api = paypal.Api(
-    client_id= client_id,
-    client_secret= client_secret )
-
+  def setUp(self):
+    self.api = paypal.Api(
+      client_id= client_id, 
+      client_secret= client_secret
+    )
+    
   def test_endpoint(self):
     
     new_api = paypal.Api(mode="live")
@@ -26,12 +31,14 @@ class Api(unittest.TestCase):
   #@patch('paypalrestsdk.api.httplib2')
   #def test_get(self, patch_api):
   def test_get(self):
+    self.api.request = Mock()
     payment_history = self.api.get("/v1/payments/payment?count=1")
-    logging.warning('payment_history')
-    self.assertEqual(payment_history['count'], 1)
-
-'''
-  def test_post(self):
+    self.api.request.assert_called_once_with('https://api.sandbox.paypal.com/v1/payments/payment?count=1','GET',headers={})
+  
+  '''  
+  @patch('paypalrestsdk.api.request')
+  def test_post(self,mock):
+    mock.return_value = 
     credit_card = self.api.post("v1/vault/credit-card", {
       "type": "visa",
       "number": "4417119669820331",
@@ -40,28 +47,22 @@ class Api(unittest.TestCase):
       "cvv2": "874",
       "first_name": "Joe",
       "last_name": "Shopper" })
+    print credit_card
     self.assertEqual(credit_card.get('error'), None)
     self.assertNotEqual(credit_card.get('id'), None)
+  
+  def test_post_mock(self):
+    self.api.request = Mock()
+    self.api.post("v1/vault/credit-card", {
+      "type": "visa",
+      "number": "4417119669820331",
+      "expire_month": "11",
+      "expire_year": "2018",
+      "cvv2": "874",
+      "first_name": "Joe",
+      "last_name": "Shopper" })
+    self.api.assert_called_once_with('https://api.sandbox.paypal.com/v1/vault/credit-card','POST',params)
+  '''
 
-  def test_bad_request(self):
-    credit_card = self.api.post("v1/vault/credit-card", {})
-    self.assertNotEqual(credit_card.get('error'), None)
 
-  def test_expired_token(self):
-    self.assertNotEqual(self.api.get_token(), None)
-    self.api.token_hash["access_token"] = "ExpiredToken"
-    self.assertEqual(self.api.get_token(), "ExpiredToken")
-    payment_history = self.api.get("/v1/payments/payment?count=1")
-    self.assertEqual(payment_history['count'], 1)
 
-  def test_expired_time(self):
-    old_token = self.api.get_token()
-    self.api.token_hash["expires_in"] = 0
-    self.assertNotEqual(self.api.get_token(), old_token)
-
-  def test_not_found(self):
-    self.assertRaises(paypal.ResourceNotFound, self.api.get, ("/v1/payments/payment/PAY-1234"))
-'''
-
-if __name__ == '__main__':
-  unittest.main()

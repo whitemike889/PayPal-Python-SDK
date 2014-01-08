@@ -2,7 +2,7 @@ from paypalrestsdk.resource import Resource
 import paypalrestsdk.util as util
 import paypalrestsdk.api as api
 from paypalrestsdk.version import __version__
-
+from six import string_types
 
 class Base(Resource):
 
@@ -28,7 +28,7 @@ class Tokeninfo(Base):
     @classmethod
     def create(cls, options=None):
         options = options or {}
-        if isinstance(options, str):
+        if isinstance(options, string_types):
             options = {'code': options}
 
         options = util.merge_dict({
@@ -42,7 +42,7 @@ class Tokeninfo(Base):
     @classmethod
     def create_with_refresh_token(cls, options=None):
         options = options or {}
-        if isinstance(options, str):
+        if isinstance(options, string_types):
             options = {'refresh_token': options}
 
         options = util.merge_dict({
@@ -83,7 +83,7 @@ class Userinfo(Base):
     @classmethod
     def get(cls, options=None):
         options = options or {}
-        if isinstance(options, str):
+        if isinstance(options, string_types):
             options = {'access_token': options}
         options = util.merge_dict({'schema': 'openid'}, options)
 

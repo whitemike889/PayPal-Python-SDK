@@ -1,7 +1,6 @@
 from test_helper import unittest, client_id, client_secret, paypal
 from mock import patch, Mock, ANY
 import logging
-import paypalrestsdk
 logging.basicConfig(filename='eg.log',level=logging.DEBUG)
 
 #TODO: REPLACE GETT
@@ -35,10 +34,9 @@ class Api(unittest.TestCase):
     payment_history = self.api.get("/v1/payments/payment?count=1")
     self.api.request.assert_called_once_with('https://api.sandbox.paypal.com/v1/payments/payment?count=1','GET',headers={})
   
-  '''  
-  @patch('paypalrestsdk.api.request')
-  def test_post(self,mock):
-    mock.return_value = 
+  
+  def test_post(self):
+    self.api.request = Mock()
     credit_card = self.api.post("v1/vault/credit-card", {
       "type": "visa",
       "number": "4417119669820331",
@@ -50,7 +48,7 @@ class Api(unittest.TestCase):
     print credit_card
     self.assertEqual(credit_card.get('error'), None)
     self.assertNotEqual(credit_card.get('id'), None)
-  
+  '''
   def test_post_mock(self):
     self.api.request = Mock()
     self.api.post("v1/vault/credit-card", {

@@ -181,7 +181,7 @@ class TestRefund(unittest.TestCase):
 class TestAuthorization(unittest.TestCase):
 
   def setUp(self):
-	self.payment_attributes = {
+    self.payment_attributes = {
       "intent": "authorize",
       "payer": {
         "payment_method": "credit_card",
@@ -206,22 +206,16 @@ class TestAuthorization(unittest.TestCase):
           "total": "1.00",
           "currency": "USD" },
         "description": "This is the payment transaction description." }]}
-	self.payment = paypal.Payment(self.payment_attributes)
-	self.auth_id = '3J872959AY1512221'
-	self.capture_attributes = { "amount": { "currency": "USD", "total": "1.00" } }
-	
-	self.authorization_attributes = {
-		'valid_until': '2014-02-12T21:11:25Z',
-  	  	'update_time': '2014-01-14T21:11:33Z', 
-  	  	'links': [{'href': 'https://api.sandbox.paypal.com/v1/payments/authorization/3J872959AY1512221', 'method': 'GET', 'rel': 'self'},
-  	    		  {'href': 'https://api.sandbox.paypal.com/v1/payments/authorization/3J872959AY1512221/capture', 'method': 'POST', 'rel': 'capture'},
-  	              {'href': 'https://api.sandbox.paypal.com/v1/payments/authorization/3J872959AY1512221/void', 'method': 'POST', 'rel': 'void'},
-  	              {'href': 'https://api.sandbox.paypal.com/v1/payments/payment/PAY-1EE254486E964802VKLK2P7I', 'method': 'GET', 'rel': 'parent_payment'}],
-  	    'state': 'authorized', 
-  	    'parent_payment': 'PAY-1EE254486E964802VKLK2P7I', 
-  	    'amount': {'currency': 'USD', 'total': '1.00', 'details': {'subtotal': '1.00'}},
-  	    'create_time': '2014-01-14T21:11:25Z', 'id': '3J872959AY1512221'}
-  	
+    self.payment = paypal.Payment(self.payment_attributes)
+    self.auth_id = '3J872959AY1512221'
+    self.authorization_attributes = {'valid_until': '2014-02-12T21:11:25Z',
+  	  'update_time': '2014-01-14T21:11:33Z', 'links': [{'href': 'https://api.sandbox.paypal.com/v1/payments/authorization/3J872959AY1512221', 'method': 'GET', 'rel': 'self'},
+  	   {'href': 'https://api.sandbox.paypal.com/v1/payments/authorization/3J872959AY1512221/capture', 'method': 'POST', 'rel': 'capture'},
+  	    {'href': 'https://api.sandbox.paypal.com/v1/payments/authorization/3J872959AY1512221/void', 'method': 'POST', 'rel': 'void'},
+  	     {'href': 'https://api.sandbox.paypal.com/v1/payments/payment/PAY-1EE254486E964802VKLK2P7I', 'method': 'GET', 'rel': 'parent_payment'}],
+  	      'state': 'authorized', 'parent_payment': 'PAY-1EE254486E964802VKLK2P7I', 'amount': {'currency': 'USD', 'total': '1.00', 'details': {'subtotal': '1.00'}},
+  	       'create_time': '2014-01-14T21:11:25Z', 'id': '3J872959AY1512221'}
+    self.capture_attributes = { "amount": { "currency": "USD", "total": "1.00" } }
 
   @patch('test_helper.paypal.Api.post', autospec=True)
   def test_create(self, mock):

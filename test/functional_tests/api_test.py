@@ -1,4 +1,7 @@
 from test_helper import unittest, client_id, client_secret, paypal
+from mock import patch
+import logging
+logging.basicConfig(filename='eg.log',level=logging.DEBUG)
 
 class Api(unittest.TestCase):
 
@@ -7,10 +10,11 @@ class Api(unittest.TestCase):
     client_secret= client_secret )
 
   def test_endpoint(self):
+    
     new_api = paypal.Api(mode="live")
     self.assertEqual(new_api.endpoint, "https://api.paypal.com")
     self.assertEqual(new_api.token_endpoint, "https://api.paypal.com")
-
+    
     new_api = paypal.Api(mode="sandbox")
     self.assertEqual(new_api.endpoint, "https://api.sandbox.paypal.com")
     self.assertEqual(new_api.token_endpoint, "https://api.sandbox.paypal.com")
@@ -18,10 +22,12 @@ class Api(unittest.TestCase):
     new_api = paypal.Api(endpoint="https://custom-endpoint.paypal.com")
     self.assertEqual(new_api.endpoint, "https://custom-endpoint.paypal.com")
     self.assertEqual(new_api.token_endpoint, "https://custom-endpoint.paypal.com")
-
+  
   def test_get(self):
     payment_history = self.api.get("/v1/payments/payment?count=1")
+    logging.warning('payment_history')
     self.assertEqual(payment_history['count'], 1)
+
 
   def test_post(self):
     credit_card = self.api.post("v1/vault/credit-card", {

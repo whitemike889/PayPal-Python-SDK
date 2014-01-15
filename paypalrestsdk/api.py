@@ -66,6 +66,7 @@ class Api:
                     "Content-Type": "application/x-www-form-urlencoded",
                     "Accept": "application/json", "User-Agent": self.user_agent
                 })
+        
         return self.token_hash
 
     # Validate expires_in
@@ -168,6 +169,7 @@ class Api:
     #   api.get("v1/payments/payment/PAY-1234")
     def get(self, action, headers=None):
         headers = headers or {}
+        print headers
         return self.request(util.join_url(self.endpoint, action), 'GET', headers=headers)
 
     # Make POST request
@@ -177,6 +179,9 @@ class Api:
     def post(self, action, params=None, headers=None):
         params = params or {}
         headers = headers or {}
+        print util.join_url(self.endpoint, action)
+        print json.dumps(params)
+        print headers
         return self.request(util.join_url(self.endpoint, action), 'POST', body=json.dumps(params), headers=headers)
 
     # Make DELETE request

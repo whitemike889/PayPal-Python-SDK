@@ -136,3 +136,4 @@ class TestResource(unittest.TestCase):
     self.assertEqual(list_.api, default)
 
     api.__api__ = original # Restore original api object
+    

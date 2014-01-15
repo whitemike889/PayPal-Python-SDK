@@ -24,7 +24,8 @@ class Api:
     #   import paypalrestsdk
     #   api = paypalrestsdk.Api( mode="sandbox",
     #          client_id='CLIENT_ID', client_secret='CLIENT_SECRET', ssl_options={} )
-    def __init__(self, options={}, **args):
+    def __init__(self, options=None, **args):
+        options = options or {}
         args = util.merge_dict(options, args)
 
         self.mode = args.get("mode", "sandbox")
@@ -65,6 +66,7 @@ class Api:
                     "Content-Type": "application/x-www-form-urlencoded",
                     "Accept": "application/json", "User-Agent": self.user_agent
                 })
+        
         return self.token_hash
 
     # Validate expires_in
@@ -87,8 +89,8 @@ class Api:
     # == Example
     #   api.request("https://api.sandbox.paypal.com/v1/payments/payment?count=10", "GET", {})
     #   api.request("https://api.sandbox.paypal.com/v1/payments/payment", "POST", "{}", {} )
-    def request(self, url, method, body=None, headers={}):
-
+    def request(self, url, method, body=None, headers=None):
+        headers = headers or {}
         http_headers = util.merge_dict(self.headers(), headers)
 
         if http_headers.get('PayPal-Request-Id'):
@@ -174,13 +176,17 @@ class Api:
     # == Example
     #   api.post("v1/payments/payment", { 'indent': 'sale' })
     #   api.post("v1/payments/payment/PAY-1234/execute", { 'payer_id': '1234' })
-    def post(self, action, params={}, headers={}):
-        print params
+    def post(self, action, params=None, headers=None):
+        params = params or {}
+        headers = headers or {}
+        print util.join_url(self.endpoint, action)
+        print json.dumps(params)
         print headers
         return self.request(util.join_url(self.endpoint, action), 'POST', body=json.dumps(params), headers=headers)
 
     # Make DELETE request
-    def delete(self, action, headers={}):
+    def delete(self, action, headers=None):
+        headers = headers or {}
         return self.request(util.join_url(self.endpoint, action), 'DELETE', headers=headers)
 
 
@@ -203,9 +209,11 @@ def default():
 
 
 # Create new default api object with given configuration
-def set_config(options={}, **config):
+def set_config(options=None, **config):
+    options = options or {}
     global __api__
     __api__ = Api(options, **config)
     return __api__
 
 configure = set_config
+

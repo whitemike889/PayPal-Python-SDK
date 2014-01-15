@@ -1,5 +1,5 @@
 from test_helper import paypal, unittest
-'''
+
 class TestCreditCard(unittest.TestCase):
 
   credit_card_attributes = {
@@ -34,4 +34,3 @@ class TestCreditCard(unittest.TestCase):
     self.assertEqual(new_credit_card.id, credit_card.id)
     self.assertEqual(new_credit_card.request_id, credit_card.request_id)
 
-'''

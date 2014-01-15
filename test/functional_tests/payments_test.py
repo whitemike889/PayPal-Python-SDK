@@ -1,5 +1,5 @@
 from test_helper import paypal, unittest
-'''
+
 class TestPayment(unittest.TestCase):
 
   def test_create(self):
@@ -109,6 +109,7 @@ class TestSale(unittest.TestCase):
     refund = sale.refund({ "amount": { "total": "0.01", "currency": "USD" } })
     self.assertEqual(refund.success(), True)
 
+
 class TestRefund(unittest.TestCase):
 
   def test_find(self):
@@ -151,7 +152,6 @@ class TestAuthorization(unittest.TestCase):
     authorization = paypal.Authorization.find(self.create_authorization().id)
     self.assertEqual(authorization.__class__, paypal.Authorization)
 
-
   def test_capture(self):
     authorization = self.create_authorization()
     capture = authorization.capture({ "amount": { "currency": "USD", "total": "1.00" } })
@@ -165,7 +165,6 @@ class TestAuthorization(unittest.TestCase):
     authorization = self.create_authorization()
     capture = authorization.capture({ "amount": { "currency": "USD", "total": "1.00" } })
     self.assertEqual(capture.success(), True)
-
     capture = paypal.Capture.find(capture.id)
     self.assertEqual(capture.__class__, paypal.Capture)
 
@@ -184,4 +183,4 @@ class TestAuthorization(unittest.TestCase):
     refund = capture.refund({ "amount": { "currency": "USD", "total": "1.00" } })
     self.assertEqual(refund.success(), True)
     self.assertEqual(refund.__class__, paypal.Refund)
-'''
+

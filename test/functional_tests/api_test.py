@@ -23,14 +23,12 @@ class Api(unittest.TestCase):
     self.assertEqual(new_api.endpoint, "https://custom-endpoint.paypal.com")
     self.assertEqual(new_api.token_endpoint, "https://custom-endpoint.paypal.com")
   
-  #@patch('paypalrestsdk.api.httplib2')
-  #def test_get(self, patch_api):
   def test_get(self):
     payment_history = self.api.get("/v1/payments/payment?count=1")
     logging.warning('payment_history')
     self.assertEqual(payment_history['count'], 1)
 
-'''
+
   def test_post(self):
     credit_card = self.api.post("v1/vault/credit-card", {
       "type": "visa",
@@ -61,7 +59,3 @@ class Api(unittest.TestCase):
 
   def test_not_found(self):
     self.assertRaises(paypal.ResourceNotFound, self.api.get, ("/v1/payments/payment/PAY-1234"))
-'''
-
-if __name__ == '__main__':
-  unittest.main()

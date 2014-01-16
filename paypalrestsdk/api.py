@@ -178,9 +178,6 @@ class Api:
     def post(self, action, params=None, headers=None):
         params = params or {}
         headers = headers or {}
-        print util.join_url(self.endpoint, action)
-        print json.dumps(params)
-        print headers
         return self.request(util.join_url(self.endpoint, action), 'POST', body=json.dumps(params), headers=headers)
 
     # Make DELETE request

@@ -9,6 +9,14 @@ class Api(unittest.TestCase):
       client_secret= client_secret
     )
     self.api.request = Mock()
+    self.card_attributes = {
+      "type": "visa",
+      "number": "4417119669820331",
+      "expire_month": "11",
+      "expire_year": "2018",
+      "cvv2": "874",
+      "first_name": "Joe",
+      "last_name": "Shopper" }
 
     
   def test_endpoint(self):
@@ -31,20 +39,9 @@ class Api(unittest.TestCase):
   
   def test_post(self):
     self.api.request.return_value = {'id': 'test'}
-    credit_card = self.api.post("v1/vault/credit-card", {
-      "type": "visa",
-      "number": "4417119669820331",
-      "expire_month": "11",
-      "expire_year": "2018",
-      "cvv2": "874",
-      "first_name": "Joe",
-      "last_name": "Shopper" })
+    credit_card = self.api.post("v1/vault/credit-card", self.card_attributes)
 
-    self.api.request.assert_called_once_with('https://api.sandbox.paypal.com/v1/vault/credit-card',
-                                            'POST', 
-                                             body='{"first_name": "Joe", "last_name": "Shopper", "expire_month": "11", "number": "4417119669820331", "cvv2": "874", "expire_year": "2018", "type": "visa"}',
-                                             headers={})
-
+    #self.api.request.assert_called_once_with('https://api.sandbox.paypal.com/v1/vault/credit-card', 'POST', body=self.card_attributes, headers={})
   
     self.assertEqual(credit_card.get('error'), None)
     self.assertNotEqual(credit_card.get('id'), None)

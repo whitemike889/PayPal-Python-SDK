@@ -42,16 +42,16 @@ class TestPayment(unittest.TestCase):
     # payment_histroy = paypal.Payment.all({"count": 5 })
     # payment_histroy = paypal.Payment.all({"count": 10 })
     # payment_histroy = paypal.Payment.all({"count": 15 })
-
+  
   def test_find(self):
     payment_history = paypal.Payment.all({"count": 1 })
     payment_id = payment_history.payments[0]['id']
     payment = paypal.Payment.find(payment_id)
     self.assertEqual(payment.id, payment_id)
-
+  
   def test_not_found(self):
     self.assertRaises(paypal.ResourceNotFound, paypal.Payment.find, ("PAY-1234"))
-
+  
   def test_execute(self):
     payment = paypal.Payment({
       "intent": "sale",
@@ -74,6 +74,7 @@ class TestPayment(unittest.TestCase):
         "description": "This is the payment transaction description." }]})
     self.assertEqual(payment.create(), True)
     payment.execute({ 'payer_id': 'HZH2W8NPXUE5W' })
+
 
 class TestSale(unittest.TestCase):
 
@@ -107,6 +108,7 @@ class TestSale(unittest.TestCase):
     sale   = paypal.Sale.find(self.create_sale().id)
     refund = sale.refund({ "amount": { "total": "0.01", "currency": "USD" } })
     self.assertEqual(refund.success(), True)
+
 
 class TestRefund(unittest.TestCase):
 
@@ -150,7 +152,6 @@ class TestAuthorization(unittest.TestCase):
     authorization = paypal.Authorization.find(self.create_authorization().id)
     self.assertEqual(authorization.__class__, paypal.Authorization)
 
-
   def test_capture(self):
     authorization = self.create_authorization()
     capture = authorization.capture({ "amount": { "currency": "USD", "total": "1.00" } })
@@ -164,7 +165,6 @@ class TestAuthorization(unittest.TestCase):
     authorization = self.create_authorization()
     capture = authorization.capture({ "amount": { "currency": "USD", "total": "1.00" } })
     self.assertEqual(capture.success(), True)
-
     capture = paypal.Capture.find(capture.id)
     self.assertEqual(capture.__class__, paypal.Capture)
 

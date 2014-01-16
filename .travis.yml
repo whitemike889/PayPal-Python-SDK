@@ -9,7 +9,7 @@ install:
 - pip install coverage
 - pip install coveralls
 script:
-- nosetests --with-coverage --cover-package=paypalrestsdk --include=paypalrestsdk/* --exclude=test/*
+- nosetests --with-coverage --cover-package=paypalrestsdk --include=paypalrestsdk/* --exclude=functional*
 after_success:
 - coveralls
 notifications:

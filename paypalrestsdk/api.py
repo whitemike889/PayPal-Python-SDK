@@ -66,6 +66,7 @@ class Api:
                     "Content-Type": "application/x-www-form-urlencoded",
                     "Accept": "application/json", "User-Agent": self.user_agent
                 })
+        
         return self.token_hash
 
     # Validate expires_in

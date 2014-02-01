@@ -20,16 +20,15 @@ class Api(unittest.TestCase):
 
     
   def test_endpoint(self):
-    
-    new_api = paypal.Api(mode="live")
+    new_api = paypal.Api(mode="live", client_id="dummy", client_secret="dummy")
     self.assertEqual(new_api.endpoint, "https://api.paypal.com")
     self.assertEqual(new_api.token_endpoint, "https://api.paypal.com")
-    
-    new_api = paypal.Api(mode="sandbox")
+
+    new_api = paypal.Api(mode="sandbox", client_id="dummy", client_secret="dummy")
     self.assertEqual(new_api.endpoint, "https://api.sandbox.paypal.com")
     self.assertEqual(new_api.token_endpoint, "https://api.sandbox.paypal.com")
 
-    new_api = paypal.Api(endpoint="https://custom-endpoint.paypal.com")
+    new_api = paypal.Api(endpoint="https://custom-endpoint.paypal.com", client_id="dummy", client_secret="dummy")
     self.assertEqual(new_api.endpoint, "https://custom-endpoint.paypal.com")
     self.assertEqual(new_api.token_endpoint, "https://custom-endpoint.paypal.com")
   

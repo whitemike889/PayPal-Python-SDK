@@ -25,20 +25,20 @@ class Api:
     #   api = paypalrestsdk.Api( mode="sandbox",
     #          client_id='CLIENT_ID', client_secret='CLIENT_SECRET', ssl_options={} )
     def __init__(self, options=None, **args):
-        options = options or {}
-        args = util.merge_dict(options, args)
+        args = util.merge_dict(options or {}, args)
 
         self.mode = args.get("mode", "sandbox")
         self.endpoint = args.get("endpoint", self.default_endpoint())
         self.token_endpoint = args.get("token_endpoint", self.endpoint)
-        self.client_id = args.get("client_id")
-        self.client_secret = args.get("client_secret")
+        self.client_id = args["client_id"]              # Mandatory parameter, so not using `dict.get`
+        self.client_secret = args["client_secret"]      # Mandatory parameter, so not using `dict.get`
         self.ssl_options = args.get("ssl_options", {})
 
         self.token_hash = None
         self.token_request_at = None
+
         if args.get("token"):
-            self.token_hash = {"access_token": args.get("token"), "token_type": "Bearer"}
+            self.token_hash = {"access_token": args["token"], "token_type": "Bearer"}
 
         self.options = args
 
@@ -90,8 +90,7 @@ class Api:
     #   api.request("https://api.sandbox.paypal.com/v1/payments/payment?count=10", "GET", {})
     #   api.request("https://api.sandbox.paypal.com/v1/payments/payment", "POST", "{}", {} )
     def request(self, url, method, body=None, headers=None):
-        headers = headers or {}
-        http_headers = util.merge_dict(self.headers(), headers)
+        http_headers = util.merge_dict(self.headers(), headers or {})
 
         if http_headers.get('PayPal-Request-Id'):
             logging.info('PayPal-Request-Id: %s' % (http_headers['PayPal-Request-Id']))
@@ -103,7 +102,7 @@ class Api:
         except BadRequest as error:
             return {"error": json.loads(error.content)}
 
-        # Handle Exipre token
+        # Handle Expired token
         except UnauthorizedAccess as error:
             if(self.token_hash and self.client_id):
                 self.token_hash = None
@@ -127,10 +126,7 @@ class Api:
         if status in (301, 302, 303, 307):
             raise Redirection(response, content)
         elif 200 <= status <= 299:
-            if content:
-                return json.loads(content)
-            else:
-                return {}
+            return json.loads(content) if content else {}
         elif status == 400:
             raise BadRequest(response, content)
         elif status == 401:
@@ -147,9 +143,9 @@ class Api:
             raise ResourceGone(response, content)
         elif status == 422:
             raise ResourceInvalid(response, content)
-        elif status >= 401 and status <= 499:
+        elif 401 <= status <= 499:
             raise ClientError(response, content)
-        elif status >= 500 and status <= 599:
+        elif 500 <= status <= 599:
             raise ServerError(response, content)
         else:
             raise ConnectionError(response, content, "Unknown response code: #{response.code}")
@@ -168,27 +164,21 @@ class Api:
     #   api.get("v1/payments/payment?count=1")
     #   api.get("v1/payments/payment/PAY-1234")
     def get(self, action, headers=None):
-        headers = headers or {}
-        return self.request(util.join_url(self.endpoint, action), 'GET', headers=headers)
+        return self.request(util.join_url(self.endpoint, action), 'GET', headers=headers or {})
 
     # Make POST request
     # == Example
     #   api.post("v1/payments/payment", { 'indent': 'sale' })
     #   api.post("v1/payments/payment/PAY-1234/execute", { 'payer_id': '1234' })
     def post(self, action, params=None, headers=None):
-        params = params or {}
-        headers = headers or {}
-        return self.request(util.join_url(self.endpoint, action), 'POST', body=json.dumps(params), headers=headers)
+        return self.request(util.join_url(self.endpoint, action), 'POST', body=json.dumps(params or {}), headers=headers or {})
 
     # Make DELETE request
     def delete(self, action, headers=None):
-        headers = headers or {}
-        return self.request(util.join_url(self.endpoint, action), 'DELETE', headers=headers)
+        return self.request(util.join_url(self.endpoint, action), 'DELETE', headers=headers or {})
 
 
-global __api__
 __api__ = None
-
 
 # Get default api
 def default():
@@ -206,9 +196,8 @@ def default():
 
 # Create new default api object with given configuration
 def set_config(options=None, **config):
-    options = options or {}
     global __api__
-    __api__ = Api(options, **config)
+    __api__ = Api(options or {}, **config)
     return __api__
 
 configure = set_config

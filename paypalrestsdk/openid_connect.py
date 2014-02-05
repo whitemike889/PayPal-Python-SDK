@@ -10,13 +10,11 @@ class Base(Resource):
 
     @classmethod
     def post(cls, action, options=None, headers=None):
-        options = options or {}
-        headers = headers or {}
         url = util.join_url(endpoint(), action)
-        body = util.urlencode(options)
+        body = util.urlencode(options or {})
         headers = util.merge_dict({
             'User-Agent': cls.user_agent,
-            'Content-Type': 'application/x-www-form-urlencoded'}, headers)
+            'Content-Type': 'application/x-www-form-urlencoded'}, headers or {})
         data = api.default().http_call(url, 'POST', body=body, headers=headers)
         return cls(data)
 
@@ -55,25 +53,19 @@ class Tokeninfo(Base):
 
     @classmethod
     def authorize_url(cls, options=None):
-        options = options or {}
-        return authorize_url(options)
+        return authorize_url(options or {})
 
     def logout_url(self, options=None):
-        options = options or {}
-        options = util.merge_dict({'id_token': self.id_token}, options)
-        return logout_url(options)
+        return logout_url(util.merge_dict({'id_token': self.id_token}, options or {}))
 
     def refresh(self, options=None):
-        options = options or {}
-        options = util.merge_dict({'refresh_token': self.refresh_token}, options)
+        options = util.merge_dict({'refresh_token': self.refresh_token}, options or {})
         tokeninfo = self.__class__.create_with_refresh_token(options)
         self.merge(tokeninfo.to_dict())
         return self
 
     def userinfo(self, options=None):
-        options = options or {}
-        options = util.merge_dict({'access_token': self.access_token}, options)
-        return Userinfo.get(options)
+        return Userinfo.get(util.merge_dict({'access_token': self.access_token}, options or {}))
 
 
 class Userinfo(Base):
@@ -109,27 +101,24 @@ start_session_path = "/webapps/auth/protocol/openidconnect/v1/authorize"
 end_session_path = "/webapps/auth/protocol/openidconnect/v1/endsession"
 
 def session_url(path, options=None):
-    options = options or {}
     if api.default().mode == "live":
         path = util.join_url("https://www.paypal.com", path)
     else:
         path = util.join_url("https://www.sandbox.paypal.com", path)
-    return util.join_url_params(path, options)
+    return util.join_url_params(path, options or {})
 
 def authorize_url(options=None):
-    options = options or {}
     options = util.merge_dict({
         'response_type': 'code',
         'scope': 'openid',
         'client_id': client_id(),
         'redirect_uri': redirect_uri()
-    }, options)
+    }, options or {})
     return session_url(start_session_path, options)
 
 def logout_url(options=None):
-    options = options or {}
     options = util.merge_dict({
         'logout': 'true',
         'redirect_uri': redirect_uri()
-    }, options)
+    }, options or {})
     return session_url(end_session_path, options)

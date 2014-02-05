@@ -1,3 +1,11 @@
+Version 0.7.0 - February 5, 2014
+  - Allow multiple API object in same thread
+  - Remove mutable default arguments
+  - Change comments to be docstrings
+  - Token creation supports unicode
+  - Add unit_tests using mock and patch, separate from functional_tests
+  - Optimize merge_dict
+
 Version 0.6.4 - October 23, 2013
   - Support OpenIDConnect for sandbox environment
 

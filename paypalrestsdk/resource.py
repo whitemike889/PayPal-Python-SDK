@@ -3,10 +3,9 @@ import uuid
 import paypalrestsdk.util as util
 from paypalrestsdk.api import default as default_api
 
-
-# Base class for all REST service
 class Resource(object):
-
+    """Base class for all REST services
+    """
     convert_resources = {}
 
     def __init__(self, attributes=None, api=None):
@@ -20,14 +19,16 @@ class Resource(object):
         super(Resource, self).__setattr__('request_id', None)
         self.merge(attributes)
 
-    # Generate uniq request id
     def generate_request_id(self):
+        """Generate uniq request id
+        """
         if self.request_id is None:
             self.request_id = str(uuid.uuid4())
         return self.request_id
-
-    # Generate HTTP header
+ 
     def http_headers(self):
+        """Generate HTTP header
+        """
         return util.merge_dict(self.header, self.headers,
                                {'PayPal-Request-Id': self.generate_request_id()})
 
@@ -37,11 +38,9 @@ class Resource(object):
     def __repr__(self):
         return self.__data__.__str__()
 
-    # Getter
     def __getattr__(self, name):
         return self.__data__.get(name)
 
-    # Setter
     def __setattr__(self, name, value):
         try:
             # Handle attributes(error, header, request_id)
@@ -50,17 +49,18 @@ class Resource(object):
         except AttributeError:
             self.__data__[name] = self.convert(name, value)
 
-    # return True if no error
     def success(self):
         return self.error is None
 
-    # Merge new attributes
     def merge(self, new_attributes):
+        """Merge new attributes e.g. response from a post to Resource
+        """
         for k,v in new_attributes.items():
             setattr(self, k, v)
 
-    # Convert the attribute values to configured class.
     def convert(self, name, value):
+        """Convert the attribute values to configured class
+        """
         if isinstance(value, dict):
             cls = self.convert_resources.get(name, Resource)
             return cls(value, api=self.api)
@@ -97,25 +97,34 @@ class Resource(object):
         return data
 
 
-# == Example
-#   payment = Payment.find("PAY-1234")
 class Find(Resource):
 
     @classmethod
     def find(cls, resource_id, api=None):
+        """Locate resource e.g. payment with given id
+
+        Usage::
+            >>> payment = Payment.find("PAY-1234")
+        """
         api = api or default_api()
 
         url = util.join_url(cls.path, str(resource_id))
         return cls(api.get(url), api=api)
 
 
-# == Example
-#   payment_histroy = Payment.all({'count': 2})
 class List(Resource):
+
     list_class = Resource
 
     @classmethod
     def all(cls, params=None, api=None):
+        """Get list of payments as on
+        https://developer.paypal.com/docs/api/#list-payment-resources
+
+        Usage::
+            
+            >>> payment_histroy = Payment.all({'count': 2})
+        """
         api = api or default_api()
 
         if params is None:
@@ -125,36 +134,48 @@ class List(Resource):
         return cls.list_class(api.get(url), api=api)
 
 
-# == Example
-#   payment = Payment({})
-#   payment.create() # return True or False
 class Create(Resource):
 
     def create(self):
+        """Creates a resource e.g. payment
+
+        Usage::
+
+            >>> payment = Payment({})
+            >>> payment.create() # return True or False     
+        """
         new_attributes = self.api.post(self.path, self.to_dict(), self.http_headers())
         self.error = None
         self.merge(new_attributes)
         return self.success()
 
 
-# == Example
-#   credit_card.delete()
 class Delete(Resource):
 
     def delete(self):
+        """Deletes a resource e.g. credit_card
+
+        Usage::
+
+            >>> credit_card.delete()
+        """
         url = util.join_url(self.path, str(self['id']))
         new_attributes = self.api.delete(url)
         self.error = None
         self.merge(new_attributes)
         return self.success()
 
-
-# == Example
-#   payment.post("execute", {'payer_id': '1234'}, payment)  # return True or False
-#   sale.post("refund", {'payer_id': '1234'})  # return Refund object
 class Post(Resource):
 
     def post(self, name, attributes=None, cls=Resource):
+        """Constructs url with passed in headers and makes post request via
+        post method in api class
+
+        Usage::
+
+            >>> payment.post("execute", {'payer_id': '1234'}, payment)  # return True or False
+            >>> sale.post("refund", {'payer_id': '1234'})  # return Refund object
+        """
         attributes = attributes or {}
         url = util.join_url(self.path, str(self['id']), name)
         if not isinstance(attributes, Resource):

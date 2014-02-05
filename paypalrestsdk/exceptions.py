@@ -1,5 +1,4 @@
 
-
 class ConnectionError(Exception):
     def __init__(self, response, content=None, message=None):
         self.response = response
@@ -15,8 +14,9 @@ class ConnectionError(Exception):
         return message
 
 
-# Raised when a Timeout::Error occurs.
 class TimeoutError(ConnectionError):
+    """Raised when a Timeout::Error occurs.
+    """
     def __init__(self, message):
         self.message = message
 
@@ -24,8 +24,9 @@ class TimeoutError(ConnectionError):
         return self.message
 
 
-# Raised when a OpenSSL::SSL::SSLError occurs.
 class SSLError(ConnectionError):
+    """Raised when a OpenSSL::SSL::SSLError occurs
+    """
     def __init__(self, message):
         self.message = message
 
@@ -33,68 +34,69 @@ class SSLError(ConnectionError):
         return self.message
 
 
-# 3xx Redirection
 class Redirection(ConnectionError):
+    """3xx Redirection
+    """
     def __str__(self):
         message = super(Redirection, self).__str__()
         if self.response.get('Location'):
             message = "%s => %s" % (message, self.response.get('Location'))
         return message
 
-
 class MissingParam(TypeError):
     pass
-
 
 class MissingConfig(Exception):
     pass
 
-
-# 4xx Client Error
 class ClientError(ConnectionError):
+    """4xx Client Error
+    """
     pass
 
-
-# 400 Bad Request
 class BadRequest(ClientError):
+    """400 Bad Request
+    """
     pass
-
-
-# 401 Unauthorized
+ 
 class UnauthorizedAccess(ClientError):
+    """401 Unauthorized
+    """
     pass
 
-
-# 403 Forbidden
 class ForbiddenAccess(ClientError):
+    """403 Forbidden
+    """
     pass
 
-
-# 404 Not Found
 class ResourceNotFound(ClientError):
+    """404 Not Found
+    """
     pass
-
-
-# 409 Conflict
+ 
 class ResourceConflict(ClientError):
+    """409 Conflict
+    """
     pass
 
-
-# 410 Gone
 class ResourceGone(ClientError):
+    """410 Gone
+    """
     pass
 
-#422 Invalid
 class ResourceInvalid(ClientError):
+    """422 Invalid
+    """
     pass
 
-# 5xx Server Error
 class ServerError(ConnectionError):
+    """5xx Server Error
+    """
     pass
-
-
-# 405 Method Not Allowed
+ 
 class MethodNotAllowed(ClientError):
+    """405 Method Not Allowed
+    """
 
     def allowed_methods(self):
         return self.response['Allow']

@@ -64,4 +64,3 @@ class TestUrls(unittest.TestCase):
   def test_logout_url_using_tokeninfo(self):
     url = Tokeninfo({'id_token': '1234'}).logout_url()
     assert_regex_matches(self, url, 'id_token=1234')
-

@@ -91,7 +91,7 @@ class Api:
         """
         return self.get_token_hash()["token_type"]
 
-    def request(self, url, method, bodyd=None, headers=None):
+    def request(self, url, method, body=None, headers=None):
         """Make HTTP call, formats response and does error handling. Uses http_call method in API class.
 
         Usage::

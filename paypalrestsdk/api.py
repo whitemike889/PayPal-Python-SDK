@@ -91,7 +91,7 @@ class Api:
         """
         return self.get_token_hash()["token_type"]
 
-    def request(self, url, method, data=None, headers=None):
+    def request(self, url, method, bodyd=None, headers=None):
         """Make HTTP call, formats response and does error handling. Uses http_call method in API class.
 
         Usage::
@@ -106,7 +106,7 @@ class Api:
             logging.info('PayPal-Request-Id: %s' % (http_headers['PayPal-Request-Id']))
 
         try:
-            return self.http_call(url, method, data=data, headers=http_headers)
+            return self.http_call(url, method, data=body, headers=http_headers)
 
         # Format Error message for bad request
         except BadRequest as error:

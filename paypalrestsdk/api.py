@@ -193,7 +193,7 @@ class Api:
             >>> api.post("v1/payments/payment/PAY-1234/execute", { 'payer_id': '1234' })
 
         """         
-        return self.request(util.join_url(self.endpoint, action), 'POST', data=json.dumps(params or {}), headers=headers or {})
+        return self.request(util.join_url(self.endpoint, action), 'POST', body=json.dumps(params or {}), headers=headers or {})
 
     def delete(self, action, headers=None):
         """Make DELETE request

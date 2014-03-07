@@ -26,6 +26,7 @@ class Resource(object):
             self.request_id = str(uuid.uuid4())
         return self.request_id
  
+    # Need to way to pass in Correlation-ID or other headers
     def http_headers(self):
         """Generate HTTP header
         """
@@ -136,7 +137,7 @@ class List(Resource):
 
 class Create(Resource):
 
-    def create(self):
+    def create(self, correlation_id=None):
         """Creates a resource e.g. payment
 
         Usage::
@@ -144,7 +145,13 @@ class Create(Resource):
             >>> payment = Payment({})
             >>> payment.create() # return True or False     
         """
-        new_attributes = self.api.post(self.path, self.to_dict(), self.http_headers())
+        headers = {}
+        if correlation_id is not None:
+            headers = util.merge_dict(self.http_headers(), 
+                                  {'Paypal-Application-Correlation-Id': correlation_id})
+        else:
+            headers = self.http_headers()
+        new_attributes = self.api.post(self.path, self.to_dict(), headers)
         self.error = None
         self.merge(new_attributes)
         return self.success()

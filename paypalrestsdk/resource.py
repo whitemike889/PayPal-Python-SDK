@@ -3,6 +3,7 @@ import uuid
 import paypalrestsdk.util as util
 from paypalrestsdk.api import default as default_api
 
+
 class Resource(object):
     """Base class for all REST services
     """
@@ -25,8 +26,7 @@ class Resource(object):
         if self.request_id is None:
             self.request_id = str(uuid.uuid4())
         return self.request_id
- 
-    # Need to way to pass in Correlation-ID or other headers
+
     def http_headers(self):
         """Generate HTTP header
         """
@@ -56,7 +56,7 @@ class Resource(object):
     def merge(self, new_attributes):
         """Merge new attributes e.g. response from a post to Resource
         """
-        for k,v in new_attributes.items():
+        for k, v in new_attributes.items():
             setattr(self, k, v)
 
     def convert(self, name, value):
@@ -123,7 +123,7 @@ class List(Resource):
         https://developer.paypal.com/docs/api/#list-payment-resources
 
         Usage::
-            
+
             >>> payment_histroy = Payment.all({'count': 2})
         """
         api = api or default_api()
@@ -137,21 +137,25 @@ class List(Resource):
 
 class Create(Resource):
 
-    def create(self, correlation_id=None):
+    def create(self, refresh_token=None, correlation_id=None):
         """Creates a resource e.g. payment
 
         Usage::
 
             >>> payment = Payment({})
-            >>> payment.create() # return True or False     
+            >>> payment.create() # return True or False
         """
+
         headers = {}
         if correlation_id is not None:
-            headers = util.merge_dict(self.http_headers(), 
-                                  {'Paypal-Application-Correlation-Id': correlation_id})
+            headers = util.merge_dict(
+                self.http_headers(),
+                {'Paypal-Application-Correlation-Id': correlation_id}
+            )
         else:
             headers = self.http_headers()
-        new_attributes = self.api.post(self.path, self.to_dict(), headers)
+
+        new_attributes = self.api.post(self.path, self.to_dict(), headers, refresh_token)
         self.error = None
         self.merge(new_attributes)
         return self.success()
@@ -171,6 +175,7 @@ class Delete(Resource):
         self.error = None
         self.merge(new_attributes)
         return self.success()
+
 
 class Post(Resource):
 
@@ -194,4 +199,3 @@ class Post(Resource):
             return self.success()
         else:
             return cls(new_attributes, api=self.api)
-

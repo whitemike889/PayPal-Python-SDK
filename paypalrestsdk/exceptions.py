@@ -43,57 +43,69 @@ class Redirection(ConnectionError):
             message = "%s => %s" % (message, self.response.get('Location'))
         return message
 
+
 class MissingParam(TypeError):
     pass
 
+
 class MissingConfig(Exception):
     pass
+
 
 class ClientError(ConnectionError):
     """4xx Client Error
     """
     pass
 
+
 class BadRequest(ClientError):
     """400 Bad Request
     """
     pass
- 
+
+
 class UnauthorizedAccess(ClientError):
     """401 Unauthorized
     """
     pass
+
 
 class ForbiddenAccess(ClientError):
     """403 Forbidden
     """
     pass
 
+
 class ResourceNotFound(ClientError):
     """404 Not Found
     """
     pass
- 
+
+
 class ResourceConflict(ClientError):
     """409 Conflict
     """
     pass
+
 
 class ResourceGone(ClientError):
     """410 Gone
     """
     pass
 
+
 class ResourceInvalid(ClientError):
     """422 Invalid
     """
     pass
 
+
 class ServerError(ConnectionError):
     """5xx Server Error
     """
     pass
- 
+
+
 class MethodNotAllowed(ClientError):
     """405 Method Not Allowed
     """

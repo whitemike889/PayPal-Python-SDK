@@ -18,7 +18,7 @@ class Api:
     # User-Agent for HTTP request
     library_details = "httplib2 %s; python %s" % (httplib2.__version__, platform.python_version())
     user_agent = "PayPalSDK/rest-sdk-python %s (%s)" % (__version__, library_details)
-        
+
     def __init__(self, options=None, **args):
         """Create API object
 
@@ -56,25 +56,40 @@ class Api:
         credentials = "%s:%s" % (self.client_id, self.client_secret)
         return base64.b64encode(credentials.encode('utf-8')).decode('utf-8').replace("\n", "")
 
-    def get_token_hash(self):
-        """Generate new token by making a POST request with client credentials if 
+    def get_token_hash(self, authorization_code=None, refresh_token=None):
+        """Generate new token by making a POST request with client credentials if
         validate_token_hash finds token to be invalid
         """
-        self.validate_token_hash()
-        if self.token_hash is None:
-            self.token_request_at = datetime.datetime.now()
-            self.token_hash = self.http_call(util.join_url(self.token_endpoint, "/v1/oauth2/token"), "POST",
-                body="grant_type=client_credentials",
-                headers={
-                    "Authorization": ("Basic %s" % self.basic_auth()),
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "Accept": "application/json", "User-Agent": self.user_agent
-                })
-        
+        path = "/v1/oauth2/token"
+        payload = "grant_type=client_credentials"
+
+        #exchange authorization_code for long living refresh_token
+        if authorization_code is not None:
+            payload = "grant_type=authorization_code&response_type=token&redirect_uri=urn:ietf:wg:oauth:2.0:oob&code=" + authorization_code
+
+        #exchange refresh token for bearer access token
+        elif refresh_token is not None:
+            payload = "grant_type=refresh_token&refresh_token=" + refresh_token
+
+        else:
+            self.validate_token_hash()
+            if self.token_hash is not None:
+                return self.token_hash
+            else:
+                self.token_request_at = datetime.datetime.now()
+
+        self.token_hash = self.http_call(
+            util.join_url(self.token_endpoint, path), "POST",
+            body=payload,
+            headers={
+                "Authorization": ("Basic %s" % self.basic_auth()),
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Accept": "application/json", "User-Agent": self.user_agent
+            })
         return self.token_hash
 
     def validate_token_hash(self):
-        """Checks if token duration has expired and if so resets token 
+        """Checks if token duration has expired and if so resets token
         """
         if self.token_request_at and self.token_hash and self.token_hash.get("expires_in") is not None:
             delta = datetime.datetime.now() - self.token_request_at
@@ -82,16 +97,20 @@ class Api:
             if duration > self.token_hash.get("expires_in"):
                 self.token_hash = None
 
-    def get_token(self):
-        return self.get_token_hash()["access_token"]
+    def get_token(self, refresh_token=None):
+        return self.get_token_hash(refresh_token=refresh_token)["access_token"]
 
-    # Get token 
+    def get_refresh_token(self, authorization_code=None):
+        if authorization_code is None:
+            raise KeyError("Authorization code needed to get new refresh token.")
+        return self.get_token_hash(authorization_code)["refresh_token"]
+
     def get_token_type(self):
         """Get token type e.g. Bearer
         """
         return self.get_token_hash()["token_type"]
 
-    def request(self, url, method, body=None, headers=None):
+    def request(self, url, method, body=None, headers=None, refresh_token=None):
         """Make HTTP call, formats response and does error handling. Uses http_call method in API class.
 
         Usage::
@@ -100,13 +119,14 @@ class Api:
             >>> api.request("https://api.sandbox.paypal.com/v1/payments/payment", "POST", "{}", {} )
 
         """
-        http_headers = util.merge_dict(self.headers(), headers or {})
+
+        http_headers = util.merge_dict(self.headers(refresh_token=refresh_token), headers or {})
 
         if http_headers.get('PayPal-Request-Id'):
             logging.info('PayPal-Request-Id: %s' % (http_headers['PayPal-Request-Id']))
 
         try:
-            return self.http_call(url, method, body=body, headers=http_headers)
+            return self.http_call(url, method, body=json.dumps(body), headers=http_headers)
 
         # Format Error message for bad request
         except BadRequest as error:
@@ -122,7 +142,7 @@ class Api:
 
     def http_call(self, url, method, **args):
         """
-        Makes a http call. Logs response information. 
+        Makes a http call. Logs response information.
         """
         logging.info('Request[%s]: %s' % (method, url))
         http = httplib2.Http(**self.ssl_options)
@@ -163,11 +183,13 @@ class Api:
         else:
             raise ConnectionError(response, content, "Unknown response code: #{response.code}")
 
-    def headers(self):
+    def headers(self, refresh_token=None):
         """Default HTTP headers
         """
+        token_hash = self.get_token_hash(refresh_token=refresh_token)
+
         return {
-            "Authorization": ("%s %s" % (self.get_token_type(), self.get_token())),
+            "Authorization": ("%s %s" % (token_hash['token_type'], token_hash['access_token'])),
             "Content-Type": "application/json",
             "Accept": "application/json",
             "User-Agent": self.user_agent
@@ -183,7 +205,7 @@ class Api:
         """
         return self.request(util.join_url(self.endpoint, action), 'GET', headers=headers or {})
 
-    def post(self, action, params=None, headers=None):
+    def post(self, action, params=None, headers=None, refresh_token=None):
         """Make POST request
 
         Usage::
@@ -191,8 +213,8 @@ class Api:
             >>> api.post("v1/payments/payment", { 'indent': 'sale' })
             >>> api.post("v1/payments/payment/PAY-1234/execute", { 'payer_id': '1234' })
 
-        """         
-        return self.request(util.join_url(self.endpoint, action), 'POST', body=json.dumps(params or {}), headers=headers or {})
+        """
+        return self.request(util.join_url(self.endpoint, action), 'POST', body=params or {}, headers=headers or {}, refresh_token=refresh_token)
 
     def delete(self, action, headers=None):
         """Make DELETE request
@@ -200,6 +222,7 @@ class Api:
         return self.request(util.join_url(self.endpoint, action), 'DELETE', headers=headers or {})
 
 __api__ = None
+
 
 def default():
     """Returns default api object and if not present creates a new one

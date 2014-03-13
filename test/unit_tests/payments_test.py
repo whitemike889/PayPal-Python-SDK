@@ -35,7 +35,7 @@ class TestPayment(unittest.TestCase):
 	def test_create(self, mock):	
 		response = self.payment.create()
 		self.assertNotEqual(self.payment.request_id, None)
-		mock.assert_called_once_with(self.payment.api,'v1/payments/payment',self.payment_attributes, {'PayPal-Request-Id' : self.payment.request_id})		
+		mock.assert_called_once_with(self.payment.api,'v1/payments/payment',self.payment_attributes, {'PayPal-Request-Id' : self.payment.request_id}, None)		
 		self.assertEqual(response, True)
 
 	@patch('test_helper.paypal.Api.post', autospec=True)
@@ -51,7 +51,7 @@ class TestPayment(unittest.TestCase):
 		 	'information_link' : 'https://developer.paypal.com/webapps/developer/docs/api/#VALIDATION_ERROR'
 		 	}
 		response = payment.create()
-		mock.assert_called_once_with(self.payment.api,'v1/payments/payment',{}, {'PayPal-Request-Id' : payment.request_id})
+		mock.assert_called_once_with(self.payment.api,'v1/payments/payment',{}, {'PayPal-Request-Id' : payment.request_id}, None)
 
 		self.assertEqual(response, False)
 
@@ -114,7 +114,7 @@ class TestPayment(unittest.TestCase):
 		mock.return_value = {'id' : 'AY-7JD471929T152531RKLKWR6Q', 'intent' : 'sale', 'state' : 'completed', 'description' : 'This is the payment transaction' }
 
 		response = payment.create()
-		mock.assert_called_once_with(self.payment.api,'v1/payments/payment',paypal_payment_attrib, {'PayPal-Request-Id' : payment.request_id})
+		mock.assert_called_once_with(self.payment.api,'v1/payments/payment',paypal_payment_attrib, {'PayPal-Request-Id' : payment.request_id}, None)
 		self.assertEqual(response, True)
 		
 		payment.execute({ 'payer_id': 'HZH2W8NPXUE5W' })
@@ -223,7 +223,7 @@ class TestAuthorization(unittest.TestCase):
 		'transactions': [{'related_resources': [{'authorization': self.authorization_attributes}],
 		    					  	}]}
 		response = self.payment.create()
-		mock.assert_called_once_with(self.payment.api,'v1/payments/payment',self.payment_attributes, {'PayPal-Request-Id' : self.payment.request_id})		
+		mock.assert_called_once_with(self.payment.api,'v1/payments/payment',self.payment_attributes, {'PayPal-Request-Id' : self.payment.request_id}, None)		
 		self.assertEqual(response, True)
 		self.assertNotEqual(self.payment.transactions[0].related_resources[0].authorization.id, None)
 

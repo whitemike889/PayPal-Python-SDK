@@ -51,8 +51,9 @@ class Api(unittest.TestCase):
     
     self.api.request.assert_called_once_with('https://api.sandbox.paypal.com/v1/vault/credit-card',
                                         'POST', 
-                                         body='{}',
-                                         headers={})
+                                         body={},
+                                         headers={}, 
+                                         refresh_token=None)
     self.assertNotEqual(credit_card.get('error'), None)
 
   def test_expired_time(self):

@@ -1,5 +1,5 @@
 from test_helper import unittest, client_id, client_secret, paypal
-from mock import patch, Mock, ANY
+from mock import Mock
 
 class Api(unittest.TestCase):
 
@@ -40,8 +40,6 @@ class Api(unittest.TestCase):
     self.api.request.return_value = {'id': 'test'}
     credit_card = self.api.post("v1/vault/credit-card", self.card_attributes)
 
-    #self.api.request.assert_called_once_with('https://api.sandbox.paypal.com/v1/vault/credit-card', 'POST', body=self.card_attributes, headers={})
-  
     self.assertEqual(credit_card.get('error'), None)
     self.assertNotEqual(credit_card.get('id'), None)
 

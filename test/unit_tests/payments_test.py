@@ -1,5 +1,5 @@
 from test_helper import paypal, unittest
-from mock import patch, Mock, ANY
+from mock import patch, ANY
 
 class TestPayment(unittest.TestCase):
 

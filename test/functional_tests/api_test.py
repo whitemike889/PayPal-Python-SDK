@@ -1,5 +1,4 @@
 from test_helper import unittest, client_id, client_secret, paypal
-from mock import patch
 import logging
 logging.basicConfig(filename='eg.log',level=logging.DEBUG)
 

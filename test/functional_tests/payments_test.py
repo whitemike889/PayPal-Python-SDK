@@ -38,10 +38,6 @@ class TestPayment(unittest.TestCase):
     payment_histroy = paypal.Payment.all({"count": 1 })
     self.assertEqual(payment_histroy.count, 1)
     self.assertEqual(payment_histroy.payments[0].__class__, paypal.Payment)
-
-    # payment_histroy = paypal.Payment.all({"count": 5 })
-    # payment_histroy = paypal.Payment.all({"count": 10 })
-    # payment_histroy = paypal.Payment.all({"count": 15 })
   
   def test_find(self):
     payment_history = paypal.Payment.all({"count": 1 })

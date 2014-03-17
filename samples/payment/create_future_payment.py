@@ -1,7 +1,5 @@
-# #Create Payment Using PayPal Sample
-# This sample code demonstrates how you can process a
-# PayPal Account based Payment.
-# API used: /v1/payments/payment
+# #Create Future Payment Using PayPal
+# https://developer.paypal.com/docs/integration/mobile/make-future-payment/
 import paypalrestsdk
 
 #authorization code from mobile sdk

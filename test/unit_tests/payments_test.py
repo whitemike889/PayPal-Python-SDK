@@ -30,12 +30,30 @@ class TestPayment(unittest.TestCase):
 		          "currency": "USD" },
 		        "description": "This is the payment transaction description." }]}
 		self.payment = paypal.Payment(self.payment_attributes)
+		self.refresh_token = 'long_living_refresh_token'
+		self.correlation_id = 'paypal_application_correlation_id'
+
 
 	@patch('test_helper.paypal.Api.post', autospec=True)
 	def test_create(self, mock):	
 		response = self.payment.create()
 		self.assertNotEqual(self.payment.request_id, None)
 		mock.assert_called_once_with(self.payment.api,'v1/payments/payment',self.payment_attributes, {'PayPal-Request-Id' : self.payment.request_id}, None)		
+		self.assertEqual(response, True)
+
+	@patch('test_helper.paypal.Api.post', autospec=True)
+	def test_create_future_payment(self, mock):
+		response = self.payment.create(
+			refresh_token=self.refresh_token, 
+			correlation_id=self.correlation_id
+		)
+		self.assertNotEqual(self.payment.request_id, None)
+		mock.assert_called_once_with(
+			self.payment.api,'v1/payments/payment',
+			self.payment_attributes, 
+			{'PayPal-Request-Id' : self.payment.request_id, 'Paypal-Application-Correlation-Id' : self.correlation_id}, 
+			self.refresh_token
+		)
 		self.assertEqual(response, True)
 
 	@patch('test_helper.paypal.Api.post', autospec=True)

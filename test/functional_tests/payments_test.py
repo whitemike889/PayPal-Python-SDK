@@ -179,4 +179,3 @@ class TestAuthorization(unittest.TestCase):
     refund = capture.refund({ "amount": { "currency": "USD", "total": "1.00" } })
     self.assertEqual(refund.success(), True)
     self.assertEqual(refund.__class__, paypal.Refund)
-

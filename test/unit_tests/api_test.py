@@ -90,6 +90,9 @@ class Api(unittest.TestCase):
     )
     self.assertEqual(refresh_token, self.refresh_token)
 
+  def test_fail_get_refresh_token(self):
+    self.assertRaises(KeyError, self.api.get_refresh_token, None)
+
   @patch('test_helper.paypal.Api.http_call', autospec=True)
   def test_refresh_access_token(self, mock_http):
     mock_http.return_value = {
@@ -111,6 +114,3 @@ class Api(unittest.TestCase):
       }
     )
     self.assertEqual(access_token, self.access_token)
-
-
-

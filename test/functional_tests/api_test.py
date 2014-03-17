@@ -27,7 +27,6 @@ class Api(unittest.TestCase):
     logging.warning('payment_history')
     self.assertEqual(payment_history['count'], 1)
 
-
   def test_post(self):
     credit_card = self.api.post("v1/vault/credit-card", {
       "type": "visa",
@@ -45,16 +44,19 @@ class Api(unittest.TestCase):
     self.assertNotEqual(credit_card.get('error'), None)
 
   def test_expired_token(self):
-    self.assertNotEqual(self.api.get_token(), None)
+    old_token = self.api.get_token_hash()['access_token']
+    self.assertNotEqual(old_token, None)
     self.api.token_hash["access_token"] = "ExpiredToken"
-    self.assertEqual(self.api.get_token(), "ExpiredToken")
+    new_token = self.api.get_token_hash()['access_token']
+    self.assertEqual(new_token, "ExpiredToken")
     payment_history = self.api.get("/v1/payments/payment?count=1")
     self.assertEqual(payment_history['count'], 1)
 
   def test_expired_time(self):
-    old_token = self.api.get_token()
+    old_token = self.api.get_token_hash()['access_token']
     self.api.token_hash["expires_in"] = 0
-    self.assertNotEqual(self.api.get_token(), old_token)
+    new_token = self.api.get_token_hash()['access_token']
+    self.assertNotEqual(new_token, old_token)
 
   def test_not_found(self):
     self.assertRaises(paypal.ResourceNotFound, self.api.get, ("/v1/payments/payment/PAY-1234"))

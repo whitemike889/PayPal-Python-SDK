@@ -57,17 +57,23 @@ class Api:
         return base64.b64encode(credentials.encode('utf-8')).decode('utf-8').replace("\n", "")
 
     def get_token_hash(self, authorization_code=None, refresh_token=None):
-        """Generate new token by making a POST request with client credentials if
-        validate_token_hash finds token to be invalid
+        """Generate new token by making a POST request 
+
+            1. By using client credentials if validate_token_hash finds
+            token to be invalid. This is useful during web flow so that an already
+            authenticated user is not reprompted for login
+            2. Exchange authorization_code from mobile device for a long living
+            refresh token that can be used to charge user who has consented to future 
+            payments 
+            3. Exchange refresh_token for the user for a access_token of type Bearer
+            which can be passed in to charge user
         """
         path = "/v1/oauth2/token"
         payload = "grant_type=client_credentials"
 
-        #exchange authorization_code for long living refresh_token
         if authorization_code is not None:
             payload = "grant_type=authorization_code&response_type=token&redirect_uri=urn:ietf:wg:oauth:2.0:oob&code=" + authorization_code
 
-        #exchange refresh token for bearer access token
         elif refresh_token is not None:
             payload = "grant_type=refresh_token&refresh_token=" + refresh_token
 
@@ -97,18 +103,10 @@ class Api:
             if duration > self.token_hash.get("expires_in"):
                 self.token_hash = None
 
-    def get_token(self, refresh_token=None):
-        return self.get_token_hash(refresh_token=refresh_token)["access_token"]
-
     def get_refresh_token(self, authorization_code=None):
         if authorization_code is None:
             raise KeyError("Authorization code needed to get new refresh token.")
         return self.get_token_hash(authorization_code)["refresh_token"]
-
-    def get_token_type(self):
-        """Get token type e.g. Bearer
-        """
-        return self.get_token_hash()["token_type"]
 
     def request(self, url, method, body=None, headers=None, refresh_token=None):
         """Make HTTP call, formats response and does error handling. Uses http_call method in API class.

@@ -1,5 +1,5 @@
 from test_helper import unittest, client_id, client_secret, paypal
-from mock import Mock
+from mock import Mock, patch
 
 class Api(unittest.TestCase):
 
@@ -17,6 +17,9 @@ class Api(unittest.TestCase):
       "cvv2": "874",
       "first_name": "Joe",
       "last_name": "Shopper" }
+    self.authorization_code = 'auth_code_from_device'
+    self.refresh_token = 'long_living_token'
+    self.access_token = 'use_once_token'
 
     
   def test_endpoint(self):
@@ -55,10 +58,34 @@ class Api(unittest.TestCase):
     self.assertNotEqual(credit_card.get('error'), None)
 
   def test_expired_time(self):
-    old_token = self.api.get_token()
+    old_token = self.api.get_token_hash()['access_token']
     self.api.token_hash["expires_in"] = 0
-    self.assertNotEqual(self.api.get_token(), old_token)
+    new_token = self.api.get_token_hash()['access_token']
+    self.assertNotEqual(new_token, old_token)
 
   def test_not_found(self):
     self.api.request.side_effect = paypal.ResourceNotFound("error")
     self.assertRaises(paypal.ResourceNotFound, self.api.get, ("/v1/payments/payment/PAY-1234"))
+
+  @patch('test_helper.paypal.Api.http_call', autospec=True)
+  def test_get_refresh_token(self, mock_http):
+    self.api.request.return_value = {
+      'access_token': self.access_token,
+      'expires_in': 900,
+      'refresh_token': self.refresh_token,
+      'scope': "https://api.paypal.com/v1/payments/.* https://uri.paypal.com/services/payments/futurepayments",
+      'token_type': 'Bearer'
+    }
+    refresh_token = self.api.get_refresh_token(self.authorization_code)
+    self.assertNotEqual(refresh_token, None)
+    mock_http.assert_called_once_with(self.api,
+      'https://api.sandbox.paypal.com/v1/oauth2/token', 'POST',
+      body = 'grant_type=authorization_code&response_type=token&redirect_uri=urn:ietf:wg:oauth:2.0:oob&code=' + self.authorization_code,
+      headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'Authorization': 'Basic ' + self.api.basic_auth(),
+        'User-Agent': self.api.user_agent
+      }
+    )
+

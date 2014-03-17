@@ -20,6 +20,7 @@ class Api(unittest.TestCase):
     self.authorization_code = 'auth_code_from_device'
     self.refresh_token = 'long_living_token'
     self.access_token = 'use_once_token'
+    self.future_payments_scope = 'https://api.paypal.com/v1/payments/.* https://uri.paypal.com/services/payments/futurepayments'
 
     
   def test_endpoint(self):
@@ -69,15 +70,14 @@ class Api(unittest.TestCase):
 
   @patch('test_helper.paypal.Api.http_call', autospec=True)
   def test_get_refresh_token(self, mock_http):
-    self.api.request.return_value = {
+    mock_http.return_value = {
       'access_token': self.access_token,
       'expires_in': 900,
       'refresh_token': self.refresh_token,
-      'scope': "https://api.paypal.com/v1/payments/.* https://uri.paypal.com/services/payments/futurepayments",
+      'scope': self.future_payments_scope,
       'token_type': 'Bearer'
     }
     refresh_token = self.api.get_refresh_token(self.authorization_code)
-    self.assertNotEqual(refresh_token, None)
     mock_http.assert_called_once_with(self.api,
       'https://api.sandbox.paypal.com/v1/oauth2/token', 'POST',
       body = 'grant_type=authorization_code&response_type=token&redirect_uri=urn:ietf:wg:oauth:2.0:oob&code=' + self.authorization_code,
@@ -88,4 +88,29 @@ class Api(unittest.TestCase):
         'User-Agent': self.api.user_agent
       }
     )
+    self.assertEqual(refresh_token, self.refresh_token)
+
+  @patch('test_helper.paypal.Api.http_call', autospec=True)
+  def test_refresh_access_token(self, mock_http):
+    mock_http.return_value = {
+      'access_token': self.access_token,
+      'app_id': 'APP-6XR95014BA15863X',
+      'expires_in': 900,
+      'scope': self.future_payments_scope,
+      'token_type': 'Bearer'
+    }
+    access_token = self.api.get_token_hash(refresh_token=self.refresh_token)['access_token']
+    mock_http.assert_called_once_with(self.api,
+      'https://api.sandbox.paypal.com/v1/oauth2/token', 'POST',
+      body = 'grant_type=refresh_token&refresh_token=' + self.refresh_token,
+      headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'Authorization': 'Basic ' + self.api.basic_auth(),
+        'User-Agent': self.api.user_agent        
+      }
+    )
+    self.assertEqual(access_token, self.access_token)
+
+
 

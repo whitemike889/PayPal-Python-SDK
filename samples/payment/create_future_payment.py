@@ -1,4 +1,4 @@
-# #Create Future Payment Using PayPal Wallet
+# Create Future Payment Using PayPal Wallet
 # https://developer.paypal.com/docs/integration/mobile/make-future-payment/
 import paypalrestsdk
 

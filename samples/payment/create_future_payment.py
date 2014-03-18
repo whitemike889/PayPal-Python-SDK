@@ -5,28 +5,27 @@ import paypalrestsdk
 #authorization code from mobile sdk
 authorization_code = ''
 
-#Save refresh token in database
+#Exchange authorization_code for long living refresh token. You should store
+#it in a database for later use
 refresh_token = api.get_refresh_token(authorization_code)
 
 #correlation id from mobile sdk
 correlation_id=''
 
+#Initialize the payment object
 payment = paypalrestsdk.Payment({
   "intent":  "authorize",
-
   "payer": {
     "payment_method":  "paypal" },
-
   "transactions": [{
-
     "amount":{
       "total":  "0.17",
       "currency":  "USD"},
     "description":  "This is the payment transaction description."}]})
 
-# If payment intent is authorize prints out the authorization
-# id, it can be used to capture payment later using 
-# samples/authorization/capture.py
+# Create the payment. Set intent to sale to charge immediately,
+# else if authorize use the authorization id to capture
+# payment later using samples/authorization/capture.py
 if payment.create(refresh_token, correlation_id):
   print("Payment %s created successfully"%(payment.id))
   if payment['intent'] == "authorize":

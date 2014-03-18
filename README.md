@@ -112,7 +112,7 @@ payment_history = paypalrestsdk.Payment.all({"count": 10})
 payment_history.payments
 ```
 
-## Execute Payment
+### Execute Payment
 
 Only for [Payment](https://github.com/paypal/rest-api-sdk-python/blob/master/samples/payment/create_with_paypal.py) with `payment_method` as `"paypal"`
 
@@ -128,7 +128,7 @@ else:
 For more samples [github.com/paypal/rest-api-sdk-python/tree/master/samples](https://github.com/paypal/rest-api-sdk-python/tree/master/samples)
 
 
-## OpenID Connect
+### OpenID Connect
 
 ```python
 import paypalrestsdk
@@ -162,6 +162,6 @@ userinfo  = Userinfo.get("Replace with access_token")
 logout_url = tokeninfo.logout_url()
 ```
 
-## Future Payments
+### Future Payments
 
 Check out this [sample](/samples/payment/create_future_payment.py) for executing [future payments](https://developer.paypal.com/docs/integration/mobile/make-future-payment/) for a customer who has granted consent on a mobile device 

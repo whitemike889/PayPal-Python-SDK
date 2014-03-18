@@ -161,3 +161,11 @@ userinfo  = Userinfo.get("Replace with access_token")
 # Generate logout url
 logout_url = tokeninfo.logout_url()
 ```
+
+## Future Payments
+
+```python
+
+Check out this (sample)[/samples/payment/create_future_payment.py] for executing (future payments)[https://developer.paypal.com/docs/integration/mobile/make-future-payment/] for a customer who has granted consent on a mobile device 
+
+```

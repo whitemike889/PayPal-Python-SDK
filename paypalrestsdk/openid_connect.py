@@ -120,6 +120,7 @@ def authorize_url(options=None):
     }, options or {})
     return session_url(start_session_path, options)
 
+
 def logout_url(options=None):
     options = util.merge_dict({
         'logout': 'true',

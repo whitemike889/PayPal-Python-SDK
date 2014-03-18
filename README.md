@@ -166,6 +166,6 @@ logout_url = tokeninfo.logout_url()
 
 ```python
 
-Check out this (sample)[/samples/payment/create_future_payment.py] for executing (future payments)[https://developer.paypal.com/docs/integration/mobile/make-future-payment/] for a customer who has granted consent on a mobile device 
+Check out this [sample](/samples/payment/create_future_payment.py) for executing [future payments](https://developer.paypal.com/docs/integration/mobile/make-future-payment/) for a customer who has granted consent on a mobile device 
 
 ```

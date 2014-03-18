@@ -125,9 +125,6 @@ else:
   print(payment.error) # Error Hash
 ```
 
-For more samples [github.com/paypal/rest-api-sdk-python/tree/master/samples](https://github.com/paypal/rest-api-sdk-python/tree/master/samples)
-
-
 ### OpenID Connect
 
 ```python

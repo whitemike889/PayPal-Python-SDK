@@ -116,7 +116,7 @@ class Api:
         except UnauthorizedAccess as error:
             if(self.token_hash and self.client_id):
                 self.token_hash = None
-                return self.request(url, method, data, headers)
+                return self.request(url, method, body, headers)
             else:
                 raise error
 

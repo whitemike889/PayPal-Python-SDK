@@ -13,27 +13,6 @@ class ConnectionError(Exception):
             message = message + "  Response message = %s." % (self.response.reason)
         return message
 
-
-class TimeoutError(ConnectionError):
-    """Raised when a Timeout::Error occurs.
-    """
-    def __init__(self, message):
-        self.message = message
-
-    def __str__(self):
-        return self.message
-
-
-class SSLError(ConnectionError):
-    """Raised when a OpenSSL::SSL::SSLError occurs
-    """
-    def __init__(self, message):
-        self.message = message
-
-    def __str__(self):
-        return self.message
-
-
 class Redirection(ConnectionError):
     """3xx Redirection
     """

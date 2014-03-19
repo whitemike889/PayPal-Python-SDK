@@ -8,14 +8,6 @@ class TestExceptions(unittest.TestCase):
     error = ConnectionError({})
     self.assertEqual(str(error), "Failed.")
 
-  def test_timeout(self):
-    error = TimeoutError("HTTP Timeout")
-    self.assertEqual(str(error), "HTTP Timeout")
-
-  def test_ssl_error(self):
-    error = SSLError("SSL Error")
-    self.assertEqual(str(error), "SSL Error")
-
   def test_redirect(self):
     error = Redirection({ "Location": "http://example.com" })
     self.assertEqual(str(error), "Failed. => http://example.com")

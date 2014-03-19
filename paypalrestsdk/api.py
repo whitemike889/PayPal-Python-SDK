@@ -2,7 +2,7 @@ from __future__ import division
 
 import base64
 import datetime
-import httplib2
+import requests
 import json
 import logging
 import os
@@ -16,7 +16,7 @@ from paypalrestsdk.version import __version__
 class Api(object):
 
     # User-Agent for HTTP request
-    library_details = "httplib2 %s; python %s" % (httplib2.__version__, platform.python_version())
+    library_details = "requests %s; python %s" % (requests.__version__, platform.python_version())
     user_agent = "PayPalSDK/rest-sdk-python %s (%s)" % (__version__, library_details)
 
     def __init__(self, options=None, **args):
@@ -35,7 +35,7 @@ class Api(object):
         self.client_id = args["client_id"]              # Mandatory parameter, so not using `dict.get`
         self.client_secret = args["client_secret"]      # Mandatory parameter, so not using `dict.get`
         self.ssl_options = args.get("ssl_options", {})
-
+        self.proxies = args.get("proxies", None)
         self.token_hash = None
         self.token_request_at = None
 
@@ -87,12 +87,13 @@ class Api(object):
 
         self.token_hash = self.http_call(
             util.join_url(self.token_endpoint, path), "POST",
-            body=payload,
+            data=payload,
             headers={
                 "Authorization": ("Basic %s" % self.basic_auth()),
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Accept": "application/json", "User-Agent": self.user_agent
             })
+
         return self.token_hash
 
     def validate_token_hash(self):
@@ -125,7 +126,7 @@ class Api(object):
             logging.info('PayPal-Request-Id: %s' % (http_headers['PayPal-Request-Id']))
 
         try:
-            return self.http_call(url, method, body=json.dumps(body), headers=http_headers)
+            return self.http_call(url, method, data=json.dumps(body), headers=http_headers)
 
         # Format Error message for bad request
         except exceptions.BadRequest as error:
@@ -144,17 +145,18 @@ class Api(object):
         Makes a http call. Logs response information.
         """
         logging.info('Request[%s]: %s' % (method, url))
-        http = httplib2.Http(**self.ssl_options)
+        #http = httplib2.Http(**self.ssl_options)
         start_time = datetime.datetime.now()
-        response, content = http.request(url, method, **args)
+        r = requests.request(method, url, proxies=self.proxies, **args)
+        response, content = r, r.content
         duration = datetime.datetime.now() - start_time
-        logging.info('Response[%d]: %s, Duration: %s.%ss' % (response.status, response.reason, duration.seconds, duration.microseconds))
+        logging.info('Response[%d]: %s, Duration: %s.%ss' % (response.status_code, response.reason, duration.seconds, duration.microseconds))
         return self.handle_response(response, content.decode('utf-8'))
 
     def handle_response(self, response, content):
         """Validate HTTP response
         """
-        status = response.status
+        status = response.status_code
         if status in (301, 302, 303, 307):
             raise exceptions.Redirection(response, content)
         elif 200 <= status <= 299:

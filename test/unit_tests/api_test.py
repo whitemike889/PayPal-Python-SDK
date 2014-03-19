@@ -80,7 +80,7 @@ class Api(unittest.TestCase):
     refresh_token = self.api.get_refresh_token(self.authorization_code)
     mock_http.assert_called_once_with(self.api,
       'https://api.sandbox.paypal.com/v1/oauth2/token', 'POST',
-      body = 'grant_type=authorization_code&response_type=token&redirect_uri=urn:ietf:wg:oauth:2.0:oob&code=' + self.authorization_code,
+      data = 'grant_type=authorization_code&response_type=token&redirect_uri=urn:ietf:wg:oauth:2.0:oob&code=' + self.authorization_code,
       headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json',
@@ -105,7 +105,7 @@ class Api(unittest.TestCase):
     access_token = self.api.get_token_hash(refresh_token=self.refresh_token)['access_token']
     mock_http.assert_called_once_with(self.api,
       'https://api.sandbox.paypal.com/v1/oauth2/token', 'POST',
-      body = 'grant_type=refresh_token&refresh_token=' + self.refresh_token,
+      data = 'grant_type=refresh_token&refresh_token=' + self.refresh_token,
       headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json',

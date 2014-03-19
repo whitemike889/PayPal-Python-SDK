@@ -16,7 +16,7 @@ class Base(Resource):
         headers = util.merge_dict({
             'User-Agent': cls.user_agent,
             'Content-Type': 'application/x-www-form-urlencoded'}, headers or {})
-        data = api.default().http_call(url, 'POST', body=body, headers=headers)
+        data = api.default().http_call(url, 'POST', data=body, headers=headers)
         return cls(data)
 
 

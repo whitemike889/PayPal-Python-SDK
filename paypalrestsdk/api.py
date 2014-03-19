@@ -19,7 +19,7 @@ class Api(object):
     library_details = "requests %s; python %s" % (requests.__version__, platform.python_version())
     user_agent = "PayPalSDK/rest-sdk-python %s (%s)" % (__version__, library_details)
 
-    def __init__(self, options=None, **args):
+    def __init__(self, options=None, **kwargs):
         """Create API object
 
         Usage::
@@ -27,22 +27,22 @@ class Api(object):
             >>> import paypalrestsdk
             >>> api = paypalrestsdk.Api(mode="sandbox", client_id='CLIENT_ID', client_secret='CLIENT_SECRET', ssl_options={})
         """
-        args = util.merge_dict(options or {}, args)
+        kwargs = util.merge_dict(options or {}, kwargs)
 
-        self.mode = args.get("mode", "sandbox")
-        self.endpoint = args.get("endpoint", self.default_endpoint())
-        self.token_endpoint = args.get("token_endpoint", self.endpoint)
-        self.client_id = args["client_id"]              # Mandatory parameter, so not using `dict.get`
-        self.client_secret = args["client_secret"]      # Mandatory parameter, so not using `dict.get`
-        self.ssl_options = args.get("ssl_options", {})
-        self.proxies = args.get("proxies", None)
+        self.mode = kwargs.get("mode", "sandbox")
+        self.endpoint = kwargs.get("endpoint", self.default_endpoint())
+        self.token_endpoint = kwargs.get("token_endpoint", self.endpoint)
+        self.client_id = kwargs["client_id"]              # Mandatory parameter, so not using `dict.get`
+        self.client_secret = kwargs["client_secret"]      # Mandatory parameter, so not using `dict.get`
+        self.ssl_options = kwargs.get("ssl_options", {})
+        self.proxies = kwargs.get("proxies", None)
         self.token_hash = None
         self.token_request_at = None
 
-        if args.get("token"):
-            self.token_hash = {"access_token": args["token"], "token_type": "Bearer"}
+        if kwargs.get("token"):
+            self.token_hash = {"access_token": kwargs["token"], "token_type": "Bearer"}
 
-        self.options = args
+        self.options = kwargs
 
     def default_endpoint(self):
         if self.mode == "live":
@@ -140,14 +140,13 @@ class Api(object):
             else:
                 raise error
 
-    def http_call(self, url, method, **args):
+    def http_call(self, url, method, **kwargs):
         """
         Makes a http call. Logs response information.
         """
         logging.info('Request[%s]: %s' % (method, url))
-        #http = httplib2.Http(**self.ssl_options)
         start_time = datetime.datetime.now()
-        r = requests.request(method, url, proxies=self.proxies, **args)
+        r = requests.request(method, url, proxies=self.proxies, **kwargs)
         response, content = r, r.content
         duration = datetime.datetime.now() - start_time
         logging.info('Response[%d]: %s, Duration: %s.%ss' % (response.status_code, response.reason, duration.seconds, duration.microseconds))

@@ -9,11 +9,11 @@ import os
 import platform
 
 import paypalrestsdk.util as util
-from paypalrestsdk.exceptions import *
+from paypalrestsdk import exceptions
 from paypalrestsdk.version import __version__
 
 
-class Api:
+class Api(object):
 
     # User-Agent for HTTP request
     library_details = "httplib2 %s; python %s" % (httplib2.__version__, platform.python_version())
@@ -67,6 +67,7 @@ class Api:
             payments 
             3. Exchange refresh_token for the user for a access_token of type Bearer
             which can be passed in to charge user
+
         """
         path = "/v1/oauth2/token"
         payload = "grant_type=client_credentials"
@@ -127,11 +128,11 @@ class Api:
             return self.http_call(url, method, body=json.dumps(body), headers=http_headers)
 
         # Format Error message for bad request
-        except BadRequest as error:
+        except exceptions.BadRequest as error:
             return {"error": json.loads(error.content)}
 
         # Handle Expired token
-        except UnauthorizedAccess as error:
+        except exceptions.UnauthorizedAccess as error:
             if(self.token_hash and self.client_id):
                 self.token_hash = None
                 return self.request(url, method, body, headers)
@@ -155,31 +156,31 @@ class Api:
         """
         status = response.status
         if status in (301, 302, 303, 307):
-            raise Redirection(response, content)
+            raise exceptions.Redirection(response, content)
         elif 200 <= status <= 299:
             return json.loads(content) if content else {}
         elif status == 400:
-            raise BadRequest(response, content)
+            raise exceptions.BadRequest(response, content)
         elif status == 401:
-            raise UnauthorizedAccess(response, content)
+            raise exceptions.UnauthorizedAccess(response, content)
         elif status == 403:
-            raise ForbiddenAccess(response, content)
+            raise exceptions.ForbiddenAccess(response, content)
         elif status == 404:
-            raise ResourceNotFound(response, content)
+            raise exceptions.ResourceNotFound(response, content)
         elif status == 405:
-            raise MethodNotAllowed(response, content)
+            raise exceptions.MethodNotAllowed(response, content)
         elif status == 409:
-            raise ResourceConflict(response, content)
+            raise exceptions.ResourceConflict(response, content)
         elif status == 410:
-            raise ResourceGone(response, content)
+            raise exceptions.ResourceGone(response, content)
         elif status == 422:
-            raise ResourceInvalid(response, content)
+            raise exceptions.ResourceInvalid(response, content)
         elif 401 <= status <= 499:
-            raise ClientError(response, content)
+            raise exceptions.ClientError(response, content)
         elif 500 <= status <= 599:
-            raise ServerError(response, content)
+            raise exceptions.ServerError(response, content)
         else:
-            raise ConnectionError(response, content, "Unknown response code: #{response.code}")
+            raise exceptions.ConnectionError(response, content, "Unknown response code: #{response.code}")
 
     def headers(self, refresh_token=None):
         """Default HTTP headers
@@ -232,7 +233,7 @@ def default():
             client_id = os.environ["PAYPAL_CLIENT_ID"]
             client_secret = os.environ["PAYPAL_CLIENT_SECRET"]
         except KeyError:
-            raise MissingConfig("Required PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET. Refer https://github.com/paypal/rest-api-sdk-python#configuration")
+            raise exceptions.MissingConfig("Required PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET. Refer https://github.com/paypal/rest-api-sdk-python#configuration")
 
         __api__ = Api(mode=os.environ.get("PAYPAL_MODE", "sandbox"), client_id=client_id, client_secret=client_secret)
     return __api__

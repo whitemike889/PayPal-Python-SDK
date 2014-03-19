@@ -13,6 +13,7 @@ class ConnectionError(Exception):
             message = message + "  Response message = %s." % (self.response.reason)
         return message
 
+
 class Redirection(ConnectionError):
     """3xx Redirection
     """

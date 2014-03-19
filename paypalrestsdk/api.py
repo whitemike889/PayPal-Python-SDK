@@ -25,7 +25,7 @@ class Api(object):
         Usage::
 
             >>> import paypalrestsdk
-            >>> api = paypalrestsdk.Api(mode="sandbox", client_id='CLIENT_ID', client_secret='CLIENT_SECRET', ssl_options={})
+            >>> api = paypalrestsdk.Api(mode="sandbox", client_id='CLIENT_ID', client_secret='CLIENT_SECRET', ssl_options={"cert": "/path/to/server.pem"})
         """
         kwargs = util.merge_dict(options or {}, kwargs)
 
@@ -34,10 +34,13 @@ class Api(object):
         self.token_endpoint = kwargs.get("token_endpoint", self.endpoint)
         self.client_id = kwargs["client_id"]              # Mandatory parameter, so not using `dict.get`
         self.client_secret = kwargs["client_secret"]      # Mandatory parameter, so not using `dict.get`
-        self.ssl_options = kwargs.get("ssl_options", {})
         self.proxies = kwargs.get("proxies", None)
         self.token_hash = None
         self.token_request_at = None
+        # setup SSL certificate verification if private certificate provided
+        ssl_options = kwargs.get("ssl_options", {})
+        if "cert" in ssl_options:
+            os.environ["REQUESTS_CA_BUNDLE"] = ssl_options["cert"]
 
         if kwargs.get("token"):
             self.token_hash = {"access_token": kwargs["token"], "token_type": "Bearer"}

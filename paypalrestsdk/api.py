@@ -110,7 +110,7 @@ class Api(object):
 
     def get_refresh_token(self, authorization_code=None):
         if authorization_code is None:
-            raise KeyError("Authorization code needed to get new refresh token.")
+            raise exceptions.MissingConfig("Authorization code needed to get new refresh token. Refer to https://developer.paypal.com/docs/integration/mobile/make-future-payment/#get-an-auth-code")
         return self.get_token_hash(authorization_code)["refresh_token"]
 
     def request(self, url, method, body=None, headers=None, refresh_token=None):

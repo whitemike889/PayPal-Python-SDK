@@ -44,7 +44,7 @@ export PAYPAL_CLIENT_ID=EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM
 export PAYPAL_CLIENT_SECRET=EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM
 ```
 
-Configure through a non-global Api object
+Configure through a non-global API object
 ```python
 import paypalrestsdk
 my_api = paypalrestsdk.Api({

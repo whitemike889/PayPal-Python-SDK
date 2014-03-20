@@ -24,7 +24,7 @@ class TestCreditCard(unittest.TestCase):
 
 		response = self.credit_card.create()
 		self.assertNotEqual(self.credit_card.request_id, None)
-		mock.assert_called_once_with(self.credit_card.api,'v1/vault/credit-card',self.credit_card_attributes, {'PayPal-Request-Id' : self.credit_card.request_id})		
+		mock.assert_called_once_with(self.credit_card.api,'v1/vault/credit-card',self.credit_card_attributes, {'PayPal-Request-Id' : self.credit_card.request_id}, None)		
 		self.assertEqual(response, True)
 	
 	@patch('test_helper.paypal.Api.get', autospec=True)
@@ -61,14 +61,14 @@ class TestCreditCard(unittest.TestCase):
 		'''
 
 		response = self.credit_card.create()
-		mock.assert_called_once_with(self.credit_card.api,'v1/vault/credit-card',self.credit_card_attributes, {'PayPal-Request-Id' : self.credit_card.request_id})		
+		mock.assert_called_once_with(self.credit_card.api,'v1/vault/credit-card',self.credit_card_attributes, {'PayPal-Request-Id' : self.credit_card.request_id}, None)		
 		self.assertEqual(response, True)
 
 		duplicate_card = paypal.CreditCard(self.credit_card_attributes)
 		duplicate_card.request_id = self.credit_card.request_id
 		duplicate_card_response = duplicate_card.create()
 
-		mock.assert_called_with(self.credit_card.api,'v1/vault/credit-card',self.credit_card_attributes, {'PayPal-Request-Id' : self.credit_card.request_id})
+		mock.assert_called_with(self.credit_card.api,'v1/vault/credit-card',self.credit_card_attributes, {'PayPal-Request-Id' : self.credit_card.request_id}, None)
 		self.assertEqual(mock.call_count, 2)
 		self.assertEqual(duplicate_card_response, True)
 		self.assertEqual(duplicate_card.id, self.credit_card.id)

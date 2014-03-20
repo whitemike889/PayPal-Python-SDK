@@ -62,6 +62,8 @@ payment = paypalrestsdk.Payment({...}, api=my_api)
 import paypalrestsdk
 import logging
 
+# Include Headers and Content by setting logging level to DEBUG, particularly for
+# Paypal-Debug-Id if requesting PayPal Merchant Technical Services for support
 logging.basicConfig(level=logging.INFO)
 
 paypalrestsdk.configure({
@@ -112,7 +114,7 @@ payment_history = paypalrestsdk.Payment.all({"count": 10})
 payment_history.payments
 ```
 
-## Execute Payment
+### Execute Payment
 
 Only for [Payment](https://github.com/paypal/rest-api-sdk-python/blob/master/samples/payment/create_with_paypal.py) with `payment_method` as `"paypal"`
 
@@ -125,10 +127,7 @@ else:
   print(payment.error) # Error Hash
 ```
 
-For more samples [github.com/paypal/rest-api-sdk-python/tree/master/samples](https://github.com/paypal/rest-api-sdk-python/tree/master/samples)
-
-
-## OpenID Connect
+### OpenID Connect
 
 ```python
 import paypalrestsdk
@@ -161,3 +160,7 @@ userinfo  = Userinfo.get("Replace with access_token")
 # Generate logout url
 logout_url = tokeninfo.logout_url()
 ```
+
+### Future Payments
+
+Check out this [sample](/samples/payment/create_future_payment.py) for executing [future payments](https://developer.paypal.com/docs/integration/mobile/make-future-payment/) for a customer who has granted consent on a mobile device.

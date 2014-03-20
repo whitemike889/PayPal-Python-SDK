@@ -149,10 +149,12 @@ class Api(object):
         """
         logging.info('Request[%s]: %s' % (method, url))
         start_time = datetime.datetime.now()
-        r = requests.request(method, url, proxies=self.proxies, **kwargs)
-        response, content = r, r.content
+        response = requests.request(method, url, proxies=self.proxies, **kwargs)
+        headers, content = response.headers, response.content
         duration = datetime.datetime.now() - start_time
-        logging.info('Response[%d]: %s, Duration: %s.%ss' % (response.status_code, response.reason, duration.seconds, duration.microseconds))
+        
+        logging.info('Response[%d]: %s, Duration: %s.%ss.' % (response.status_code, response.reason, duration.seconds, duration.microseconds))
+        logging.debug('Headers: %s\nContent: %s' % (str(headers), str(content)))
         return self.handle_response(response, content.decode('utf-8'))
 
     def handle_response(self, response, content):

@@ -62,6 +62,8 @@ payment = paypalrestsdk.Payment({...}, api=my_api)
 import paypalrestsdk
 import logging
 
+# Include Headers and Content by setting logging level to DEBUG, particularly for
+# Paypal-Debug-Id if requesting PayPal Merchant Technical Services for support
 logging.basicConfig(level=logging.INFO)
 
 paypalrestsdk.configure({
@@ -161,4 +163,4 @@ logout_url = tokeninfo.logout_url()
 
 ### Future Payments
 
-Check out this [sample](/samples/payment/create_future_payment.py) for executing [future payments](https://developer.paypal.com/docs/integration/mobile/make-future-payment/) for a customer who has granted consent on a mobile device 
+Check out this [sample](/samples/payment/create_future_payment.py) for executing [future payments](https://developer.paypal.com/docs/integration/mobile/make-future-payment/) for a customer who has granted consent on a mobile device.

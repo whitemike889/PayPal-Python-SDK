@@ -1,6 +1,7 @@
 Version 1.0.0 - March 20, 2014
  - future payments support added to sdk
  - move from httplib2 to requests
+ - Improve error reporting
  - exceptions below http_layer removed
 
 Version 0.7.0 - February 5, 2014

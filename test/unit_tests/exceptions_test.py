@@ -1,8 +1,12 @@
 import unittest
-from httplib2 import Response
+from collections import namedtuple
+import json
 from paypalrestsdk.exceptions import *
 
 class TestExceptions(unittest.TestCase):
+
+  def setUp(self):
+    self.Response = namedtuple('Response', 'status_code reason')
 
   def test_connection(self):
     error = ConnectionError({})
@@ -13,14 +17,14 @@ class TestExceptions(unittest.TestCase):
     self.assertEqual(str(error), "Failed. => http://example.com")
 
   def test_not_found(self):
-    response = Response({ "status": 404, "reason": "Not Found" })
+    response = self.Response(status_code="404", reason="Not Found" )
     error = ResourceNotFound(response)
-    self.assertEqual(str(error), "Failed.  Response status = 404.  Response message = %s."%(response.reason))
+    self.assertEqual(str(error), "Failed. Response status: %s. Response message: %s." % (response.status_code, response.reason))
 
   def test_unauthorized_access(self):
-    response = Response({ "status": 401, "reason": "Unauthorized" })
+    response = self.Response(status_code="401", reason="Unauthorized" )
     error = UnauthorizedAccess(response)
-    self.assertEqual(str(error), "Failed.  Response status = 401.  Response message = %s."%(response.reason))
+    self.assertEqual(str(error), "Failed. Response status: %s. Response message: %s." % (response.status_code, response.reason))
 
   def test_missing_param(self):
     error = MissingParam("Missing Payment Id")

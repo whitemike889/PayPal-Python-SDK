@@ -148,14 +148,17 @@ class Api(object):
         Makes a http call. Logs response information.
         """
         logging.info('Request[%s]: %s' % (method, url))
+        request_headers = kwargs.get("headers", {})
+        request_body = kwargs.get("data", {})
+        logging.debug('Headers: %s\nBody: %s' % (str(request_headers), str(request_body)))
+        
         start_time = datetime.datetime.now()
-        response = requests.request(method, url, proxies=self.proxies, **kwargs)
-        headers, content = response.headers, response.content
+        response = requests.request(method, url, proxies=self.proxies, **kwargs)  
         duration = datetime.datetime.now() - start_time
 
         logging.info('Response[%d]: %s, Duration: %s.%ss.' % (response.status_code, response.reason, duration.seconds, duration.microseconds))
-        logging.debug('Headers: %s\nContent: %s' % (str(headers), str(content)))
-        return self.handle_response(response, content.decode('utf-8'))
+        logging.debug('Headers: %s\nBody: %s' % (str(response.headers), str(response.content)))
+        return self.handle_response(response, response.content.decode('utf-8'))
 
     def handle_response(self, response, content):
         """Validate HTTP response

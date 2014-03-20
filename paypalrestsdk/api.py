@@ -60,14 +60,14 @@ class Api(object):
         return base64.b64encode(credentials.encode('utf-8')).decode('utf-8').replace("\n", "")
 
     def get_token_hash(self, authorization_code=None, refresh_token=None):
-        """Generate new token by making a POST request 
+        """Generate new token by making a POST request
 
             1. By using client credentials if validate_token_hash finds
             token to be invalid. This is useful during web flow so that an already
             authenticated user is not reprompted for login
             2. Exchange authorization_code from mobile device for a long living
-            refresh token that can be used to charge user who has consented to future 
-            payments 
+            refresh token that can be used to charge user who has consented to future
+            payments
             3. Exchange refresh_token for the user for a access_token of type Bearer
             which can be passed in to charge user
 
@@ -152,7 +152,7 @@ class Api(object):
         response = requests.request(method, url, proxies=self.proxies, **kwargs)
         headers, content = response.headers, response.content
         duration = datetime.datetime.now() - start_time
-        
+
         logging.info('Response[%d]: %s, Duration: %s.%ss.' % (response.status_code, response.reason, duration.seconds, duration.microseconds))
         logging.debug('Headers: %s\nContent: %s' % (str(headers), str(content)))
         return self.handle_response(response, content.decode('utf-8'))

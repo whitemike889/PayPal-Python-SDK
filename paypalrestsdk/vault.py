@@ -1,8 +1,10 @@
 from paypalrestsdk.resource import Find, Create, Delete
 
+
 class CreditCard(Find, Create, Delete):
-    """Use vault api to avoid having to store sensitive information 
-	such as credit card related details on your server
+    """Use vault api to avoid having to store sensitive information
+    such as credit card related details on your server. API docs at
+    https://developer.paypal.com/docs/api/#vault
 
     Usage::
 

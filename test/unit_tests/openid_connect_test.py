@@ -1,6 +1,6 @@
 from test_helper import unittest, paypal, client_id, client_secret, assert_regex_matches
 from paypalrestsdk.openid_connect import Tokeninfo, Userinfo, authorize_url, logout_url, endpoint, Base
-from mock import patch, Mock
+from mock import Mock
 
 class TestTokeninfo(unittest.TestCase):
 

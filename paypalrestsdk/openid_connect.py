@@ -4,6 +4,7 @@ import paypalrestsdk.api as api
 from paypalrestsdk.version import __version__
 from six import string_types
 
+
 class Base(Resource):
 
     user_agent = "PayPalSDK/openid-connect-python %s (%s)" % (__version__, api.Api.library_details)
@@ -15,11 +16,14 @@ class Base(Resource):
         headers = util.merge_dict({
             'User-Agent': cls.user_agent,
             'Content-Type': 'application/x-www-form-urlencoded'}, headers or {})
-        data = api.default().http_call(url, 'POST', body=body, headers=headers)
+        data = api.default().http_call(url, 'POST', data=body, headers=headers)
         return cls(data)
 
 
 class Tokeninfo(Base):
+    """Token service for Log In with PayPal, API docs at
+    https://developer.paypal.com/docs/api/#identity
+    """
 
     path = "v1/identity/openidconnect/tokenservice"
 
@@ -69,6 +73,8 @@ class Tokeninfo(Base):
 
 
 class Userinfo(Base):
+    """Retrive user profile attributes for Log In with PayPal
+    """
 
     path = "v1/identity/openidconnect/userinfo"
 
@@ -85,6 +91,7 @@ class Userinfo(Base):
 def endpoint():
     return api.default().options.get("openid_endpoint", api.default().endpoint)
 
+
 def client_id():
     return api.default().options.get("openid_client_id", api.default().client_id)
 
@@ -100,12 +107,14 @@ def redirect_uri():
 start_session_path = "/webapps/auth/protocol/openidconnect/v1/authorize"
 end_session_path = "/webapps/auth/protocol/openidconnect/v1/endsession"
 
+
 def session_url(path, options=None):
     if api.default().mode == "live":
         path = util.join_url("https://www.paypal.com", path)
     else:
         path = util.join_url("https://www.sandbox.paypal.com", path)
     return util.join_url_params(path, options or {})
+
 
 def authorize_url(options=None):
     options = util.merge_dict({
@@ -115,6 +124,7 @@ def authorize_url(options=None):
         'redirect_uri': redirect_uri()
     }, options or {})
     return session_url(start_session_path, options)
+
 
 def logout_url(options=None):
     options = util.merge_dict({

@@ -1,5 +1,6 @@
 from paypalrestsdk.resource import List, Find, Create, Post
 
+
 class Payment(List, Find, Create, Post):
     """Payment class wrapping the REST v1/payments/payment endpoint
 
@@ -10,7 +11,7 @@ class Payment(List, Find, Create, Post):
         >>> payment = Payment.new({"intent": "sale"})
         >>> payment.create()     # return True or False
         >>> payment.execute({"payer_id": 1234})  # return True or False
-    """    
+    """
     path = "v1/payments/payment"
 
     def execute(self, attributes):
@@ -28,7 +29,7 @@ class Sale(Find, Post):
         >>> sale = Sale.find("98765432")
         >>> refund = sale.refund({"amount": {"total": "1.00", "currency": "USD"}})
         >>> refund.success()   # return True or False
-    """      
+    """
     path = "v1/payments/sale"
 
     def refund(self, attributes):
@@ -44,7 +45,7 @@ class Refund(Find):
     Usage::
 
         >>> refund = Refund.find("12345678")
-    """  
+    """
     path = "v1/payments/refund"
 
 Refund.convert_resources['refund'] = Refund
@@ -59,10 +60,10 @@ class Authorization(Find, Post):
 
     Usage::
 
-        >>> authorization = Authorization.find("")  
+        >>> authorization = Authorization.find("")
         >>> capture = authorization.capture({ "amount": { "currency": "USD", "total": "1.00" } })
         >>> authorization.void() # return True or False
-    """ 
+    """
     path = "v1/payments/authorization"
 
     def capture(self, attributes):
@@ -76,15 +77,15 @@ class Authorization(Find, Post):
 
 Authorization.convert_resources['authorization'] = Authorization
 
-   
+
 class Capture(Find, Post):
     """Look up and refund captured payments, wraps v1/payments/capture
 
     Usage::
 
         >>> capture = Capture.find("")
-        >>> refund = capture.refund({ "amount": { "currency": "USD", "total": "1.00" })
-    """ 
+        >>> refund = capture.refund({ "amount": { "currency": "USD", "total": "1.00" }})
+    """
     path = "v1/payments/capture"
 
     def refund(self, attributes):

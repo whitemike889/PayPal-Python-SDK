@@ -21,6 +21,9 @@ class Base(Resource):
 
 
 class Tokeninfo(Base):
+    """Token service for Log In with PayPal, API docs at
+    https://developer.paypal.com/docs/api/#identity
+    """
 
     path = "v1/identity/openidconnect/tokenservice"
 
@@ -70,6 +73,8 @@ class Tokeninfo(Base):
 
 
 class Userinfo(Base):
+    """Retrive user profile attributes for Log In with PayPal
+    """
 
     path = "v1/identity/openidconnect/userinfo"
 

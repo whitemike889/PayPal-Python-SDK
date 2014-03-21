@@ -1,5 +1,5 @@
 from test_helper import unittest, client_id, client_secret, paypal
-from mock import patch, Mock, ANY
+from mock import Mock, patch
 
 class Api(unittest.TestCase):
 
@@ -17,8 +17,11 @@ class Api(unittest.TestCase):
       "cvv2": "874",
       "first_name": "Joe",
       "last_name": "Shopper" }
-
-    
+    self.authorization_code = 'auth_code_from_device'
+    self.refresh_token = 'long_living_token'
+    self.access_token = 'use_once_token'
+    self.future_payments_scope = 'https://api.paypal.com/v1/payments/.* https://uri.paypal.com/services/payments/futurepayments'
+  
   def test_endpoint(self):
     new_api = paypal.Api(mode="live", client_id="dummy", client_secret="dummy")
     self.assertEqual(new_api.endpoint, "https://api.paypal.com")
@@ -40,8 +43,6 @@ class Api(unittest.TestCase):
     self.api.request.return_value = {'id': 'test'}
     credit_card = self.api.post("v1/vault/credit-card", self.card_attributes)
 
-    #self.api.request.assert_called_once_with('https://api.sandbox.paypal.com/v1/vault/credit-card', 'POST', body=self.card_attributes, headers={})
-  
     self.assertEqual(credit_card.get('error'), None)
     self.assertNotEqual(credit_card.get('id'), None)
 
@@ -51,15 +52,64 @@ class Api(unittest.TestCase):
     
     self.api.request.assert_called_once_with('https://api.sandbox.paypal.com/v1/vault/credit-card',
                                         'POST', 
-                                         body='{}',
-                                         headers={})
+                                         body={},
+                                         headers={}, 
+                                         refresh_token=None)
     self.assertNotEqual(credit_card.get('error'), None)
 
   def test_expired_time(self):
-    old_token = self.api.get_token()
+    old_token = self.api.get_token_hash()['access_token']
     self.api.token_hash["expires_in"] = 0
-    self.assertNotEqual(self.api.get_token(), old_token)
+    new_token = self.api.get_token_hash()['access_token']
+    self.assertNotEqual(new_token, old_token)
 
   def test_not_found(self):
     self.api.request.side_effect = paypal.ResourceNotFound("error")
     self.assertRaises(paypal.ResourceNotFound, self.api.get, ("/v1/payments/payment/PAY-1234"))
+
+  @patch('test_helper.paypal.Api.http_call', autospec=True)
+  def test_get_refresh_token(self, mock_http):
+    mock_http.return_value = {
+      'access_token': self.access_token,
+      'expires_in': 900,
+      'refresh_token': self.refresh_token,
+      'scope': self.future_payments_scope,
+      'token_type': 'Bearer'
+    }
+    refresh_token = self.api.get_refresh_token(self.authorization_code)
+    mock_http.assert_called_once_with(self.api,
+      'https://api.sandbox.paypal.com/v1/oauth2/token', 'POST',
+      data = 'grant_type=authorization_code&response_type=token&redirect_uri=urn:ietf:wg:oauth:2.0:oob&code=' + self.authorization_code,
+      headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'Authorization': 'Basic ' + self.api.basic_auth(),
+        'User-Agent': self.api.user_agent
+      }
+    )
+    self.assertEqual(refresh_token, self.refresh_token)
+
+  def test_fail_get_refresh_token(self):
+    self.assertRaises(paypal.MissingConfig, self.api.get_refresh_token, None)
+
+  @patch('test_helper.paypal.Api.http_call', autospec=True)
+  def test_refresh_access_token(self, mock_http):
+    mock_http.return_value = {
+      'access_token': self.access_token,
+      'app_id': 'APP-6XR95014BA15863X',
+      'expires_in': 900,
+      'scope': self.future_payments_scope,
+      'token_type': 'Bearer'
+    }
+    access_token = self.api.get_token_hash(refresh_token=self.refresh_token)['access_token']
+    mock_http.assert_called_once_with(self.api,
+      'https://api.sandbox.paypal.com/v1/oauth2/token', 'POST',
+      data = 'grant_type=refresh_token&refresh_token=' + self.refresh_token,
+      headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'Authorization': 'Basic ' + self.api.basic_auth(),
+        'User-Agent': self.api.user_agent        
+      }
+    )
+    self.assertEqual(access_token, self.access_token)

@@ -7,7 +7,6 @@ class ConnectionError(Exception):
 
     def __str__(self):
         message = "Failed."
-        print self.response
         if hasattr(self.response, 'status_code'):
             message += " Response status: %s." % (self.response.status_code)
         if hasattr(self.response, 'reason'):

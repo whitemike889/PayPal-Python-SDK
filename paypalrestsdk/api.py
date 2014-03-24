@@ -147,17 +147,17 @@ class Api(object):
         """
         Makes a http call. Logs response information.
         """
-        logging.info('Request[%s]: %s' % (method, url))
-        request_headers = kwargs.get("headers", {})
-        request_body = kwargs.get("data", {})
-        logging.debug('Headers: %s\nBody: %s' % (str(request_headers), str(request_body)))
-        
+        logging.info('Request[%s]: %s' % (method, url))        
         start_time = datetime.datetime.now()
+        
         response = requests.request(method, url, proxies=self.proxies, **kwargs)  
-        duration = datetime.datetime.now() - start_time
 
+        duration = datetime.datetime.now() - start_time
         logging.info('Response[%d]: %s, Duration: %s.%ss.' % (response.status_code, response.reason, duration.seconds, duration.microseconds))
-        logging.debug('Headers: %s\nBody: %s' % (str(response.headers), str(response.content)))
+        debug_id = response.headers.get('PayPal-Debug-Id')
+        if debug_id:
+            logging.debug('debug_id: %s' % debug_id)
+
         return self.handle_response(response, response.content.decode('utf-8'))
 
     def handle_response(self, response, content):

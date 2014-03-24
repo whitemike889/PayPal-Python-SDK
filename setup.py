@@ -20,7 +20,7 @@ setup(
     1. https://github.com/paypal/rest-api-sdk-python/ - README and Samples
     2. https://developer.paypal.com/webapps/developer/docs/api/ - API Reference
   """,
-  install_requires=['requests'],
+  install_requires=['requests', 'six'],
   classifiers=[
     'Intended Audience :: Developers',
     'Natural Language :: English',

@@ -147,10 +147,10 @@ class Api(object):
         """
         Makes a http call. Logs response information.
         """
-        logging.info('Request[%s]: %s' % (method, url))        
+        logging.info('Request[%s]: %s' % (method, url))
         start_time = datetime.datetime.now()
-        
-        response = requests.request(method, url, proxies=self.proxies, **kwargs)  
+
+        response = requests.request(method, url, proxies=self.proxies, **kwargs)
 
         duration = datetime.datetime.now() - start_time
         logging.info('Response[%d]: %s, Duration: %s.%ss.' % (response.status_code, response.reason, duration.seconds, duration.microseconds))
@@ -223,6 +223,11 @@ class Api(object):
 
         """
         return self.request(util.join_url(self.endpoint, action), 'POST', body=params or {}, headers=headers or {}, refresh_token=refresh_token)
+
+    def put(self, action, params=None, headers=None, refresh_token=None):
+        """Make PUT request
+        """
+        return self.request(util.join_url(self.endpoint, action), 'PUT', body=params or {}, headers=headers or {}, refresh_token=refresh_token)
 
     def delete(self, action, headers=None):
         """Make DELETE request

@@ -12,7 +12,7 @@ class Invoice(List, Find, Create, Delete, Update, Post):
         >>> invoice = Invoice.new({})
         >>> invoice.create()     # return True or False
     """
-    path = "v1/invoices/invoice"
+    path = "v1/invoicing/invoices"
 
     def send(self):
         return self.post('send', {}, self)

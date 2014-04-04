@@ -49,6 +49,7 @@ class TestInvoice(unittest.TestCase):
 		self.assertEqual(history.total_count, 1)
 		self.assertTrue(isinstance(history.invoices[0], paypal.Invoice))
 
+
 	@patch('test_helper.paypal.Api.delete', autospec=True)
 	def test_delete(self, mock):
 		response = self.invoice.delete()
@@ -80,8 +81,9 @@ class TestInvoice(unittest.TestCase):
 			"total_count_required" : True
 		}
 		mock.return_value = {'total_count': 1, 'invoices': [self.invoice_attributes]}
+
 		history = paypal.Invoice.search(search_attributes)
- 
+
 		mock.assert_called_once_with(self.invoice.api,'v1/invoicing/invoices/search', search_attributes)
 		self.assertEqual(history.total_count, 1)
 		self.assertTrue(isinstance(history.invoices[0], paypal.Invoice))

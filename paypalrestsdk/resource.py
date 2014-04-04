@@ -160,6 +160,21 @@ class Create(Resource):
         self.merge(new_attributes)
         return self.success()
 
+class Update(Resource):
+    """ Update a resource
+
+    Usage::
+
+        >>> invoice.update()
+    """
+
+    def update(self, attributes=None, refresh_token=None):
+        attributes = attributes or self.to_dict()
+        url = util.join_url(self.path, str(self['id']))
+        new_attributes = self.api.put(url, attributes, self.http_headers(), refresh_token)
+        self.error = None
+        self.merge(new_attributes)
+        return self.success()
 
 class Delete(Resource):
 

@@ -167,13 +167,13 @@ Check out this [sample](/samples/payment/create_future_payment.py) for executing
 
 ### Invoicing
 
-Create, send and manage [invoices](https://developer.paypal.com/docs/integration/direct/invoicing/)
+Create, send and manage [invoices](https://developer.paypal.com/docs/integration/direct/invoicing/).
 
-# Create an invoice
-
-from paypalrestsdk import Invoice
+### Create an invoice
 
 ```python
+from paypalrestsdk import Invoice
+
 invoice = Invoice({
   'merchant_info': {
     "email": "default@merchant.com",

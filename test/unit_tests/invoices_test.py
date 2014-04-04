@@ -50,7 +50,6 @@ class TestInvoice(unittest.TestCase):
 		self.assertTrue(isinstance(history.invoices[0], paypal.Invoice))
 
 
-
 	@patch('test_helper.paypal.Api.delete', autospec=True)
 	def test_delete(self, mock):
 		response = self.invoice.delete()
@@ -72,19 +71,18 @@ class TestInvoice(unittest.TestCase):
 		mock.assert_called_once_with(self.invoice.api,'v1/invoicing/invoices/'+self.invoice.id+'/send', {}, {'PayPal-Request-Id' : ANY})
 		self.assertEqual(response, True)
 
-
 	@patch('test_helper.paypal.Api.post', autospec=True)
 	def test_search(self, mock):
 		search_attributes = {
-			"start_invoice_date" : "2010-05-10 PST",
-			"end_invoice_date" : "2013-05-11 PST",
+			"start_invoice_date" : "2014-04-01 PST",
+			"end_invoice_date" : "2013-04-03 PST",
 			"page" : 1,
 			"page_size" : 20,
 			"total_count_required" : True
 		}
 		mock.return_value = {'total_count': 1, 'invoices': [self.invoice_attributes]}
 
-		history = paypal.Invoice.search(search_attributes);
+		history = paypal.Invoice.search(search_attributes)
 
 		mock.assert_called_once_with(self.invoice.api,'v1/invoicing/invoices/search', search_attributes)
 		self.assertEqual(history.total_count, 1)
@@ -98,7 +96,7 @@ class TestInvoice(unittest.TestCase):
 			'send_to_merchant': True
 		}
 
-		response = self.invoice.remind(remind_attributes);
+		response = self.invoice.remind(remind_attributes)
 
 		mock.assert_called_once_with(self.invoice.api,'v1/invoicing/invoices/'+self.invoice.id+'/remind', remind_attributes, {'PayPal-Request-Id' : ANY})
 		self.assertEqual(response, True)
@@ -112,7 +110,7 @@ class TestInvoice(unittest.TestCase):
 			'send_to_payer': True
 		}
 
-		response = self.invoice.cancel(cancel_attributes);
+		response = self.invoice.cancel(cancel_attributes)
 
 		mock.assert_called_once_with(self.invoice.api,'v1/invoicing/invoices/'+self.invoice.id+'/cancel', cancel_attributes, {'PayPal-Request-Id' : ANY})
 		self.assertEqual(response, True)

@@ -164,3 +164,35 @@ logout_url = tokeninfo.logout_url()
 ### Future Payments
 
 Check out this [sample](/samples/payment/create_future_payment.py) for executing [future payments](https://developer.paypal.com/docs/integration/mobile/make-future-payment/) for a customer who has granted consent on a mobile device.
+
+### Invoicing
+
+Create, send and manage [invoices](https://developer.paypal.com/docs/integration/direct/invoicing/).
+
+### Create an invoice
+
+```python
+from paypalrestsdk import Invoice
+
+invoice = Invoice({
+  'merchant_info': {
+    "email": "default@merchant.com",
+  },
+  "billing_info": [{
+    "email": "example@example.com"
+  }],
+  "items": [{
+      "name": "Widgets",
+      "quantity": 20,
+      "unit_price": {
+        "currency": "USD",
+        "value": 2
+      }
+    }],
+})
+
+response = invoice.create()
+print response
+```
+
+Check out [more samples](/samples/invoice/). The [Invoicing REST APIs](https://developer.paypal.com/webapps/developer/docs/api/#invoicing) are fully supported by the sdk.

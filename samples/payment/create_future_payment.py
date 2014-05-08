@@ -2,6 +2,12 @@
 # https://developer.paypal.com/docs/integration/mobile/make-future-payment/
 import paypalrestsdk
 
+api = paypalrestsdk.configure({
+    "mode": "sandbox",
+    "client_id": "CLIENT_ID",
+    "client_secret": "CLIENT_SECRET"
+})
+
 #authorization code from mobile sdk
 authorization_code = ''
 

@@ -30,6 +30,8 @@ pip install paypalrestsdk
 
 ## Configuration
 
+ Register for a developer account and get your client_id and secret at [PayPal Developer Portal](https://developer.paypal.com).
+
 ```python
 import paypalrestsdk
 paypalrestsdk.configure({

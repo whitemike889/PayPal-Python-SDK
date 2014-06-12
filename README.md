@@ -12,6 +12,8 @@ PyPI status:
 
 The PayPal REST SDK provides Python APIs to create, process and manage payment.
 
+> **Before starting to use the sdk, please be aware of the [existing issues and currently available or upcoming features](https://github.com/paypal/rest-api-sdk-python/wiki/Existing-Issues-and-Unavailable%5CUpcoming-features) for the REST APIs. (which the sdks are based on)** 
+
 ## Installation
 
 Install using `easy_install`:
@@ -27,6 +29,8 @@ pip install paypalrestsdk
 ```
 
 ## Configuration
+
+ Register for a developer account and get your client_id and secret at [PayPal Developer Portal](https://developer.paypal.com).
 
 ```python
 import paypalrestsdk

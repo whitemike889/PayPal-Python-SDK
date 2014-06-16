@@ -144,8 +144,7 @@ class Api(object):
                 raise error
 
     def http_call(self, url, method, **kwargs):
-        """
-        Makes a http call. Logs response information.
+        """Makes a http call. Logs response information.
         """
         logging.info('Request[%s]: %s' % (method, url))
         start_time = datetime.datetime.now()

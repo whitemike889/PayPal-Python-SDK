@@ -171,7 +171,7 @@ Check out this [sample](/samples/payment/create_future_payment.py) for executing
 
 ### Subscription
 
-Create [subscription payments](https://developer.paypal.com/docs/integration/direct/create-billing-plan/) i.e. planned sets of future recurring payments at periodic intervals.
+Create [subscription payments](https://developer.paypal.com/docs/integration/direct/create-billing-plan/) i.e. planned sets of future recurring payments at periodic intervals. Billing plans serve as the template for a subscription while billing agreements can be used to have customers subscribe to the plan.
 
 ### Create a billing plan
 

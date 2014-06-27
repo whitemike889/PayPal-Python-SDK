@@ -135,23 +135,6 @@ class List(Resource):
         return cls.list_class(api.get(url), api=api)
 
 
-class Replace(Resource):
-    """Partial update or modify resource
-
-    Usage::
-
-        >>> billing_plan.replace([ { 'op': 'replace', 'path': '/merchant-preferences', 'value': {}} ])
-    """
-
-    def replace(self, attributes=None, refresh_token=None):
-        attributes = attributes or self.to_dict()
-        url = util.join_url(self.path, str(self['id']), name)
-        new_attributes = self.api.patch(url, attributes, self.http_headers(), refresh_token)
-        self.error = None
-        self.merge(new_attributes)
-        return self.success()
-
-
 class Create(Resource):
 
     def create(self, refresh_token=None, correlation_id=None):
@@ -194,6 +177,23 @@ class Update(Resource):
         return self.success()
 
 
+class Replace(Resource):
+    """Partial update or modify resource
+
+    Usage::
+
+        >>> billing_plan.replace([ { 'op': 'replace', 'path': '/merchant-preferences', 'value': {}} ])
+    """
+
+    def replace(self, attributes=None, refresh_token=None):
+        attributes = attributes or self.to_dict()
+        url = util.join_url(self.path, str(self['id']))
+        new_attributes = self.api.patch(url, attributes, self.http_headers(), refresh_token)
+        self.error = None
+        self.merge(new_attributes)
+        return self.success()
+
+
 class Delete(Resource):
 
     def delete(self):
@@ -214,7 +214,7 @@ class Post(Resource):
 
     def post(self, name, attributes=None, cls=Resource):
         """Constructs url with passed in headers and makes post request via
-        post method in api class
+        post method in api class.
 
         Usage::
 

@@ -1,4 +1,6 @@
-from paypalrestsdk.resource import List, Find, Create, Post
+from paypalrestsdk.resource import List, Find, Create, Post, Update, Replace
+from paypalrestsdk.api import default as api
+import paypalrestsdk.util as util
 
 
 class Payment(List, Find, Create, Post):
@@ -19,6 +21,70 @@ class Payment(List, Find, Create, Post):
 
 Payment.convert_resources['payments'] = Payment
 Payment.convert_resources['payment'] = Payment
+
+
+class BillingPlan(List, Create, Find, Replace):
+    """Merchants can create subscription payments i.e. planned sets of
+    future recurring payments at periodic intervals. Billing Plans specify
+    number of payments, their frequency and other details. Acts as a template
+    for BillingAgreement, one BillingPlan can be used to create multiple
+    agreements.
+    Wraps the v1/payments/billing-plans endpoint
+
+    https://developer.paypal.com/webapps/developer/docs/integration/direct/create-billing-plan/
+
+    Usage::
+
+        >>> billing_plans = BillingPlan.all({'status': CREATED})
+    """
+    path = "v1/payments/billing-plans"
+
+BillingPlan.convert_resources['billingplan'] = BillingPlan
+BillingPlan.convert_resources['billingplans'] = BillingPlan
+
+
+class BillingAgreement(Create, Find, Replace, Post):
+    """After billing plan is created and activated, the billing agreement
+    resource can be used to have customers agree to subscribe to plan. 
+    Wraps the v1/payments/billing-agreements endpoint
+
+    https://developer.paypal.com/webapps/developer/docs/integration/direct/create-billing-agreement/
+
+    Usage::
+
+        >>> billing_agreement = BillingAgreement.find("I-THNVHK6X9H0V")
+    """
+    path = "v1/payments/billing-agreements"
+
+    def suspend(self, attributes):
+        return self.post('suspend', attributes, self)
+
+    def cancel(self, attributes):
+        return self.post('remind', attributes, self)
+
+    def reactivate(self, attributes):
+        return self.post('re-activate', attributes, self)
+
+    def bill_balance(self, attributes):
+        return self.post('bill-balance', attributes, self)
+
+    def set_balance(self, attributes):
+        return self.post('set-balance', attributes, self)
+
+    def execute(self):
+        links = self.get('links')
+        for link in links:
+            if link.get('rel') == 'execute':
+                execute_url = link.get('href')
+                return Resource(api.post(execute_url), api=api)
+
+    def search_transactions(self, attributes):
+        endpoint = util.join_url(self.path, str(self.get('id')), 'transaction')
+        url = util.join_url_params(endpoint, attributes)
+        return Resource(api.get(url), api=api)
+
+BillingAgreement.convert_resources['billingagreement'] = BillingAgreement
+BillingAgreement.convert_resources['billingagreements'] = BillingAgreement
 
 
 class Sale(Find, Post):

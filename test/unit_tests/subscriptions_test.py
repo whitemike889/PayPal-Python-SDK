@@ -240,10 +240,8 @@ class TestBillingAgreement(unittest.TestCase):
 
     @patch('test_helper.paypal.Api.get', autospec=True)
     def test_search_transactions(self, mock):
-        date_range = {
-            "start-date": "2014-07-20",
-            "end-date": "2014-07-30"
-        }
+        start_date = "2014-07-20"
+        end_date = "2014-07-30"
         mock.return_value = {
             "agreement_transaction_list": [
                 {
@@ -275,8 +273,9 @@ class TestBillingAgreement(unittest.TestCase):
             ]
         }
         self.billing_agreement.id = self.billing_agreement_id
-        print self.billing_agreement
-        transactions = self.billing_agreement.search_transactions(date_range)
+        transactions = self.billing_agreement.search_transactions(start_date, end_date)
+        mock.assert_called_once_with(self.billing_agreement.api, 'v1/payments/billing-agreements/' + self.billing_agreement_id
+         + '/transaction?start-date=' + start_date + '&end-date=' + end_date)
         self.assertEqual(len(transactions.agreement_transaction_list), 2)
 
     @patch('test_helper.paypal.Api.post', autospec=True)

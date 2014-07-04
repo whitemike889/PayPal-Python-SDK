@@ -1,6 +1,7 @@
 from paypalrestsdk.resource import List, Find, Create, Post, Update, Replace, Resource
 from paypalrestsdk.api import default as api
 import paypalrestsdk.util as util
+from exceptions import MissingParam
 
 
 class Payment(List, Find, Create, Post):
@@ -83,11 +84,14 @@ class BillingAgreement(Create, Find, Replace, Post):
                 self.ec_token = execute_url.split("/")[-2]
                 return self.post('agreement-execute', fieldname='ec_token')
 
-    def search_transactions(self, attributes):
+    def search_transactions(self, start_date, end_date):
         # Construct url similar to
         # v1/payments/billing-agreements/I-HT38K76XPMGJ/transactions?start-date=2014-04-13&end-date=2014-04-30
+        if not start_date or not end_date:
+            raise MissingParam("Search transactions needs valid start_date and end_date.")
         endpoint = util.join_url(self.path, str(self['id']), 'transaction')
-        url = util.join_url_params(endpoint, attributes)
+        date_range = [('start-date', start_date), ('end-date', end_date)]
+        url = util.join_url_params(endpoint, date_range)
         return Resource(self.api.get(url), api=api)
 
 BillingAgreement.convert_resources['billingagreement'] = BillingAgreement

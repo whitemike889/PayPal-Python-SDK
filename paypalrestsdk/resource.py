@@ -160,6 +160,7 @@ class Create(Resource):
         self.merge(new_attributes)
         return self.success()
 
+
 class Update(Resource):
     """Update a resource
 

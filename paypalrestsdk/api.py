@@ -224,7 +224,7 @@ class Api(object):
         return self.request(util.join_url(self.endpoint, action), 'POST', body=params or {}, headers=headers or {}, refresh_token=refresh_token)
 
     def put(self, action, params=None, headers=None, refresh_token=None):
-        """Make PUT request 
+        """Make PUT request
 
         Usage::
 
@@ -240,7 +240,6 @@ class Api(object):
             >>> api.patch("v1/payments/billing-plans/P-5VH69258TN786403SVUHBM6A", { 'op': 'replace', 'path': '/merchant-preferences'})
         """
         return self.request(util.join_url(self.endpoint, action), 'PATCH', body=params or {}, headers=headers or {}, refresh_token=refresh_token)
-
 
     def delete(self, action, headers=None):
         """Make DELETE request

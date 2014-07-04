@@ -77,6 +77,6 @@ billing_plan = BillingPlan({
 })
 
 if billing_plan.create():
-  print("Billing Plan [%s] created successfully"%(billing_plan.id))
+    print("Billing Plan [%s] created successfully" % (billing_plan.id))
 else:
-  print(billing_plan.error)
+    print(billing_plan.error)

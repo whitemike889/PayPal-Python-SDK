@@ -24,6 +24,6 @@ billing_agreement = BillingAgreement({
 })
 
 if billing_agreement.create():
-  print("Billing Agreement [%s] created successfully"%(billing_agreement.id))
+    print("Billing Agreement [%s] created successfully" % (billing_agreement.id))
 else:
-  print(billing_agreement.error)
+    print(billing_agreement.error)

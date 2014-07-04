@@ -27,18 +27,18 @@ billing_agreement = BillingAgreement({
 # After creating the agreement, redirect user to the url provided in links array
 # entry with method field set to REDIRECT
 if billing_agreement.create():
-  print("Billing Agreement created successfully")
-  for link in billing_agreement.links:
-  	if link.rel == "approval_url":
-  		approval_url = link.href
-  		print("For approving billing agreement, redirect user to\n [%s]"(approval_url))
+    print("Billing Agreement created successfully")
+    for link in billing_agreement.links:
+        if link.rel == "approval_url":
+            approval_url = link.href
+            print("For approving billing agreement, redirect user to\n [%s]" % (approval_url))
 else:
-  print(billing_agreement.error)
+    print(billing_agreement.error)
 
-# After user approves the agreement, call execute on the billing agreement to 
-# execute the billing agreement. 
+# After user approves the agreement, call execute on the billing agreement to
+# execute the billing agreement.
 # https://github.paypal.com/pages/lkutch/paypal-developer-docs/api/#execute-an-agreement
 if billing_agreement.execute():
-  print("BillingAgreement[%s] execute successfully"%(billing_agreement.id))
+    print("BillingAgreement[%s] execute successfully" % (billing_agreement.id))
 else:
-  print(billing_agreement.error)
+    print(billing_agreement.error)

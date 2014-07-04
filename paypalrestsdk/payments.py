@@ -45,7 +45,7 @@ BillingPlan.convert_resources['billingplans'] = BillingPlan
 
 class BillingAgreement(Create, Find, Replace, Post):
     """After billing plan is created and activated, the billing agreement
-    resource can be used to have customers agree to subscribe to plan. 
+    resource can be used to have customers agree to subscribe to plan.
     Wraps the v1/payments/billing-agreements endpoint
 
     https://developer.paypal.com/webapps/developer/docs/integration/direct/create-billing-agreement/
@@ -85,7 +85,7 @@ class BillingAgreement(Create, Find, Replace, Post):
 
     def search_transactions(self, attributes):
         # Construct url similar to
-        # v1/payments/billing-agreements/I-HT38K76XPMGJ/transactions?start-date=2014-04-13&end-date=2014-04-30 
+        # v1/payments/billing-agreements/I-HT38K76XPMGJ/transactions?start-date=2014-04-13&end-date=2014-04-30
         endpoint = util.join_url(self.path, str(self['id']), 'transaction')
         url = util.join_url_params(endpoint, attributes)
         return Resource(self.api.get(url), api=api)
@@ -163,5 +163,6 @@ class Capture(Find, Post):
 
     def refund(self, attributes):
         return self.post('refund', attributes, Refund)
+
 
 Capture.convert_resources['capture'] = Capture

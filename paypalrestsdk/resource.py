@@ -212,7 +212,7 @@ class Delete(Resource):
 
 class Post(Resource):
 
-    def post(self, name, attributes=None, cls=Resource):
+    def post(self, name, attributes=None, cls=Resource, fieldname='id'):
         """Constructs url with passed in headers and makes post request via
         post method in api class.
 
@@ -222,7 +222,7 @@ class Post(Resource):
             >>> sale.post("refund", {'payer_id': '1234'})  # return Refund object
         """
         attributes = attributes or {}
-        url = util.join_url(self.path, str(self['id']), name)
+        url = util.join_url(self.path, str(self[fieldname]), name)
         if not isinstance(attributes, Resource):
             attributes = Resource(attributes, api=self.api)
         new_attributes = self.api.post(url, attributes.to_dict(), attributes.http_headers())

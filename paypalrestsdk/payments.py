@@ -1,4 +1,4 @@
-from paypalrestsdk.resource import List, Find, Create, Post, Update, Replace
+from paypalrestsdk.resource import List, Find, Create, Post, Update, Replace, Resource
 from paypalrestsdk.api import default as api
 import paypalrestsdk.util as util
 
@@ -60,7 +60,7 @@ class BillingAgreement(Create, Find, Replace, Post):
         return self.post('suspend', attributes, self)
 
     def cancel(self, attributes):
-        return self.post('remind', attributes, self)
+        return self.post('cancel', attributes, self)
 
     def reactivate(self, attributes):
         return self.post('re-activate', attributes, self)
@@ -72,16 +72,23 @@ class BillingAgreement(Create, Find, Replace, Post):
         return self.post('set-balance', attributes, self)
 
     def execute(self):
-        links = self.get('links')
+        # Find the execute url link
+        links = self['links']
         for link in links:
-            if link.get('rel') == 'execute':
-                execute_url = link.get('href')
-                return Resource(api.post(execute_url), api=api)
+            if link['rel'] == 'execute':
+                execute_url = link['href']
+                # Get the ec_token (payment_token) from url
+                # and set it as the fieldname to construct
+                # post url
+                self.ec_token = execute_url.split("/")[-2]
+                return self.post('agreement-execute', fieldname='ec_token')
 
     def search_transactions(self, attributes):
-        endpoint = util.join_url(self.path, str(self.get('id')), 'transaction')
+        # Construct url similar to
+        # v1/payments/billing-agreements/I-HT38K76XPMGJ/transactions?start-date=2014-04-13&end-date=2014-04-30 
+        endpoint = util.join_url(self.path, str(self['id']), 'transaction')
         url = util.join_url_params(endpoint, attributes)
-        return Resource(api.get(url), api=api)
+        return Resource(self.api.get(url), api=api)
 
 BillingAgreement.convert_resources['billingagreement'] = BillingAgreement
 BillingAgreement.convert_resources['billingagreements'] = BillingAgreement

@@ -1,6 +1,10 @@
 PayPal Python SDK release notes
 ============================
 
+v1.2.0
+-----
+* Subscription (Billing Plan and Billing Agreement) API supported
+
 v1.1.0
 -----
 * Invoicing API support added 

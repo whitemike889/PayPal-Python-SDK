@@ -4,6 +4,17 @@ import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'paypalrestsdk'))
 from version import __version__
 
+long_description="""
+    The PayPal REST SDK provides Python APIs to create, process and manage payments.
+
+    1. https://github.com/paypal/rest-api-sdk-python/ - README and Samples
+    2. https://developer.paypal.com/webapps/developer/docs/api/ - API Reference
+  """
+
+license='PayPal SDK License'
+if os.path.exists('LICENSE.md'):
+  license = open('LICENSE.md').read()
+
 setup(
   name='paypalrestsdk',
   version= __version__,
@@ -12,14 +23,9 @@ setup(
   packages=['paypalrestsdk'],
   scripts=[],
   url='https://github.com/paypal/rest-api-sdk-python',
-  license='PayPal SDK License',
-  description='The PayPal REST SDK provides Python APIs to create, process and manage payments',
-  long_description="""
-    The PayPal REST SDK provides Python APIs to create, process and manage payments.
-
-    1. https://github.com/paypal/rest-api-sdk-python/ - README and Samples
-    2. https://developer.paypal.com/webapps/developer/docs/api/ - API Reference
-  """,
+  license=license,
+  description='The PayPal REST SDK provides Python APIs to create, process and manage payments.',
+  long_description=long_description,
   install_requires=['requests', 'six'],
   classifiers=[
     'Intended Audience :: Developers',
@@ -32,6 +38,7 @@ setup(
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.2',
     'Programming Language :: Python :: 3.3',
+    'Programming Language :: Python :: 3.4',
     'Topic :: Software Development :: Libraries :: Python Modules'
   ],
   keywords=['paypal', 'rest', 'sdk', 'payments']

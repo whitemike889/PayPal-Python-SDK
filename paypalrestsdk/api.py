@@ -144,8 +144,7 @@ class Api(object):
                 raise error
 
     def http_call(self, url, method, **kwargs):
-        """
-        Makes a http call. Logs response information.
+        """Makes a http call. Logs response information.
         """
         logging.info('Request[%s]: %s' % (method, url))
         start_time = datetime.datetime.now()
@@ -226,8 +225,21 @@ class Api(object):
 
     def put(self, action, params=None, headers=None, refresh_token=None):
         """Make PUT request
+
+        Usage::
+
+            >>> api.put("v1/invoicing/invoices/INV2-RUVR-ADWQ", { 'id': 'INV2-RUVR-ADWQ', 'status': 'DRAFT'})
         """
         return self.request(util.join_url(self.endpoint, action), 'PUT', body=params or {}, headers=headers or {}, refresh_token=refresh_token)
+
+    def patch(self, action, params=None, headers=None, refresh_token=None):
+        """Make PATCH request
+
+        Usage::
+
+            >>> api.patch("v1/payments/billing-plans/P-5VH69258TN786403SVUHBM6A", { 'op': 'replace', 'path': '/merchant-preferences'})
+        """
+        return self.request(util.join_url(self.endpoint, action), 'PATCH', body=params or {}, headers=headers or {}, refresh_token=refresh_token)
 
     def delete(self, action, headers=None):
         """Make DELETE request

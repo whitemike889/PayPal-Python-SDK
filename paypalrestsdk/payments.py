@@ -1,4 +1,7 @@
-from paypalrestsdk.resource import List, Find, Create, Post
+from paypalrestsdk.resource import List, Find, Create, Post, Update, Replace, Resource
+from paypalrestsdk.api import default as default_api
+import paypalrestsdk.util as util
+from exceptions import MissingParam
 
 
 class Payment(List, Find, Create, Post):
@@ -19,6 +22,80 @@ class Payment(List, Find, Create, Post):
 
 Payment.convert_resources['payments'] = Payment
 Payment.convert_resources['payment'] = Payment
+
+
+class BillingPlan(List, Create, Find, Replace):
+    """Merchants can create subscription payments i.e. planned sets of
+    future recurring payments at periodic intervals. Billing Plans specify
+    number of payments, their frequency and other details. Acts as a template
+    for BillingAgreement, one BillingPlan can be used to create multiple
+    agreements.
+    Wraps the v1/payments/billing-plans endpoint
+
+    https://developer.paypal.com/webapps/developer/docs/integration/direct/create-billing-plan/
+
+    Usage::
+
+        >>> billing_plans = BillingPlan.all({'status': CREATED})
+    """
+    path = "v1/payments/billing-plans"
+
+BillingPlan.convert_resources['billingplan'] = BillingPlan
+BillingPlan.convert_resources['billingplans'] = BillingPlan
+
+
+class BillingAgreement(Create, Find, Replace, Post):
+    """After billing plan is created and activated, the billing agreement
+    resource can be used to have customers agree to subscribe to plan.
+    Wraps the v1/payments/billing-agreements endpoint
+
+    https://developer.paypal.com/webapps/developer/docs/integration/direct/create-billing-agreement/
+
+    Usage::
+
+        >>> billing_agreement = BillingAgreement.find("I-THNVHK6X9H0V")
+    """
+    path = "v1/payments/billing-agreements"
+
+    def suspend(self, attributes):
+        return self.post('suspend', attributes, self)
+
+    def cancel(self, attributes):
+        return self.post('cancel', attributes, self)
+
+    def reactivate(self, attributes):
+        return self.post('re-activate', attributes, self)
+
+    def bill_balance(self, attributes):
+        return self.post('bill-balance', attributes, self)
+
+    def set_balance(self, attributes):
+        return self.post('set-balance', attributes, self)
+
+    @classmethod
+    def execute(cls, payment_token, params=None, api=None):
+        api = api or default_api()
+        params = params or {}
+
+        url = util.join_url(cls.path, payment_token, 'agreement-execute')
+
+        return Resource(api.post(url, params), api=api)
+
+    def search_transactions(self, start_date, end_date, api=None):
+        if not start_date or not end_date:
+            raise MissingParam("Search transactions needs valid start_date and end_date.")
+        api = api or default_api()
+
+        # Construct url similar to
+        # /billing-agreements/I-HT38K76XPMGJ/transactions?start-date=2014-04-13&end-date=2014-04-30
+        endpoint = util.join_url(self.path, str(self['id']), 'transaction')
+        date_range = [('start-date', start_date), ('end-date', end_date)]
+        url = util.join_url_params(endpoint, date_range)
+
+        return Resource(self.api.get(url), api=api)
+
+BillingAgreement.convert_resources['billingagreement'] = BillingAgreement
+BillingAgreement.convert_resources['billingagreements'] = BillingAgreement
 
 
 class Sale(Find, Post):
@@ -90,5 +167,6 @@ class Capture(Find, Post):
 
     def refund(self, attributes):
         return self.post('refund', attributes, Refund)
+
 
 Capture.convert_resources['capture'] = Capture

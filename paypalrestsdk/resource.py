@@ -160,8 +160,9 @@ class Create(Resource):
         self.merge(new_attributes)
         return self.success()
 
+
 class Update(Resource):
-    """ Update a resource
+    """Update a resource
 
     Usage::
 
@@ -175,6 +176,24 @@ class Update(Resource):
         self.error = None
         self.merge(new_attributes)
         return self.success()
+
+
+class Replace(Resource):
+    """Partial update or modify resource
+
+    Usage::
+
+        >>> billing_plan.replace([ { 'op': 'replace', 'path': '/merchant-preferences', 'value': {}} ])
+    """
+
+    def replace(self, attributes=None, refresh_token=None):
+        attributes = attributes or self.to_dict()
+        url = util.join_url(self.path, str(self['id']))
+        new_attributes = self.api.patch(url, attributes, self.http_headers(), refresh_token)
+        self.error = None
+        self.merge(new_attributes)
+        return self.success()
+
 
 class Delete(Resource):
 
@@ -194,9 +213,9 @@ class Delete(Resource):
 
 class Post(Resource):
 
-    def post(self, name, attributes=None, cls=Resource):
+    def post(self, name, attributes=None, cls=Resource, fieldname='id'):
         """Constructs url with passed in headers and makes post request via
-        post method in api class
+        post method in api class.
 
         Usage::
 
@@ -204,7 +223,7 @@ class Post(Resource):
             >>> sale.post("refund", {'payer_id': '1234'})  # return Refund object
         """
         attributes = attributes or {}
-        url = util.join_url(self.path, str(self['id']), name)
+        url = util.join_url(self.path, str(self[fieldname]), name)
         if not isinstance(attributes, Resource):
             attributes = Resource(attributes, api=self.api)
         new_attributes = self.api.post(url, attributes.to_dict(), attributes.http_headers())

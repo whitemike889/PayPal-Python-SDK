@@ -1,7 +1,7 @@
 from paypalrestsdk.resource import List, Find, Create, Post, Update, Replace, Resource
 from paypalrestsdk.api import default as default_api
 import paypalrestsdk.util as util
-from exceptions import MissingParam
+from paypalrestsdk import exceptions
 
 
 class Payment(List, Find, Create, Post):
@@ -83,7 +83,7 @@ class BillingAgreement(Create, Find, Replace, Post):
 
     def search_transactions(self, start_date, end_date, api=None):
         if not start_date or not end_date:
-            raise MissingParam("Search transactions needs valid start_date and end_date.")
+            raise exceptions.MissingParam("Search transactions needs valid start_date and end_date.")
         api = api or default_api()
 
         # Construct url similar to

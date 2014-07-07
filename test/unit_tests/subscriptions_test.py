@@ -1,7 +1,10 @@
 from test_helper import paypal, unittest
 from mock import patch, ANY
-import urlparse
 
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
 
 class TestBillingPlan(unittest.TestCase):
 
@@ -351,6 +354,6 @@ class TestBillingAgreement(unittest.TestCase):
         response = self.billing_agreement.execute(self.ec_token)
         # Test that execute actually makes a http post to the href element of links array with id
         execute_url = [link['href'] for link in self.billing_agreement_attributes_created.get('links') if link['rel'] == 'execute'][0]
-        execute_url_path = urlparse.urlparse(execute_url).path[1:]
+        execute_url_path = urlparse(execute_url).path[1:]
 
         mock.assert_called_with(self.billing_agreement.api, execute_url_path, {})

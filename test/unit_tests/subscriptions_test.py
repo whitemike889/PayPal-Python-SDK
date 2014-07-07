@@ -212,6 +212,7 @@ class TestBillingAgreement(unittest.TestCase):
 
         self.billing_agreement = paypal.BillingAgreement(self.billing_agreement_attributes)
         self.billing_agreement_id = "I-THNVHK6X9H0V"
+        self.ec_token = "EC-7MD89916KU283780J"
 
     @patch('test_helper.paypal.Api.post', autospec=True)
     def test_create(self, mock):
@@ -345,18 +346,11 @@ class TestBillingAgreement(unittest.TestCase):
 
     @patch('test_helper.paypal.Api.post', autospec=True)
     def test_execute(self, mock):
-        response = self.billing_agreement.create()
-
-        mock.assert_called_once_with(self.billing_agreement.api, 'v1/payments/billing-agreements',
-            self.billing_agreement_attributes, {'PayPal-Request-Id': ANY}, None)
-        self.assertEqual(response, True)
-
-        self.billing_agreement = paypal.BillingAgreement(self.billing_agreement_attributes_created)
         mock.return_value = self.billing_agreement_executed_attributes
 
-        response = self.billing_agreement.execute()
+        response = self.billing_agreement.execute(self.ec_token)
         # Test that execute actually makes a http post to the href element of links array with id
         execute_url = [link['href'] for link in self.billing_agreement_attributes_created.get('links') if link['rel'] == 'execute'][0]
         execute_url_path = urlparse.urlparse(execute_url).path[1:]
 
-        mock.assert_called_with(self.billing_agreement.api, execute_url_path, {}, {'PayPal-Request-Id': ANY})
+        mock.assert_called_with(self.billing_agreement.api, execute_url_path, {})

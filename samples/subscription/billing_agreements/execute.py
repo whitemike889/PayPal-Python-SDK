@@ -35,10 +35,8 @@ if billing_agreement.create():
 else:
     print(billing_agreement.error)
 
-# After user approves the agreement, call execute on the billing agreement to
-# execute the billing agreement.
+# After user approves the agreement, call execute with the payment token appended to
+# the redirect url to execute the billing agreement.
 # https://github.paypal.com/pages/lkutch/paypal-developer-docs/api/#execute-an-agreement
-if billing_agreement.execute():
-    print("BillingAgreement[%s] execute successfully" % (billing_agreement.id))
-else:
-    print(billing_agreement.error)
+billing_agreement_response = BillingAgreement.execute(payment_token)
+print("BillingAgreement[%s] executed successfully" % (billing_agreement_response.id))

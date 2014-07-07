@@ -1,5 +1,5 @@
 from paypalrestsdk.resource import List, Find, Create, Post, Update, Replace, Resource
-from paypalrestsdk.api import default as api
+from paypalrestsdk.api import default as default_api
 import paypalrestsdk.util as util
 from exceptions import MissingParam
 
@@ -72,26 +72,26 @@ class BillingAgreement(Create, Find, Replace, Post):
     def set_balance(self, attributes):
         return self.post('set-balance', attributes, self)
 
-    def execute(self):
-        # Find the execute url link
-        links = self['links']
-        for link in links:
-            if link['rel'] == 'execute':
-                execute_url = link['href']
-                # Get the ec_token (payment_token) from url
-                # and set it as the fieldname to construct
-                # post url
-                self.ec_token = execute_url.split("/")[-2]
-                return self.post('agreement-execute', fieldname='ec_token')
+    @classmethod
+    def execute(cls, payment_token, params=None, api=None):
+        api = api or default_api()
+        params = params or {}
 
-    def search_transactions(self, start_date, end_date):
-        # Construct url similar to
-        # v1/payments/billing-agreements/I-HT38K76XPMGJ/transactions?start-date=2014-04-13&end-date=2014-04-30
+        url = util.join_url(cls.path, payment_token, 'agreement-execute')
+
+        return Resource(api.post(url, params), api=api)
+
+    def search_transactions(self, start_date, end_date, api=None):
         if not start_date or not end_date:
             raise MissingParam("Search transactions needs valid start_date and end_date.")
+        api = api or default_api()
+
+        # Construct url similar to
+        # /billing-agreements/I-HT38K76XPMGJ/transactions?start-date=2014-04-13&end-date=2014-04-30
         endpoint = util.join_url(self.path, str(self['id']), 'transaction')
         date_range = [('start-date', start_date), ('end-date', end_date)]
         url = util.join_url_params(endpoint, date_range)
+
         return Resource(self.api.get(url), api=api)
 
 BillingAgreement.convert_resources['billingagreement'] = BillingAgreement

@@ -2,6 +2,7 @@ import paypalrestsdk.util as util
 from paypalrestsdk.resource import List, Find, Delete, Create, Update, Post, Resource
 from paypalrestsdk.api import default as default_api
 
+
 class Invoice(List, Find, Create, Delete, Update, Post):
     """Invoice class wrapping the REST v1/invoices/invoice endpoint
 

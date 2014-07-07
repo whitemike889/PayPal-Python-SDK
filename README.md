@@ -10,7 +10,7 @@ PyPI status:
 [![PyPi downloads](https://pypip.in/d/paypalrestsdk/badge.png)](https://crate.io/packages/paypalrestsdk/)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/paypal/rest-api-sdk-python/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-The PayPal REST SDK provides Python APIs to create, process and manage payment.
+The PayPal REST SDK provides Python APIs to create, process and manage payment. The [Paypal REST APIs](https://developer.paypal.com/webapps/developer/docs/api/) are fully supported by the sdk.
 
 > **Before starting to use the sdk, please be aware of the [existing issues and currently available or upcoming features](https://github.com/paypal/rest-api-sdk-python/wiki/Existing-Issues-and-Unavailable%5CUpcoming-features) for the REST APIs. (which the sdks are based on)** 
 
@@ -168,6 +168,67 @@ logout_url = tokeninfo.logout_url()
 ### Future Payments
 
 Check out this [sample](/samples/payment/create_future_payment.py) for executing [future payments](https://developer.paypal.com/docs/integration/mobile/make-future-payment/) for a customer who has granted consent on a mobile device.
+
+### Subscription
+
+Create [subscription payments](https://developer.paypal.com/docs/integration/direct/create-billing-plan/) i.e. planned sets of future recurring payments at periodic intervals. Billing plans serve as the template for a subscription while billing agreements can be used to have customers subscribe to the plan.
+
+### Create a billing plan
+
+```python
+from paypalrestsdk import BillingPlan
+
+billing_plan = BillingPlan({
+    "name": "Fast Speed Plan",
+    "description": "Create Plan for Regular",
+    "merchant_preferences": {
+        "auto_bill_amount": "yes",
+        "cancel_url": "http://www.paypal.com/cancel",
+        "initial_fail_amount_action": "continue",
+        "max_fail_attempts": "1",
+        "return_url": "http://www.paypal.com/execute",
+        "setup_fee": {
+            "currency": "USD",
+            "value": "25"
+        }
+    },
+    "payment_definitions": [
+        {
+            "amount": {
+                "currency": "USD",
+                "value": "100"
+            },
+            "charge_models": [
+                {
+                    "amount": {
+                        "currency": "USD",
+                        "value": "10.60"
+                    },
+                    "type": "SHIPPING"
+                },
+                {
+                    "amount": {
+                        "currency": "USD",
+                        "value": "20"
+                    },
+                    "type": "TAX"
+                }
+            ],
+            "cycles": "0",
+            "frequency": "MONTH",
+            "frequency_interval": "1",
+            "name": "Regular 1",
+            "type": "REGULAR"
+        }
+    ],
+    "type": "INFINITE"
+})
+
+response = billing_plan.create()
+print response
+```
+
+Check out [more samples](/samples/subscription/). The [Subscription REST APIs](https://developer.paypal.com/webapps/developer/docs/api/#subscriptions) are fully supported by the sdk.
 
 ### Invoicing
 

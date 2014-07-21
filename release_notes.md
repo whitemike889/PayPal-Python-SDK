@@ -1,6 +1,11 @@
 PayPal Python SDK release notes
 ============================
 
+v1.2.1
+-----
+* Patch for exceptions import issue #50
+* Patch for urlparse import issue
+
 v1.2.0
 -----
 * Subscription (Billing Plan and Billing Agreement) API supported

@@ -8,7 +8,6 @@ PyPI status:
 
 [![PyPi version](https://pypip.in/v/paypalrestsdk/badge.png)](https://crate.io/packages/paypalrestsdk/)
 [![PyPi downloads](https://pypip.in/d/paypalrestsdk/badge.png)](https://crate.io/packages/paypalrestsdk/)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/paypal/rest-api-sdk-python/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 The PayPal REST SDK provides Python APIs to create, process and manage payment. The [Paypal REST APIs](https://developer.paypal.com/webapps/developer/docs/api/) are fully supported by the sdk.
 

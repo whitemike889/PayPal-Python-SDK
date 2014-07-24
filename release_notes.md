@@ -1,6 +1,11 @@
 PayPal Python SDK release notes
 ============================
 
+v1.2.2
+-----
+* get_access_token added to api spec
+* Patches for python 3 compatibility
+
 v1.2.1
 -----
 * Patch for exceptions import issue #50

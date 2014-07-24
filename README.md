@@ -224,7 +224,7 @@ billing_plan = BillingPlan({
 })
 
 response = billing_plan.create()
-print response
+print(response)
 ```
 
 Check out [more samples](/samples/subscription/). The [Subscription REST APIs](https://developer.paypal.com/webapps/developer/docs/api/#subscriptions) are fully supported by the sdk.
@@ -256,7 +256,7 @@ invoice = Invoice({
 })
 
 response = invoice.create()
-print response
+print(response)
 ```
 
 Check out [more samples](/samples/invoice/). The [Invoicing REST APIs](https://developer.paypal.com/webapps/developer/docs/api/#invoicing) are fully supported by the sdk.

@@ -1,4 +1,4 @@
-from paypalrestsdk import BillingPlan
+from paypalrestsdk import BillingPlan, ResourceNotFound
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -22,5 +22,5 @@ try:
     else:
         print(billing_plan.error)
 
-    except ResourceNotFound as error:
-        print("Billing Plan Not Found")
+except ResourceNotFound as error:
+    print("Billing Plan Not Found")

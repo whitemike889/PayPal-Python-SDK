@@ -58,9 +58,9 @@ class Api(unittest.TestCase):
     self.assertNotEqual(credit_card.get('error'), None)
 
   def test_expired_time(self):
-    old_token = self.api.get_token_hash()['access_token']
+    old_token = self.api.get_access_token()
     self.api.token_hash["expires_in"] = 0
-    new_token = self.api.get_token_hash()['access_token']
+    new_token = self.api.get_access_token()
     self.assertNotEqual(new_token, old_token)
 
   def test_not_found(self):

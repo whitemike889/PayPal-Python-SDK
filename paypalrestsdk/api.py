@@ -108,7 +108,14 @@ class Api(object):
             if duration > self.token_hash.get("expires_in"):
                 self.token_hash = None
 
+    def get_access_token(self, authorization_code=None, refresh_token=None):
+        """Wraps get_token_hash for getting access token
+        """
+        return self.get_token_hash(authorization_code, refresh_token)['access_token']
+
     def get_refresh_token(self, authorization_code=None):
+        """Exchange authorization code for refresh token for future payments
+        """
         if authorization_code is None:
             raise exceptions.MissingConfig("Authorization code needed to get new refresh token. Refer to https://developer.paypal.com/docs/integration/mobile/make-future-payment/#get-an-auth-code")
         return self.get_token_hash(authorization_code)["refresh_token"]

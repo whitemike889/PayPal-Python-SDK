@@ -119,7 +119,7 @@ def activate():
         if billing_plan.replace(billing_plan_update_attributes):
             billing_plan = BillingPlan.find(request.args.get('id', ''))
         else:
-            print billing_plan.error
+            print(billing_plan.error)
         return redirect(url_for('admin'))
     else:
         return redirect(url_for('login'))

@@ -52,7 +52,7 @@ if payment.create():
   # Redirect the user to given approval url
   for link in payment.links:
     if link.method == "REDIRECT":
-      redirect_url = link.href
+      redirect_url = str(link.href)
       print("Redirect for approval: %s"%(redirect_url))
 else:
   print("Error while creating payment:")

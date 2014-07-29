@@ -1,6 +1,10 @@
 PayPal Python SDK release notes
 ============================
 
+v1.3.0
+-----
+* update saved credit card in vault
+
 v1.2.2
 -----
 * get_access_token added to api spec

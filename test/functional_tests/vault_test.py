@@ -23,6 +23,18 @@ class TestCreditCard(unittest.TestCase):
     self.assertEqual(credit_card.create(), True)
     self.assertEqual(credit_card.delete(), True)
 
+  def test_update(self):
+    credit_card = paypal.CreditCard(self.credit_card_attributes)
+    first_name = "Billy"
+    credit_card_update_attributes = [{
+      "op": "replace",
+      "path": "/first_name",
+      "value": first_name
+    }]
+    self.assertEqual(credit_card.create(), True)
+    self.assertEqual(credit_card.replace(credit_card_update_attributes), True)
+    self.assertEqual(credit_card.first_name, first_name)
+
   def test_duplicate_request_id(self):
     credit_card = paypal.CreditCard(self.credit_card_attributes)
     self.assertEqual(credit_card.create(), True)

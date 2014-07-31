@@ -52,6 +52,8 @@ if payment.create():
   # Redirect the user to given approval url
   for link in payment.links:
     if link.method == "REDIRECT":
+      # Convert to str to avoid google appengine unicode issue
+      # https://github.com/paypal/rest-api-sdk-python/pull/58
       redirect_url = str(link.href)
       print("Redirect for approval: %s"%(redirect_url))
 else:

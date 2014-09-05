@@ -229,6 +229,10 @@ print(response)
 
 Check out [more samples](/samples/subscription/). The [Subscription REST APIs](https://developer.paypal.com/webapps/developer/docs/api/#subscriptions) are fully supported by the sdk.
 
+### Orders
+
+Create and manage [Orders](https://developer.paypal.com/webapps/developer/docs/integration/direct/create-process-order/#create-the-order), i.e. getting consent from buyer for a purchase but only placing the funds on hold when the merchant is ready to fulfill the [order](https://developer.paypal.com/webapps/developer/docs/api/#orders), have a look at [samples](/samples/order)
+
 ### Invoicing
 
 Create, send and manage [invoices](https://developer.paypal.com/docs/integration/direct/invoicing/).

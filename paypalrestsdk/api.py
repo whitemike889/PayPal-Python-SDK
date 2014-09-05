@@ -25,7 +25,8 @@ class Api(object):
         Usage::
 
             >>> import paypalrestsdk
-            >>> api = paypalrestsdk.Api(mode="sandbox", client_id='CLIENT_ID', client_secret='CLIENT_SECRET', ssl_options={"cert": "/path/to/server.pem"})
+            >>> api = paypalrestsdk.Api(mode="sandbox", client_id='CLIENT_ID', client_secret='CLIENT_SECRET',
+             ssl_options={"cert": "/path/to/server.pem"})
         """
         kwargs = util.merge_dict(options or {}, kwargs)
 
@@ -104,7 +105,7 @@ class Api(object):
         """
         if self.token_request_at and self.token_hash and self.token_hash.get("expires_in") is not None:
             delta = datetime.datetime.now() - self.token_request_at
-            duration = (delta.microseconds + (delta.seconds + delta.days * 24 * 3600) * 10**6) / 10**6
+            duration = (delta.microseconds + (delta.seconds + delta.days * 24 * 3600) * 10 ** 6) / 10 ** 6
             if duration > self.token_hash.get("expires_in"):
                 self.token_hash = None
 
@@ -117,7 +118,8 @@ class Api(object):
         """Exchange authorization code for refresh token for future payments
         """
         if authorization_code is None:
-            raise exceptions.MissingConfig("Authorization code needed to get new refresh token. Refer to https://developer.paypal.com/docs/integration/mobile/make-future-payment/#get-an-auth-code")
+            raise exceptions.MissingConfig("Authorization code needed to get new refresh token. \
+            Refer to https://developer.paypal.com/docs/integration/mobile/make-future-payment/#get-an-auth-code")
         return self.get_token_hash(authorization_code)["refresh_token"]
 
     def request(self, url, method, body=None, headers=None, refresh_token=None):
@@ -266,7 +268,8 @@ def default():
             client_id = os.environ["PAYPAL_CLIENT_ID"]
             client_secret = os.environ["PAYPAL_CLIENT_SECRET"]
         except KeyError:
-            raise exceptions.MissingConfig("Required PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET. Refer https://github.com/paypal/rest-api-sdk-python#configuration")
+            raise exceptions.MissingConfig("Required PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET. \
+                Refer https://github.com/paypal/rest-api-sdk-python#configuration")
 
         __api__ = Api(mode=os.environ.get("PAYPAL_MODE", "sandbox"), client_id=client_id, client_secret=client_secret)
     return __api__

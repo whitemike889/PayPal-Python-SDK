@@ -10,7 +10,7 @@ class Payment(List, Find, Create, Post):
     Usage::
 
         >>> payment_histroy = Payment.all({"count": 5})
-        >>> payment = Payment.find("PAY-1234")
+        >>> payment = Payment.find("<PAYMENT_ID>")
         >>> payment = Payment.new({"intent": "sale"})
         >>> payment.create()     # return True or False
         >>> payment.execute({"payer_id": 1234})  # return True or False
@@ -53,7 +53,7 @@ class BillingAgreement(Create, Find, Replace, Post):
 
     Usage::
 
-        >>> billing_agreement = BillingAgreement.find("I-THNVHK6X9H0V")
+        >>> billing_agreement = BillingAgreement.find("<AGREEMENT_ID>")
     """
     path = "v1/payments/billing-agreements"
 
@@ -103,7 +103,7 @@ class Sale(Find, Post):
 
     Usage::
 
-        >>> sale = Sale.find("98765432")
+        >>> sale = Sale.find("<SALE_ID>")
         >>> refund = sale.refund({"amount": {"total": "1.00", "currency": "USD"}})
         >>> refund.success()   # return True or False
     """
@@ -121,7 +121,7 @@ class Refund(Find):
 
     Usage::
 
-        >>> refund = Refund.find("12345678")
+        >>> refund = Refund.find("<REFUND_ID")
     """
     path = "v1/payments/refund"
 
@@ -137,7 +137,7 @@ class Authorization(Find, Post):
 
     Usage::
 
-        >>> authorization = Authorization.find("")
+        >>> authorization = Authorization.find("<AUTHORIZATION_ID>")
         >>> capture = authorization.capture({ "amount": { "currency": "USD", "total": "1.00" } })
         >>> authorization.void() # return True or False
     """
@@ -156,11 +156,11 @@ Authorization.convert_resources['authorization'] = Authorization
 
 
 class Capture(Find, Post):
-    """Look up and refund captured payments, wraps v1/payments/capture
+    """Look up and refund captured payments and orders, wraps v1/payments/capture
 
     Usage::
 
-        >>> capture = Capture.find("")
+        >>> capture = Capture.find("<CAPTURE_ID>")
         >>> refund = capture.refund({ "amount": { "currency": "USD", "total": "1.00" }})
     """
     path = "v1/payments/capture"
@@ -170,3 +170,27 @@ class Capture(Find, Post):
 
 
 Capture.convert_resources['capture'] = Capture
+
+
+class Order(Find, Post):
+    """Enables looking up, voiding, authorizing and capturing a paypal order which
+    is a payment created with intent order. This indicates buyer consent for a purchase
+    and does not place funds on hold.
+
+    Usage::
+        >>> order = Order.find("<ORDER_ID>")
+        >>> order.void()
+    """
+    path = "v1/payments/orders"
+
+    def capture(self, attributes):
+        return self.post('capture', attributes, Order)
+
+    def void(self):
+        return self.post('do-void', {}, self)
+
+    def authorize(self, attributes):
+        return self.post('authorize', attributes, self)
+
+
+Order.convert_resources['order'] = Order

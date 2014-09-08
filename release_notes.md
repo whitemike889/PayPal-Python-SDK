@@ -1,6 +1,14 @@
 PayPal Python SDK release notes
 ============================
 
+v1.4.0
+-----
+* Add Orders API support
+* Demonstrate samples for EC parameters support (improves feature gap between REST and CLASSIC payment APIs)
+* Invocing record payment, record refund and qr-code support added
+* Activate method added for billing plans
+* Merged toanant's pull request for #62 fix
+
 v1.3.0
 -----
 * update saved credit card in vault

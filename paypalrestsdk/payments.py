@@ -40,6 +40,18 @@ class BillingPlan(List, Create, Find, Replace):
     """
     path = "v1/payments/billing-plans"
 
+    def activate(self):
+        """activates a billing plan, wraps billing plan replace"""
+        billing_plan_update_attributes = [{
+            "op": "replace",
+            "path": "/",
+            "value": {
+                "state": "ACTIVE"
+            }
+        }]
+
+        return self.replace(billing_plan_update_attributes)
+
 BillingPlan.convert_resources['billingplan'] = BillingPlan
 BillingPlan.convert_resources['billingplans'] = BillingPlan
 

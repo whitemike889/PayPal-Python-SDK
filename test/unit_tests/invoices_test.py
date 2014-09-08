@@ -44,7 +44,7 @@ class TestInvoice(unittest.TestCase):
     def test_get_qr_code(self, mock):
         height = "400"
         width = "400"
-        qr_code = u'iVBORw0KGgoAAAANSURK5CYII='
+        qr_code = 'iVBORw0KGgoAAAANSURK5CYII='
         mock.return_value = { 'image': qr_code }
 
         response = self.invoice.get_qr_code(height, width)

@@ -106,18 +106,9 @@ def activate():
     """Merchant activates plan after creation
     """
     if session.get('logged_in') and session.get('merchant'):
-        billing_plan_update_attributes = [
-            {
-                "op": "replace",
-                "path": "/",
-                "value": {
-                    "state": "ACTIVE"
-                }
-            }
-        ]
         billing_plan = BillingPlan.find(request.args.get('id', ''))
-        if billing_plan.replace(billing_plan_update_attributes):
-            billing_plan = BillingPlan.find(request.args.get('id', ''))
+        if billing_plan.activate():
+            print("Billing Plan [%s] activated successfully" % (billing_plan.id))
         else:
             print(billing_plan.error)
         return redirect(url_for('admin'))

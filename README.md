@@ -13,6 +13,8 @@ The PayPal REST SDK provides Python APIs to create, process and manage payment. 
 
 > **Before starting to use the sdk, please be aware of the [existing issues and currently available or upcoming features](https://github.com/paypal/rest-api-sdk-python/wiki/Existing-Issues-and-Unavailable%5CUpcoming-features) for the REST APIs. (which the sdks are based on)** 
 
+> https://developer.paypal.com/webapps/developer/docs/integration/direct/explore-payment-capabilities/
+
 ## Installation
 
 Install using `easy_install`:
@@ -228,6 +230,14 @@ print(response)
 ```
 
 Check out [more samples](/samples/subscription/). The [Subscription REST APIs](https://developer.paypal.com/webapps/developer/docs/api/#subscriptions) are fully supported by the sdk.
+
+### Orders
+
+Create and manage [Orders](https://developer.paypal.com/webapps/developer/docs/integration/direct/create-process-order/#create-the-order), i.e. getting consent from buyer for a purchase but only placing the funds on hold when the merchant is ready to fulfill the [order](https://developer.paypal.com/webapps/developer/docs/api/#orders), have a look at [samples](/samples/order)
+
+### Explore further payment capabilities
+
+For [exploring additional payment capabilites](https://developer.paypal.com/docs/integration/direct/explore-payment-capabilities/), such as handling discounts, insurance, soft_descriptor and invoice_number, have a look at this [example](/samples/payment/create_with_paypal_further_capabilities.py). These bring REST payment functionality closer to parity with older Merchant APIs.
 
 ### Invoicing
 

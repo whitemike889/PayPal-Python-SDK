@@ -125,6 +125,15 @@ class TestBillingPlan(unittest.TestCase):
             , self.billing_plan_update_attributes, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
 
+    @patch('test_helper.paypal.Api.patch', autospec=True)
+    def test_activate(self, mock):
+        self.billing_plan.id = self.billing_plan_id
+        response = self.billing_plan.activate()
+
+        mock.assert_called_once_with(self.billing_plan.api, 'v1/payments/billing-plans/' + self.billing_plan_id
+            , self.billing_plan_update_attributes, {'PayPal-Request-Id': ANY}, None)
+        self.assertEqual(response, True)
+
 
 class TestBillingAgreement(unittest.TestCase):
 

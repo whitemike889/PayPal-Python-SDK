@@ -184,6 +184,7 @@ class TestSale(unittest.TestCase):
 		mock.assert_called_once_with(sale.api,'v1/payments/sale/5VX40080GX603650')
 		self.assertEqual(sale.__class__, paypal.Sale)
 
+
 class TestRefund(unittest.TestCase):
 
 	@patch('test_helper.paypal.Api.get', autospec=True)  
@@ -195,6 +196,89 @@ class TestRefund(unittest.TestCase):
 		refund = paypal.Refund.find(refund_id)
 		mock.assert_called_once_with(refund.api, 'v1/payments/refund/'+refund_id)
 		self.assertEqual(refund.__class__, paypal.Refund)
+
+
+class TestOrder(unittest.TestCase):
+
+	def setUp(self):
+		self.payment_attributes = {
+		    "intent": "order",
+		    "payer": {
+		        "payment_method": "paypal"
+		    },
+		    "redirect_urls": {
+		        "return_url": "http://return.url",
+		        "cancel_url": "http://cancel.url"
+		    },
+		    "transactions": [{
+		        "item_list": {
+		            "items": [{
+		                "name": "item",
+		                "sku": "item",
+		                "price": "1.00",
+		                "currency": "USD",
+		                "quantity": 1
+		            }]
+		        },
+		        "amount": {
+		            "currency": "USD",
+		            "total": "1.00"
+		        },
+		        "description": "This is the payment description."
+		    }]
+		}
+		self.payment = paypal.Payment(self.payment_attributes)
+		self.order_id = 'O-2HT09787H36911800'
+		self.order_attributes = {'update_time': '2014-09-05T15:36:47Z',
+		 'links': [{'href': 'https://api.sandbox.paypal.com/v1/payments/orders/O-2HT09787H36911800', 'method': 'GET', 'rel': 'self'},
+		  {'href': 'https://api.sandbox.paypal.com/v1/payments/payment/PAY-9KG19994R2259015YKQE5QVY', 'method': 'GET', 'rel': 'parent_payment'},
+		   {'href': 'https://api.sandbox.paypal.com/v1/payments/orders/O-2HT09787H36911800/do-void', 'method': 'POST', 'rel': 'void'},
+		    {'href': 'https://api.sandbox.paypal.com/v1/payments/orders/O-2HT09787H36911800/authorize', 'method': 'POST', 'rel': 'authorization'},
+		     {'href': 'https://api.sandbox.paypal.com/v1/payments/orders/O-2HT09787H36911800/capture', 'method': 'POST', 'rel': 'capture'}],
+		      'state': 'partially_captured', 'parent_payment': 'PAY-9KG19994R2259015YKQE5QVY',
+		       'amount': {'currency': 'USD', 'total': '1.00', 'details': {'subtotal': '1.00'}},
+		        'create_time': '2014-09-05T15:35:51Z', 'id': 'O-2HT09787H36911800'}
+		self.capture_attributes = { "amount": { "currency": "USD", "total": "4.54" }, "is_final_capture": True }
+		self.authorize_attributes = { "amount": { "currency": "USD", "total": "1.00" } }
+
+	@patch('test_helper.paypal.Api.post', autospec=True)
+	def test_create(self, mock):
+		mock.return_value = {'id': 'PAY-888868365Y436124EKLKW6JA', 'update_time': '2014-01-14T17:09:00Z', 'links': [], 'payer' : {},
+		'transactions': [{'related_resources': [{'authorization': self.order_attributes}]}]}
+		response = self.payment.create()
+		mock.assert_called_once_with(self.payment.api,'v1/payments/payment',self.payment_attributes, {'PayPal-Request-Id' : self.payment.request_id}, None)
+		self.assertEqual(response, True)
+		self.assertNotEqual(self.payment.transactions[0].related_resources[0].authorization.id, None)
+
+	@patch('test_helper.paypal.Api.get', autospec=True)
+	def test_find(self, mock):
+		order = paypal.Order.find(self.order_id)
+		self.assertEqual(order.__class__, paypal.Order)
+		mock.assert_called_once_with(order.api, 'v1/payments/orders/'+self.order_id)
+
+	@patch('test_helper.paypal.Api.post', autospec=True)
+	def test_void(self, mock):
+		order = paypal.Order.find(self.order_id)
+		self.assertEqual(order.void(), True)
+		mock.assert_called_once_with(order.api, 'v1/payments/orders/' + self.order_id + '/do-void', {},
+			{'PayPal-Request-Id': ANY})
+
+	@patch('test_helper.paypal.Api.post', autospec=True)
+	def test_capture(self, mock):
+		order = paypal.Order.find(self.order_id)
+		capture = order.capture(self.capture_attributes)
+		self.assertEqual(capture.success(), True)
+		mock.assert_called_once_with(order.api, 'v1/payments/orders/' + self.order_id + '/capture', self.capture_attributes,
+			{'PayPal-Request-Id': ANY})
+
+	@patch('test_helper.paypal.Api.post', autospec=True)
+	def test_authorize(self, mock):
+		order = paypal.Order.find(self.order_id)
+		authorization = order.authorize(self.authorize_attributes)
+		self.assertEqual(order.success(), True)
+		mock.assert_called_once_with(order.api, 'v1/payments/orders/' + self.order_id + '/authorize', self.authorize_attributes,
+			{'PayPal-Request-Id': ANY})
+
 
 class TestAuthorization(unittest.TestCase):
 
@@ -238,20 +322,19 @@ class TestAuthorization(unittest.TestCase):
 	@patch('test_helper.paypal.Api.post', autospec=True)
 	def test_create(self, mock):
 		mock.return_value = {'id': 'PAY-888868365Y436124EKLKW6JA', 'update_time': '2014-01-14T17:09:00Z', 'links': [], 'payer' : {},
-		'transactions': [{'related_resources': [{'authorization': self.authorization_attributes}],
-		    					  	}]}
+		'transactions': [{'related_resources': [{'authorization': self.authorization_attributes}]}]}
 		response = self.payment.create()
-		mock.assert_called_once_with(self.payment.api,'v1/payments/payment',self.payment_attributes, {'PayPal-Request-Id' : self.payment.request_id}, None)		
+		mock.assert_called_once_with(self.payment.api,'v1/payments/payment',self.payment_attributes, {'PayPal-Request-Id' : self.payment.request_id}, None)
 		self.assertEqual(response, True)
 		self.assertNotEqual(self.payment.transactions[0].related_resources[0].authorization.id, None)
 
-	@patch('test_helper.paypal.Api.get', autospec=True) 
+	@patch('test_helper.paypal.Api.get', autospec=True)
 	def test_find(self, mock):
 		authorization = paypal.Authorization.find(self.auth_id)
 		self.assertEqual(authorization.__class__, paypal.Authorization)
 		mock.assert_called_once_with(authorization.api, 'v1/payments/authorization/'+self.auth_id)
 
-	@patch('test_helper.paypal.Api.post', autospec=True) 
+	@patch('test_helper.paypal.Api.post', autospec=True)
 	def test_capture(self, mock):
 		authorization = paypal.Authorization.find(self.auth_id)
 		capture = authorization.capture(self.capture_attributes)
@@ -259,17 +342,16 @@ class TestAuthorization(unittest.TestCase):
 		mock.assert_called_once_with(authorization.api, 'v1/payments/authorization/' + self.auth_id + '/capture', self.capture_attributes, 
 			{'PayPal-Request-Id': ANY})
 
-	@patch('test_helper.paypal.Api.post', autospec=True) 
+	@patch('test_helper.paypal.Api.post', autospec=True)
 	def test_void(self, mock):
 		authorization = paypal.Authorization.find(self.auth_id)
 		self.assertEqual(authorization.void(), True)
 		mock.assert_called_once_with(authorization.api, 'v1/payments/authorization/' + self.auth_id + '/void', {}, 
 			{'PayPal-Request-Id': ANY})
   
-	@patch('test_helper.paypal.Api.get', autospec=True) 
+	@patch('test_helper.paypal.Api.get', autospec=True)
 	def test_capture_find(self, mock):
 		capture_id = '7S373777UY2709045'
 		capture = paypal.Capture.find(capture_id)
 		self.assertEqual(capture.__class__, paypal.Capture)
 		mock.assert_called_once_with(capture.api, 'v1/payments/capture/' + capture_id)
-

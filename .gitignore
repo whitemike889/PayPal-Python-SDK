@@ -4,5 +4,6 @@
 build/
 dist/
 MANIFEST
-
+*stage-*
+*tmp*
 .*.sw*

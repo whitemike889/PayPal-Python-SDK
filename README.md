@@ -13,7 +13,7 @@ The PayPal REST SDK provides Python APIs to create, process and manage payment. 
 
 > **Before starting to use the sdk, please be aware of the [existing issues and currently available or upcoming features](https://github.com/paypal/rest-api-sdk-python/wiki/Existing-Issues-and-Unavailable%5CUpcoming-features) for the REST APIs. (which the sdks are based on)** 
 
-> https://developer.paypal.com/webapps/developer/docs/integration/direct/explore-payment-capabilities/
+> The REST APIs are getting closer to parity with older merchant APIs. Check out https://github.com/paypal/rest-api-sdk-python#explore-further-payment-capabilities
 
 ## Installation
 
@@ -230,6 +230,8 @@ print(response)
 ```
 
 Check out [more samples](/samples/subscription/). The [Subscription REST APIs](https://developer.paypal.com/webapps/developer/docs/api/#subscriptions) are fully supported by the sdk.
+
+Also, check out a [flask application](/samples/subscription/ppsubscribe) demonstrating the use of subscription APIs from both merchant and customer points of view.
 
 ### Orders
 

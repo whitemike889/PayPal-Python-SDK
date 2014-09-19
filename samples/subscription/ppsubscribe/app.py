@@ -194,7 +194,7 @@ def admin():
             plans_created = []
 
         plans_active_query_dict = BillingPlan.all({"status": "ACTIVE",
-                "sort_order": "DESC"})
+                "page_size": 5, "page": 1, "total_required": "yes"})
         if plans_active_query_dict:
             plans_active = plans_active_query_dict.to_dict().get('plans')
         else:

@@ -51,8 +51,8 @@ class TestPayment(unittest.TestCase):
 		mock.assert_called_once_with(
 			self.payment.api,'v1/payments/payment',
 			self.payment_attributes, 
-			{'PayPal-Request-Id' : self.payment.request_id, 'Paypal-Application-Correlation-Id' : self.correlation_id}, 
-			self.refresh_token
+			{'PayPal-Request-Id' : self.payment.request_id, 'Paypal-Application-Correlation-Id' : self.correlation_id,
+			 'Paypal-Client-Metadata-Id' : self.correlation_id}, self.refresh_token
 		)
 		self.assertEqual(response, True)
 

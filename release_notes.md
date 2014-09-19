@@ -1,6 +1,11 @@
 PayPal Python SDK release notes
 ============================
 
+v1.4.1
+-----
+* Update Paypal-Client-Metadata-Id header for future payments
+* Subscription API changes for searching transactions and listing billing plans
+
 v1.4.0
 -----
 * Add Orders API support

@@ -150,7 +150,7 @@ class Create(Resource):
         if correlation_id is not None:
             headers = util.merge_dict(
                 self.http_headers(),
-                {'Paypal-Application-Correlation-Id': correlation_id}
+                {'Paypal-Application-Correlation-Id': correlation_id, 'Paypal-Client-Metadata-Id': correlation_id}
             )
         else:
             headers = self.http_headers()

@@ -288,7 +288,7 @@ class TestBillingAgreement(unittest.TestCase):
         self.billing_agreement.id = self.billing_agreement_id
         transactions = self.billing_agreement.search_transactions(start_date, end_date)
         mock.assert_called_once_with(self.billing_agreement.api, 'v1/payments/billing-agreements/' + self.billing_agreement_id
-         + '/transaction?start-date=' + start_date + '&end-date=' + end_date)
+         + '/transactions?start-date=' + start_date + '&end-date=' + end_date)
         self.assertEqual(len(transactions.agreement_transaction_list), 2)
 
     @patch('test_helper.paypal.Api.post', autospec=True)

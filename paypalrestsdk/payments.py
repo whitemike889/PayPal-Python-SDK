@@ -100,7 +100,7 @@ class BillingAgreement(Create, Find, Replace, Post):
 
         # Construct url similar to
         # /billing-agreements/I-HT38K76XPMGJ/transactions?start-date=2014-04-13&end-date=2014-04-30
-        endpoint = util.join_url(self.path, str(self['id']), 'transaction')
+        endpoint = util.join_url(self.path, str(self['id']), 'transactions')
         date_range = [('start-date', start_date), ('end-date', end_date)]
         url = util.join_url_params(endpoint, date_range)
 

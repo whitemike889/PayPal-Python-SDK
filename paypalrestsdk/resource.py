@@ -132,7 +132,15 @@ class List(Resource):
             url = cls.path
         else:
             url = util.join_url_params(cls.path, params)
-        return cls.list_class(api.get(url), api=api)
+
+        try:
+            response = api.get(url)
+            return cls.list_class(response, api=api)
+        except AttributeError:
+            # To handle the case when response is JSON Array
+            if isinstance(response, list):
+                new_resp = [cls.list_class(elem) for elem in response]
+                return new_resp
 
 
 class Create(Resource):

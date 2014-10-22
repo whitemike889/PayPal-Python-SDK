@@ -1,4 +1,4 @@
-# #Create Payment Using PayPal Sample
+# Create Payment Using PayPal Sample
 # For a simple payment example, refer to create_with_paypal.py
 # 
 # Refer to https://developer.paypal.com/docs/integration/direct/explore-payment-capabilities/

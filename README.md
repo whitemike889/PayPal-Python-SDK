@@ -241,6 +241,10 @@ Create and manage [Orders](https://developer.paypal.com/webapps/developer/docs/i
 
 For [exploring additional payment capabilites](https://developer.paypal.com/docs/integration/direct/explore-payment-capabilities/), such as handling discounts, insurance, soft_descriptor and invoice_number, have a look at this [example](/samples/payment/create_with_paypal_further_capabilities.py). These bring REST payment functionality closer to parity with older Merchant APIs.
 
+### Customizing a PayPal payment experience
+
+Customizing a [PayPal payment experience](https://developer.paypal.com/webapps/developer/docs/integration/direct/rest-experience-overview/) is available as of version 1.5.0 enabling merchants to provide a customized experience to consumers from the merchant’s website to the PayPal payment. Get started with the [supported rest methods](https://developer.paypal.com/webapps/developer/docs/api/#payment-experience) and [samples](/samples/payment_experience/web_profile).
+
 ### Invoicing
 
 Create, send and manage [invoices](https://developer.paypal.com/docs/integration/direct/invoicing/).

@@ -1,6 +1,10 @@
 PayPal Python SDK release notes
 ============================
 
+v1.5.0
+-----
+* Payment Experience customizaton feature added via API for Web Profiles
+
 v1.4.1
 -----
 * Update Paypal-Client-Metadata-Id header for future payments

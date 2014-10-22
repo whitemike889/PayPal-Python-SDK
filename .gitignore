@@ -7,3 +7,5 @@ MANIFEST
 *stage-*
 *tmp*
 .*.sw*
+.ipynb
+.cache

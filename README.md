@@ -11,9 +11,9 @@ PyPI status:
 
 The PayPal REST SDK provides Python APIs to create, process and manage payment. The [Paypal REST APIs](https://developer.paypal.com/webapps/developer/docs/api/) are fully supported by the sdk.
 
-> **Before starting to use the sdk, please be aware of the [existing issues and currently available or upcoming features](https://github.com/paypal/rest-api-sdk-python/wiki/Existing-Issues-and-Unavailable%5CUpcoming-features) for the REST APIs. (which the sdks are based on)** 
+> **Before starting to use the sdk, please be aware of the [existing issues and currently available or upcoming features](https://github.com/paypal/PayPal-Python-SDK/wiki/Existing-Issues-and-Unavailable%5CUpcoming-features) for the REST APIs. (which the sdks are based on)** 
 
-> The REST APIs are getting closer to parity with older merchant APIs. Check out https://github.com/paypal/rest-api-sdk-python#explore-further-payment-capabilities
+> The REST APIs are getting closer to parity with older merchant APIs. Check out https://github.com/paypal/PayPal-Python-SDK#explore-further-payment-capabilities
 
 ## Installation
 
@@ -121,7 +121,7 @@ payment_history.payments
 
 ### Execute Payment
 
-Only for [Payment](https://github.com/paypal/rest-api-sdk-python/blob/master/samples/payment/create_with_paypal.py) with `payment_method` as `"paypal"`
+Only for [Payment](https://github.com/paypal/PayPal-Python-SDK/blob/master/samples/payment/create_with_paypal.py) with `payment_method` as `"paypal"`
 
 ```python
 payment = paypalrestsdk.Payment.find("PAY-57363176S1057143SKE2HO3A")
@@ -244,6 +244,14 @@ For [exploring additional payment capabilites](https://developer.paypal.com/docs
 ### Customizing a PayPal payment experience
 
 Customizing a [PayPal payment experience](https://developer.paypal.com/webapps/developer/docs/integration/direct/rest-experience-overview/) is available as of version 1.5.0 enabling merchants to provide a customized experience to consumers from the merchant’s website to the PayPal payment. Get started with the [supported rest methods](https://developer.paypal.com/webapps/developer/docs/api/#payment-experience) and [samples](/samples/payment_experience/web_profile).
+
+### Webhooks - Receive notifications about PayPal Payments
+
+To receive [notifications from PayPal about Payment events](https://developer.paypal.com/webapps/developer/docs/api/#notifications) on your server, webhook support is now available as of version 1.6.0. 
+
+- For creating and managing [Webhook and Webhook Events](https://developer.paypal.com/webapps/developer/docs/integration/direct/rest-webhooks-overview/), check out the [samples](/samples/notification/) to see how you can use the Python sdk to create and manage webhooks and webhook events.
+- See this [sample](/samples/notification/webhook-events/verify_webhook_events.py) for verifying that the webhook response is unaltered, from PayPal and targeted towards the intended recipient.
+- See this [sample](/samples/notification/webhook-events/get_webhook_event_resource.py) for parsing webhook payload and getting the resource delivered via the webhook event.
 
 ### Invoicing
 

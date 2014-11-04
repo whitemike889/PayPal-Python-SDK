@@ -7,7 +7,7 @@ from version import __version__
 long_description="""
     The PayPal REST SDK provides Python APIs to create, process and manage payments.
 
-    1. https://github.com/paypal/rest-api-sdk-python/ - README and Samples
+    1. https://github.com/paypal/PayPal-Python-SDK/ - README and Samples
     2. https://developer.paypal.com/webapps/developer/docs/api/ - API Reference
   """
 
@@ -22,11 +22,11 @@ setup(
   author_email='DL-PP-PYTHON-SDK@ebay.com',
   packages=['paypalrestsdk'],
   scripts=[],
-  url='https://github.com/paypal/rest-api-sdk-python',
+  url='https://github.com/paypal/PayPal-Python-SDK',
   license=license,
   description='The PayPal REST SDK provides Python APIs to create, process and manage payments.',
   long_description=long_description,
-  install_requires=['requests', 'six'],
+  install_requires=['requests', 'six', 'pyopenssl'],
   classifiers=[
     'Intended Audience :: Developers',
     'Natural Language :: English',
@@ -41,5 +41,5 @@ setup(
     'Programming Language :: Python :: 3.4',
     'Topic :: Software Development :: Libraries :: Python Modules'
   ],
-  keywords=['paypal', 'rest', 'sdk', 'payments']
+  keywords=['paypal', 'rest', 'sdk', 'payments', 'invoice', 'subscription', 'webhook']
 )

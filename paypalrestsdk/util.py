@@ -1,4 +1,7 @@
 import re
+from pydoc import locate
+import paypalrestsdk
+import inspect
 
 try:
     from urllib.parse import urlencode
@@ -38,10 +41,26 @@ def merge_dict(data, *override):
 
     Usage::
 
-        >>> util.merge_dict ({"foo": "bar"}, {1: 2}, {"Pay": "Pal"})
+        >>> util.merge_dict({"foo": "bar"}, {1: 2}, {"Pay": "Pal"})
         {1: 2, 'foo': 'bar', 'Pay': 'Pal'}
     """
     result = {}
     for current_dict in (data,) + override:
         result.update(current_dict)
     return result
+
+
+def get_member(name):
+    """
+    Get the paypalrestsdk member class represented by name. Helper
+    method for fetching resource sent via webhook event
+
+    Usage::
+
+    >>> util.get_member('authorization')
+    <class 'paypalrestsdk.payments.Authorization'>
+    """
+    resource_class_dict = dict((k.lower(), ("{0}.{1}".format(v.__module__, k)))
+                               for k, v in inspect.getmembers(paypalrestsdk, inspect.isclass))
+    klass = locate(resource_class_dict[name.lower()])
+    return klass

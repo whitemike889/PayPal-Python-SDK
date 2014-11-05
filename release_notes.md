@@ -1,6 +1,10 @@
 PayPal Python SDK release notes
 ============================
 
+v1.6.1
+-----
+* Python 3 compatibility patch for openssl crypto verify
+
 v1.6.0
 -----
 * Webhook and Webhook events creation and management supported

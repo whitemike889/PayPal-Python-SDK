@@ -2,7 +2,7 @@
 
 Continuous integration status:
 
-[![Build Status](https://travis-ci.org/paypal/rest-api-sdk-python.png?branch=master)](https://travis-ci.org/paypal/rest-api-sdk-python) [![Coverage Status](https://coveralls.io/repos/paypal/rest-api-sdk-python/badge.png?branch=master)](https://coveralls.io/r/paypal/rest-api-sdk-python?branch=master) 
+[![Build Status](https://travis-ci.org/paypal/PayPal-Python-SDK.png?branch=master)](https://travis-ci.org/paypal/PayPal-Python-SDK) [![Coverage Status](https://coveralls.io/repos/paypal/PayPal-Python-SDK/badge.png?branch=master)](https://coveralls.io/r/paypal/PayPal-Python-SDK?branch=master) 
 
 PyPI status:
 

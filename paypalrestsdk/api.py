@@ -17,7 +17,7 @@ class Api(object):
 
     # User-Agent for HTTP request
     library_details = "requests %s; python %s" % (requests.__version__, platform.python_version())
-    user_agent = "PayPalSDK/rest-sdk-python %s (%s)" % (__version__, library_details)
+    user_agent = "PayPalSDK/PayPal-Python-SDK %s (%s)" % (__version__, library_details)
 
     def __init__(self, options=None, **kwargs):
         """Create API object

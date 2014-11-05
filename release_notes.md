@@ -6,6 +6,7 @@ v1.6.0
 * Webhook and Webhook events creation and management supported
 * Parse webhook events and return the appropriate resource
 * Verification that webhook events are unaltered and originate from PayPal
+* Update Travis and Coveralls badges and User Agent for repo renaming
 
 v1.5.0
 -----

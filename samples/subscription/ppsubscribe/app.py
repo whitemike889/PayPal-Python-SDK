@@ -187,17 +187,14 @@ def admin():
     if session.get('logged_in') and session.get('merchant'):
         plans_created_query_dict = BillingPlan.all({"status": "CREATED",
                                     "sort_order": "DESC"})
-        if plans_created_query_dict:
-            plans_created = plans_created_query_dict.to_dict().get('plans')
-
-        else:
+        plans_created = plans_created_query_dict.to_dict().get('plans')
+        if not plans_created:
             plans_created = []
 
         plans_active_query_dict = BillingPlan.all({"status": "ACTIVE",
-                "page_size": 5, "page": 1, "total_required": "yes"})
-        if plans_active_query_dict:
-            plans_active = plans_active_query_dict.to_dict().get('plans')
-        else:
+                "page_size": 5, "page": 0, "total_required": "yes"})
+        plans_active = plans_active_query_dict.to_dict().get('plans')
+        if not plans_active:
             plans_active = []
 
         return render_template('admin.html', plans_created=plans_created, plans_active=plans_active)

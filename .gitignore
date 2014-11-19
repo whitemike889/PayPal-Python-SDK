@@ -9,3 +9,4 @@ MANIFEST
 .*.sw*
 .ipynb
 .cache
+.tox/

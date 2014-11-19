@@ -1,6 +1,12 @@
 PayPal Python SDK release notes
 ============================
 
+v1.6.2
+-----
+* Search transactions for billing agreements patched
+* Empty billing plan fetch issue fixed for subscription sample app
+* Travis build update
+
 v1.6.1
 -----
 * Python 3 compatibility patch for openssl crypto verify

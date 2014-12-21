@@ -1,4 +1,4 @@
-"""Verify received webhook payload on merchant server. 
+"""Verify received webhook payload on merchant server.
 Recommended first step before starting to parse the message e.g.
 get_webhook_event_resource.py in the samples folder
 
@@ -19,7 +19,8 @@ webhook_id = "40Y916089Y8324740"
 # Paypal-Transmission-Sig in webhook payload header
 actual_signature = "mcLeCd3PZXLR2DYFbcgf/Fzjk0wAaQ0+awY7en8J3w+UxlE5nzwIQIgHAup+x7cCrEWKzSLNSdAw9OCXb+0Pg030OEhP6iSEBr3XcTrfNXhrjz9Mbl35fe7qY6eOM4lJy2vRYAGGj9X2zXNI4Ag4wUIZlc03QRCkvAedGOkopuHXCepeVVgCEIaB4NCHgLKgjpmRaj6bRXdz1Odlm0BrG6pb7Fjw3cbhbBrw6twZugD8d/fj3juUU63UFGp77RGTxtMdnnAfHwlAQYSWRxiKxQbrE0PFZyICRcXd7hgluIv+ts/hqho4vVMi9UkRXfJCtaJ6o/tjDZjnO9rjMnu++g=="
 # Paypal-Cert-Url in webhook payload header
-cert_url = 'https://api.sandbox.paypal.com/v1/notifications/certs/CERT-360caa42-35c2ed1e-21e9a5d6'    
+cert_url = 'https://api.sandbox.paypal.com/v1/notifications/certs/CERT-360caa42-35c2ed1e-21e9a5d6'
 
-response = WebhookEvent.verify(transmission_id, timestamp, webhook_id, event_body, cert_url, actual_signature)
+response = WebhookEvent.verify(
+    transmission_id, timestamp, webhook_id, event_body, cert_url, actual_signature)
 print(response)

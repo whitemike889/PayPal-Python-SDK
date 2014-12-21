@@ -6,7 +6,7 @@ BILLING_AGREEMENT_ID = "I-HT38K76XPMGJ"
 try:
     billing_agreement = BillingAgreement.find(BILLING_AGREEMENT_ID)
     print("Got Billing Agreement Details for Billing Agreement[%s]"
-        % (billing_agreement.id))
+          % (billing_agreement.id))
 
     billing_agreement_update_attributes = [
         {
@@ -29,9 +29,9 @@ try:
 
     if billing_agreement.replace(billing_agreement_update_attributes):
         print("Billing Agreement [%s] name changed to [%s]"
-            % (billing_agreement.id, billing_agreement.name))
+              % (billing_agreement.id, billing_agreement.name))
         print("Billing Agreement [%s] description changed to [%s]"
-            % (billing_agreement.id, billing_agreement.description))
+              % (billing_agreement.id, billing_agreement.description))
     else:
         print(billing_agreement.error)
 

@@ -5,7 +5,8 @@ BILLING_AGREEMENT_ID = "I-HT38K76XPMGJ"
 
 try:
     billing_agreement = BillingAgreement.find(BILLING_AGREEMENT_ID)
-    print("Billing Agreement [%s] has outstanding balance %s" % (billing_agreement.id, billing_agreement.outstanding_balance.value))
+    print("Billing Agreement [%s] has outstanding balance %s" % (
+        billing_agreement.id, billing_agreement.outstanding_balance.value))
 
     outstanding_amount = {
         "value": "10",
@@ -14,7 +15,8 @@ try:
 
     if billing_agreement.set_balance(outstanding_amount):
         billing_agreement = BillingAgreement.find(BILLING_AGREEMENT_ID)
-        print("Billing Agreement [%s] has outstanding balance %s" % (billing_agreement.id, billing_agreement.outstanding_balance.value))
+        print("Billing Agreement [%s] has outstanding balance %s" % (
+            billing_agreement.id, billing_agreement.outstanding_balance.value))
 
         outstanding_amount_note = {
             "note": "Billing Balance Amount",
@@ -23,7 +25,8 @@ try:
 
         if billing_agreement.bill_balance(outstanding_amount_note):
             billing_agreement = BillingAgreement.find(BILLING_AGREEMENT_ID)
-            print("Billing Agreement [%s] has outstanding balance %s" % (billing_agreement.id, billing_agreement.outstanding_balance.value))
+            print("Billing Agreement [%s] has outstanding balance %s" % (
+                billing_agreement.id, billing_agreement.outstanding_balance.value))
 
         else:
             print(billing_agreement.error)

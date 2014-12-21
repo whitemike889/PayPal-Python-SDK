@@ -92,7 +92,8 @@ def create():
             }
             billing_plan = BillingPlan(billing_plan_attributes)
             if billing_plan.create():
-                print("Billing Plan [%s] created successfully" % (billing_plan.id))
+                print(
+                    "Billing Plan [%s] created successfully" % (billing_plan.id))
             else:
                 print(billing_plan.error)
             return redirect(url_for('admin'))
@@ -108,7 +109,8 @@ def activate():
     if session.get('logged_in') and session.get('merchant'):
         billing_plan = BillingPlan.find(request.args.get('id', ''))
         if billing_plan.activate():
-            print("Billing Plan [%s] activated successfully" % (billing_plan.id))
+            print("Billing Plan [%s] activated successfully" %
+                  (billing_plan.id))
         else:
             print(billing_plan.error)
         return redirect(url_for('admin'))
@@ -186,13 +188,13 @@ def admin():
     """
     if session.get('logged_in') and session.get('merchant'):
         plans_created_query_dict = BillingPlan.all({"status": "CREATED",
-                                    "sort_order": "DESC"})
+                                                    "sort_order": "DESC"})
         plans_created = plans_created_query_dict.to_dict().get('plans')
         if not plans_created:
             plans_created = []
 
         plans_active_query_dict = BillingPlan.all({"status": "ACTIVE",
-                "page_size": 5, "page": 0, "total_required": "yes"})
+                                                   "page_size": 5, "page": 0, "total_required": "yes"})
         plans_active = plans_active_query_dict.to_dict().get('plans')
         if not plans_active:
             plans_active = []
@@ -210,7 +212,7 @@ def subscriptions():
     if session.get('logged_in') and session.get('customer'):
 
         plans_active_query_dict = BillingPlan.all({"status": "ACTIVE",
-                              "sort_order": "DESC"})
+                                                   "sort_order": "DESC"})
 
         if plans_active_query_dict:
             plans_active = plans_active_query_dict.to_dict().get('plans')

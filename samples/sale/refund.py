@@ -1,4 +1,4 @@
-# #SaleRefund Sample
+# SaleRefund Sample
 # This sample code demonstrate how you can
 # process a refund on a sale transaction created
 # using the Payments API.
@@ -12,13 +12,13 @@ sale = Sale.find("7DY409201T7922549")
 # Make Refund API call
 # Set amount only if the refund is partial
 refund = sale.refund({
-  "amount": {
-    "total": "0.01",
-    "currency": "USD" } })
+    "amount": {
+        "total": "0.01",
+        "currency": "USD"}})
 
 # Check refund status
 if refund.success():
-  print("Refund[%s] Success"%(refund.id))
+    print("Refund[%s] Success" % (refund.id))
 else:
-  print("Unable to Refund")
-  print(refund.error)
+    print("Unable to Refund")
+    print(refund.error)

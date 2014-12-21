@@ -16,6 +16,6 @@ webhook = Webhook({
 })
 
 if webhook.create():
-    print("Webhook[%s] created successfully"%(webhook.id))
+    print("Webhook[%s] created successfully" % (webhook.id))
 else:
     print(webhook.error)

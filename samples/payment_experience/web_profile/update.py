@@ -20,6 +20,6 @@ web_profile_update_attributes = {
 web_profile = WebProfile.find("XP-9R62-L4QJ-M8H6-UNV5")
 
 if web_profile.update(web_profile_update_attributes):
-    print("Web Profile[%s] updated successfully"%(web_profile.id))
+    print("Web Profile[%s] updated successfully" % (web_profile.id))
 else:
     print(web_profile.error)

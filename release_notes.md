@@ -1,6 +1,11 @@
 PayPal Python SDK release notes
 ============================
 
+v1.7.0
+----
+* Payouts API support added
+* Complete pep8ify of tests and samples
+
 v1.6.2
 -----
 * Search transactions for billing agreements patched

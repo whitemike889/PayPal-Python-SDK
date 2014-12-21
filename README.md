@@ -174,7 +174,7 @@ Check out this [sample](/samples/payment/create_future_payment.py) for executing
 
 Create [subscription payments](https://developer.paypal.com/docs/integration/direct/create-billing-plan/) i.e. planned sets of future recurring payments at periodic intervals. Billing plans serve as the template for a subscription while billing agreements can be used to have customers subscribe to the plan.
 
-### Create a billing plan
+#### Create a billing plan
 
 ```python
 from paypalrestsdk import BillingPlan
@@ -237,6 +237,41 @@ Also, check out a [flask application](/samples/subscription/ppsubscribe) demonst
 
 Create and manage [Orders](https://developer.paypal.com/webapps/developer/docs/integration/direct/create-process-order/#create-the-order), i.e. getting consent from buyer for a purchase but only placing the funds on hold when the merchant is ready to fulfill the [order](https://developer.paypal.com/webapps/developer/docs/api/#orders), have a look at [samples](/samples/order)
 
+### Payouts
+
+For creating [batch and single payouts](https://developer.paypal.com/webapps/developer/docs/integration/direct/payouts-overview/), check out the samples for [payouts](/samples/payout) and [payout items](/samples/payout_item). The [Payouts feature](https://developer.paypal.com/webapps/developer/docs/api/#payouts) enables you to make PayPal payments to multiple PayPal accounts in a single API call.
+
+#### Create a synchronous payout
+
+```python
+from paypalrestsdk import Payout, ResourceNotFound
+
+payout = Payout({
+    "sender_batch_header": {
+        "sender_batch_id": "batch_1",
+        "email_subject": "You have a payment"
+    },
+    "items": [
+        {
+            "recipient_type": "EMAIL",
+            "amount": {
+                "value": 0.99,
+                "currency": "USD"
+            },
+            "receiver": "shirt-supplier-one@mail.com",
+            "note": "Thank you.",
+            "sender_item_id": "item_1"
+        }
+    ]
+})
+
+if payout.create(sync_mode=True):
+    print("payout[%s] created successfully" %
+          (payout.batch_header.payout_batch_id))
+else:
+    print(payout.error)
+```
+
 ### Explore further payment capabilities
 
 For [exploring additional payment capabilites](https://developer.paypal.com/docs/integration/direct/explore-payment-capabilities/), such as handling discounts, insurance, soft_descriptor and invoice_number, have a look at this [example](/samples/payment/create_with_paypal_further_capabilities.py). These bring REST payment functionality closer to parity with older Merchant APIs.
@@ -257,7 +292,7 @@ To receive [notifications from PayPal about Payment events](https://developer.pa
 
 Create, send and manage [invoices](https://developer.paypal.com/docs/integration/direct/invoicing/).
 
-### Create an invoice
+#### Create an invoice
 
 ```python
 from paypalrestsdk import Invoice

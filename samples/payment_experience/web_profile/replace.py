@@ -17,7 +17,8 @@ try:
 
     if web_profile.replace(web_profile_update_attributes):
         web_profile = WebProfile.find("XP-3NWU-L5YK-X5EC-6KJM")
-        print("Web Profile [%s] name changed to [%s]" % (web_profile.id, web_profile.presentation.brand_name))
+        print("Web Profile [%s] name changed to [%s]" %
+              (web_profile.id, web_profile.presentation.brand_name))
     else:
         print(web_profile.error)
 

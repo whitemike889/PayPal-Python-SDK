@@ -2,7 +2,8 @@ from paypalrestsdk import Payout, ResourceNotFound
 import random
 import string
 
-sender_batch_id = ''.join(random.choice(string.ascii_uppercase) for i in range(12))
+sender_batch_id = ''.join(
+    random.choice(string.ascii_uppercase) for i in range(12))
 
 payout = Payout({
     "sender_batch_header": {
@@ -24,6 +25,7 @@ payout = Payout({
 })
 
 if payout.create(sync_mode=True):
-    print("payout[%s] created successfully"%(payout.batch_header.payout_batch_id))
+    print("payout[%s] created successfully" %
+          (payout.batch_header.payout_batch_id))
 else:
     print(payout.error)

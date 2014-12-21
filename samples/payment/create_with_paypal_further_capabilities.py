@@ -1,9 +1,10 @@
 # Create Payment Using PayPal Sample
 # For a simple payment example, refer to create_with_paypal.py
-# 
+#
 # Refer to https://developer.paypal.com/docs/integration/direct/explore-payment-capabilities/
 # to and https://developer.paypal.com/docs/release-notes/#updates-for-13-august-2014 to explore
-# extra payment options available such as fee, tax, shipping discount, invoice number etc.
+# extra payment options available such as fee, tax, shipping discount,
+# invoice number etc.
 
 from paypalrestsdk import Payment
 import logging
@@ -87,14 +88,14 @@ payment = Payment({
 
 # Create Payment and return status
 if payment.create():
-  print("Payment[%s] created successfully"%(payment.id))
-  # Redirect the user to given approval url
-  for link in payment.links:
-    if link.method == "REDIRECT":
-      # Convert to str to avoid google appengine unicode issue
-      # https://github.com/paypal/rest-api-sdk-python/pull/58
-      redirect_url = str(link.href)
-      print("Redirect for approval: %s"%(redirect_url))
+    print("Payment[%s] created successfully" % (payment.id))
+    # Redirect the user to given approval url
+    for link in payment.links:
+        if link.method == "REDIRECT":
+            # Convert to str to avoid google appengine unicode issue
+            # https://github.com/paypal/rest-api-sdk-python/pull/58
+            redirect_url = str(link.href)
+            print("Redirect for approval: %s" % (redirect_url))
 else:
-  print("Error while creating payment:")
-  print(payment.error)
+    print("Error while creating payment:")
+    print(payment.error)

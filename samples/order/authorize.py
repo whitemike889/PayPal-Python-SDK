@@ -8,10 +8,10 @@ response = order.authorize({
     "amount": {
         "currency": "USD",
         "total": "0.08"
-    }  
-  })
+    }
+})
 
 if order.success():
-  print("Authorized[%s] successfully"%(order.id))
+    print("Authorized[%s] successfully" % (order.id))
 else:
-  print(order.error)
+    print(order.error)

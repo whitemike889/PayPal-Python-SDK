@@ -3,6 +3,7 @@ from mock import patch, ANY
 import zlib
 import json
 
+
 class TestWebhook(unittest.TestCase):
 
     def setUp(self):
@@ -21,20 +22,22 @@ class TestWebhook(unittest.TestCase):
 
         self.webhook = paypal.Webhook(self.webhook_attributes)
         self.webhook_id = '6HY79521VR978045E'
-    
+
     @patch('test_helper.paypal.Api.post', autospec=True)
     def test_create(self, mock):
         response = self.webhook.create()
 
         mock.assert_called_once_with(self.webhook.api, '/v1/notifications/webhooks/',
-            self.webhook_attributes, {'PayPal-Request-Id': ANY}, None)
+                                     self.webhook_attributes, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
 
     @patch('test_helper.paypal.Api.get', autospec=True)
     def test_get_event_types(self, mock):
         self.webhook.id = self.webhook_id
         event_types = self.webhook.get_event_types()
-        mock.assert_called_once_with(self.webhook.api, '/v1/notifications/webhooks/' + self.webhook_id + '/event-types')
+        mock.assert_called_once_with(
+            self.webhook.api, '/v1/notifications/webhooks/' + self.webhook_id + '/event-types')
+
 
 class TestWebhookEvents(unittest.TestCase):
 
@@ -46,26 +49,32 @@ class TestWebhookEvents(unittest.TestCase):
         self.webhook_id = "40Y916089Y8324740"
         self.actual_signature = "mcLeCd3PZXLR2DYFbcgf/Fzjk0wAaQ0+awY7en8J3w+UxlE5nzwIQIgHAup+x7cCrEWKzSLNSdAw9OCXb+0Pg030OEhP6iSEBr3XcTrfNXhrjz9Mbl35fe7qY6eOM4lJy2vRYAGGj9X2zXNI4Ag4wUIZlc03QRCkvAedGOkopuHXCepeVVgCEIaB4NCHgLKgjpmRaj6bRXdz1Odlm0BrG6pb7Fjw3cbhbBrw6twZugD8d/fj3juUU63UFGp77RGTxtMdnnAfHwlAQYSWRxiKxQbrE0PFZyICRcXd7hgluIv+ts/hqho4vVMi9UkRXfJCtaJ6o/tjDZjnO9rjMnu++g=="
         self.cert_url = 'https://api.sandbox.paypal.com/v1/notifications/certs/CERT-360caa42-35c2ed1e-21e9a5d6'
-        self.expected_signature = self.transmission_id + "|" + self.timestamp + "|" + self.webhook_id + "|" + str(zlib.crc32(self.event_body.encode('utf-8')) & 0xffffffff)
+        self.expected_signature = self.transmission_id + "|" + self.timestamp + "|" + \
+            self.webhook_id + "|" + \
+            str(zlib.crc32(self.event_body.encode('utf-8')) & 0xffffffff)
 
     @patch('test_helper.paypal.Api.get', autospec=True)
     @patch('test_helper.paypal.Api.post', autospec=True)
     def test_find_and_resend(self, mock_post, mock_get):
         webhook_event = paypal.WebhookEvent.find(self.webhook_event_id)
-        mock_get.assert_called_once_with(webhook_event.api, '/v1/notifications/webhooks-events/' + self.webhook_event_id)
+        mock_get.assert_called_once_with(
+            webhook_event.api, '/v1/notifications/webhooks-events/' + self.webhook_event_id)
         self.assertTrue(isinstance(webhook_event, paypal.WebhookEvent))
         webhook_event.id = self.webhook_event_id
 
         response = webhook_event.resend()
-        mock_post.assert_called_once_with(webhook_event.api, '/v1/notifications/webhooks-events/' + self.webhook_event_id + '/resend', {}, {'PayPal-Request-Id' : ANY})
+        mock_post.assert_called_once_with(
+            webhook_event.api, '/v1/notifications/webhooks-events/' + self.webhook_event_id + '/resend', {}, {'PayPal-Request-Id': ANY})
         self.assertEqual(response, True)
 
     def test_verify(self):
-        response = paypal.WebhookEvent.verify(self.transmission_id, self.timestamp, self.webhook_id, self.event_body, self.cert_url, self.actual_signature)
+        response = paypal.WebhookEvent.verify(
+            self.transmission_id, self.timestamp, self.webhook_id, self.event_body, self.cert_url, self.actual_signature)
         self.assertEqual(response, True)
 
     def test_get_expected_sig(self):
-        expected_sig = paypal.WebhookEvent._get_expected_sig(self.transmission_id, self.timestamp, self.webhook_id, self.event_body)
+        expected_sig = paypal.WebhookEvent._get_expected_sig(
+            self.transmission_id, self.timestamp, self.webhook_id, self.event_body)
         self.assertEqual(expected_sig, self.expected_signature)
 
     def test_get_resource(self):

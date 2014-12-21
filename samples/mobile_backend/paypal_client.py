@@ -57,7 +57,8 @@ def verify_payment(payment_client):
 def used_payment(payment_id):
     """Make sure same payment does not get reused
     """
-    pp_verified_payments = set([line.strip() for line in open(VERIFIED_PAYMENTS, "rw")])
+    pp_verified_payments = set([line.strip()
+                                for line in open(VERIFIED_PAYMENTS, "rw")])
     if payment_id in pp_verified_payments:
         return True
     else:
@@ -78,7 +79,8 @@ def add_consent(customer_id=None, auth_code=None):
 def remove_consent(customer_id):
     """Remove previously granted consent by customer
     """
-    customer_token_map = dict([line.strip().split(",") for line in open(CUSTOMER_TOKEN_MAP)])
+    customer_token_map = dict([line.strip().split(",")
+                               for line in open(CUSTOMER_TOKEN_MAP)])
     customer_token_map.pop(customer_id, None)
     with open(CUSTOMER_TOKEN_MAP, "w") as f:
         for customer, token in customer_token_map:
@@ -96,7 +98,8 @@ def get_stored_refresh_token(customer_id=None):
     """If customer has already consented, return cached refresh token
     """
     try:
-        customer_token_map = dict([line.strip().split(",") for line in open(CUSTOMER_TOKEN_MAP)])
+        customer_token_map = dict(
+            [line.strip().split(",") for line in open(CUSTOMER_TOKEN_MAP)])
         return customer_token_map.get(customer_id)
     except (OSError, IOError):
         return None
@@ -107,18 +110,18 @@ def charge_wallet(transaction, customer_id=None, correlation_id=None, intent="au
     from paypal wallet.
     """
     payment = paypalrestsdk.Payment({
-        "intent":  intent,
+        "intent": intent,
         "payer": {
             "payment_method": "paypal"
         },
         "transactions": [{
             "amount": {
-                "total":  transaction["amount"]["total"],
-                "currency":  transaction["amount"]["currency"]
-                },
-            "description":  transaction["description"]
+                "total": transaction["amount"]["total"],
+                "currency": transaction["amount"]["currency"]
+            },
+            "description": transaction["description"]
         }]})
-    
+
     refresh_token = get_stored_refresh_token(customer_id)
 
     if not refresh_token:
@@ -127,7 +130,8 @@ def charge_wallet(transaction, customer_id=None, correlation_id=None, intent="au
     if payment.create(refresh_token, correlation_id):
         print("Payment %s created successfully" % (payment.id))
         if payment['intent'] == "authorize":
-            authorization_id = payment['transactions'][0]['related_resources'][0]['authorization']['id']
+            authorization_id = payment['transactions'][0][
+                'related_resources'][0]['authorization']['id']
             print(
                 "Payment %s authorized. Authorization id is %s" % (
                     payment.id, authorization_id

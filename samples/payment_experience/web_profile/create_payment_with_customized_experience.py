@@ -1,6 +1,6 @@
 # Create a PayPal Payment with custom PayPal checkout experience
 # For a simple payment example, refer to samples/payment/create_with_paypal.py
-# 
+#
 # Refer to https://developer.paypal.com/docs/integration/direct/rest-experience-overview/
 # to see the available options
 
@@ -33,7 +33,7 @@ web_profile = WebProfile({
 })
 
 if web_profile.create():
-    print("Web Profile[%s] created successfully"%(web_profile.id))
+    print("Web Profile[%s] created successfully" % (web_profile.id))
 else:
     print(web_profile.error)
 
@@ -67,12 +67,12 @@ payment = Payment({
 
 # Create Payment and return status
 if payment.create():
-  print("Payment[%s] created successfully"%(payment.id))
-  # Redirect the user to given approval url
-  for link in payment.links:
-    if link.method == "REDIRECT":
-      redirect_url = str(link.href)
-      print("Redirect for approval: %s"%(redirect_url))
+    print("Payment[%s] created successfully" % (payment.id))
+    # Redirect the user to given approval url
+    for link in payment.links:
+        if link.method == "REDIRECT":
+            redirect_url = str(link.href)
+            print("Redirect for approval: %s" % (redirect_url))
 else:
-  print("Error while creating payment:")
-  print(payment.error)
+    print("Error while creating payment:")
+    print(payment.error)

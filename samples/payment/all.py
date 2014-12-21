@@ -1,4 +1,4 @@
-# #GetPaymentList Sample
+# GetPaymentList Sample
 # This sample code demonstrate how you can
 # retrieve a list of all Payment resources
 # you've created using the Payments API.
@@ -10,7 +10,7 @@ from paypalrestsdk import Payment
 import logging
 logging.basicConfig(level=logging.INFO)
 
-# ###Retrieve
+# Retrieve
 # Retrieve the PaymentHistory  by calling the
 # `all` method
 # on the Payment class
@@ -22,4 +22,4 @@ payment_history = Payment.all({"count": 2})
 # List Payments
 print("List Payment:")
 for payment in payment_history.payments:
-  print("  -> Payment[%s]"%(payment.id))
+    print("  -> Payment[%s]" % (payment.id))

@@ -14,7 +14,8 @@ try:
     }]
 
     if credit_card.replace(credit_card_update_attributes):
-        print("Card [%s] first name changed to %s" % (credit_card.id, credit_card.first_name))
+        print("Card [%s] first name changed to %s" %
+              (credit_card.id, credit_card.first_name))
     else:
         print(credit_card.error)
 

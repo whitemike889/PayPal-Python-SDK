@@ -1,6 +1,6 @@
 """
-An example to demonstrate getting the paypal resource sent via 
-the webhook event to the merchant server. It is recommended that 
+An example to demonstrate getting the paypal resource sent via
+the webhook event to the merchant server. It is recommended that
 the payload is verified before this. Refer to verify_webhook_events.py
 in the samples for more information regarding this.
 """

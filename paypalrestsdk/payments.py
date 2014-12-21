@@ -206,3 +206,36 @@ class Order(Find, Post):
 
 
 Order.convert_resources['order'] = Order
+
+
+class Payout(Create, Find):
+    """
+
+    Usage::
+        >>> payout = Payout.find("<PAYOUT_ID>")
+    """
+    path = '/v1/payments/payouts/'
+
+    def create(self, sync_mode=False, **kwargs):
+        """Creates a payout resource
+        """
+        if sync_mode:
+            self.path = "/v1/payments/payouts?sync_mode=true"
+        return super(Payout, self).create(**kwargs)
+
+
+Payout.convert_resources['payout'] = Payout
+
+
+class PayoutItem(Find):
+    """
+
+    Usage::
+        >>> payout = Payout.find("<PAYOUT_ID>")
+    """
+    path = '/v1/payments/payouts-item/'
+
+
+PayoutItem.convert_resources['payoutItem'] = PayoutItem
+PayoutItem.convert_resources['payoutitem'] = PayoutItem
+PayoutItem.convert_resources['payout-item'] = PayoutItem

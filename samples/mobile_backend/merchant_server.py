@@ -12,7 +12,7 @@ def parse_response():
     """Check validity of a mobile payment made via credit card or PayPal,
     or save customer consented to future payments
     """
-    if not request.json or not 'response' or not 'response_type' in request.json:
+    if not request.json or not 'response' or 'response_type' not in request.json:
         raise InvalidUsage('Invalid mobile client response ')
 
     if request.json['response_type'] == 'payment':
@@ -40,8 +40,10 @@ def correlations():
     https://developer.paypal.com/docs/integration/direct/capture-payment/
     """
     result, message = charge_wallet(
-        transaction=request.json['transactions'][0], customer_id=request.json['customer_id'],
-        correlation_id=request.json['correlation_id'], intent=request.json['intent']
+        transaction=request.json['transactions'][
+            0], customer_id=request.json['customer_id'],
+        correlation_id=request.json[
+            'correlation_id'], intent=request.json['intent']
     )
     if result:
         return jsonify({"status": message}), 200
@@ -50,6 +52,7 @@ def correlations():
 
 
 class InvalidUsage(Exception):
+
     """Errorhandler class to enable custom error message propagation
     """
     status_code = 400

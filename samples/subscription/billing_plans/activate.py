@@ -9,7 +9,8 @@ try:
 
     if billing_plan.activate():
         billing_plan = BillingPlan.find("P-0NJ10521L3680291SOAQIVT")
-        print("Billing Plan [%s] state changed to [%s]" % (billing_plan.id, billing_plan.state))
+        print("Billing Plan [%s] state changed to [%s]" %
+              (billing_plan.id, billing_plan.state))
     else:
         print(billing_plan.error)
 

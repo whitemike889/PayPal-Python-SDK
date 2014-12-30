@@ -3,6 +3,7 @@ from paypalrestsdk.api import default as default_api
 import paypalrestsdk.util as util
 import binascii
 from base64 import b64decode
+import requests
 
 
 class Webhook(Create, Find, List, Delete, Replace):
@@ -52,7 +53,6 @@ class WebhookEvent(Find, List, Post):
     def _get_cert(cert_url):
         """Fetches the paypal certificate used to sign the webhook event payload
         """
-        import requests
         from OpenSSL import crypto
         try:
             r = requests.get(cert_url)

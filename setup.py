@@ -26,7 +26,7 @@ setup(
   license=license,
   description='The PayPal REST SDK provides Python APIs to create, process and manage payments.',
   long_description=long_description,
-  install_requires=['requests', 'six', 'pyopenssl'],
+  install_requires=['requests', 'six>=1.5', 'pyopenssl'],
   classifiers=[
     'Intended Audience :: Developers',
     'Natural Language :: English',

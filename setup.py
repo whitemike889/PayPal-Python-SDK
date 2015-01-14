@@ -2,7 +2,7 @@ from distutils.core import setup
 
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'paypalrestsdk'))
-from version import __version__
+from config import __version__, __pypi_packagename__, __github_username__, __github_reponame__
 
 long_description="""
     The PayPal REST SDK provides Python APIs to create, process and manage payments.
@@ -15,18 +15,20 @@ license='PayPal SDK License'
 if os.path.exists('LICENSE.md'):
   license = open('LICENSE.md').read()
 
+url='https://github.com/' + __github_username__ + '/' + __github_reponame__
+
 setup(
-  name='paypalrestsdk',
+  name=__pypi_packagename__,
   version= __version__,
   author='PayPal',
   author_email='DL-PP-PYTHON-SDK@ebay.com',
   packages=['paypalrestsdk'],
   scripts=[],
-  url='https://github.com/paypal/PayPal-Python-SDK',
+  url=url,
   license=license,
   description='The PayPal REST SDK provides Python APIs to create, process and manage payments.',
   long_description=long_description,
-  install_requires=['requests', 'six>=1.5', 'pyopenssl'],
+  install_requires=['requests>=1.0.0', 'six>=1.0.0', 'pyopenssl>=0.14'],
   classifiers=[
     'Intended Audience :: Developers',
     'Natural Language :: English',

@@ -4,7 +4,6 @@ import paypalrestsdk.util as util
 import binascii
 from base64 import b64decode
 import requests
-from OpenSSL import crypto
 
 
 class Webhook(Create, Find, List, Delete, Replace):
@@ -54,6 +53,7 @@ class WebhookEvent(Find, List, Post):
     def _get_cert(cert_url):
         """Fetches the paypal certificate used to sign the webhook event payload
         """
+        from OpenSSL import crypto
         try:
             r = requests.get(cert_url)
             cert = crypto.load_certificate(crypto.FILETYPE_PEM, str(r.text))
@@ -67,6 +67,7 @@ class WebhookEvent(Find, List, Post):
         """Verify that the webhook payload received is from PayPal,
         unaltered and targeted towards correct recipient
         """
+        from OpenSSL import crypto
         expected_sig = WebhookEvent._get_expected_sig(transmission_id, timestamp, webhook_id, event_body)
         cert = WebhookEvent._get_cert(cert_url)
         try:

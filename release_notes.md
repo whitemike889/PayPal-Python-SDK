@@ -1,6 +1,13 @@
 PayPal Python SDK release notes
 ============================
 
+v1.7.1
+----
+* OpenSSL only imported when necessary
+* Dependency versions updated
+* Config.py added as source of all configuration information
+* Setup.py refactored to get information from config
+
 v1.7.0
 ----
 * Payouts API support added

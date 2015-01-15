@@ -10,7 +10,7 @@ import platform
 
 import paypalrestsdk.util as util
 from paypalrestsdk import exceptions
-from paypalrestsdk.version import __version__
+from paypalrestsdk.config import __version__
 
 
 class Api(object):

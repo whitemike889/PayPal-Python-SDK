@@ -1,7 +1,7 @@
 from paypalrestsdk.resource import Resource
 import paypalrestsdk.util as util
 import paypalrestsdk.api as api
-from paypalrestsdk.version import __version__
+from paypalrestsdk.config import __version__
 from six import string_types
 
 

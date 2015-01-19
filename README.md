@@ -15,6 +15,19 @@ The PayPal REST SDK provides Python APIs to create, process and manage payment. 
 
 > The REST APIs are getting closer to parity with older merchant APIs. Check out https://github.com/paypal/PayPal-Python-SDK#explore-further-payment-capabilities
 
+## System Requirements
+PayPal SDK depends on the following system libraries:
+
+* libssl-dev
+* libffi-dev
+
+On Debian-based systems, run:
+
+```sh
+apt-get install libssl-dev libffi-dev
+```
+
+
 ## Installation
 
 Install using `easy_install`:

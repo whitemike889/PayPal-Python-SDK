@@ -227,13 +227,16 @@ class Payout(Create, Find):
 Payout.convert_resources['payout'] = Payout
 
 
-class PayoutItem(Find):
+class PayoutItem(Find, Post):
     """
 
     Usage::
         >>> payout = Payout.find("<PAYOUT_ID>")
     """
     path = '/v1/payments/payouts-item/'
+
+    def cancel(self):
+        return self.post('cancel', {}, self, fieldname='payout_item_id')
 
 
 PayoutItem.convert_resources['payoutItem'] = PayoutItem

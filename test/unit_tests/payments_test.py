@@ -315,12 +315,40 @@ class TestPayoutItem(unittest.TestCase):
     def setUp(self):
         self.payout_item_id = "R3LFR867ESVQY"
 
+        self.single_payout_details = {
+            "payout_item_id": "1421342",
+            "transaction_id": "4345",
+            "transaction_status": "SUCCESS",
+            "payout_batch_id": "20140724",
+            "payout_item": {
+                "amount": {
+                    "value": "9.87",
+                    "currency": "USD"
+                },
+                "recipient_type": "EMAIL",
+                "note": "Thanks for your patronage!",
+                "receiver": "shirt-supplier@mail.com",
+                "sender_item_id": "14Feb_234"
+            },
+            "time_created": "2014-01-27T10:17:00Z",
+            "time_processed": "2014-01-27T10:17:41Z"
+        }
+
+        self.payout_item = paypal.PayoutItem(self.single_payout_details)
+
     @patch('test_helper.paypal.Api.get', autospec=True)
     def test_find(self, mock):
         payout_item = paypal.PayoutItem.find(self.payout_item_id)
         self.assertEqual(payout_item.__class__, paypal.PayoutItem)
         mock.assert_called_once_with(
             payout_item.api, '/v1/payments/payouts-item/' + self.payout_item_id)
+
+    @patch('test_helper.paypal.Api.post', autospec=True)
+    def test_cancel(self, mock):
+        response = self.payout_item.cancel()
+
+        mock.assert_called_once_with(
+            self.payout_item.api, '/v1/payments/payouts-item/' + self.payout_item.payout_item_id + '/cancel', {}, {'PayPal-Request-Id': ANY})
 
 
 class TestOrder(unittest.TestCase):

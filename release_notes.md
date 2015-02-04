@@ -1,6 +1,13 @@
 PayPal Python SDK release notes
 ============================
 
+v1.8.0
+----
+* Payouts cancel feature added
+* Patch version imports
+* Merge pull #84 for crypto dependency docs
+* Google appengine workaround documented
+
 v1.7.1
 ----
 * OpenSSL only imported when necessary

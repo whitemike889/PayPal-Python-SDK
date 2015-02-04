@@ -1,4 +1,4 @@
-__version__ = "1.7.2"
+__version__ = "1.8.0"
 __pypi_username__ = "paypal"
 __pypi_packagename__ = "paypalrestsdk"
 __github_username__ = "paypal"

@@ -15,7 +15,7 @@ The PayPal REST SDK provides Python APIs to create, process and manage payment. 
 
 > The REST APIs are getting closer to parity with older merchant APIs. Check out https://github.com/paypal/PayPal-Python-SDK#explore-further-payment-capabilities
 
-> If deploying on Google appengine and running into issues since requests is a dependency, see #66 for workaround.
+> If deploying on Google appengine and running into issues since requests is a dependency, see [#66](https://github.com/paypal/PayPal-Python-SDK/issues/66) for workaround.
 
 ## System Requirements
 PayPal SDK depends on the following system libraries:

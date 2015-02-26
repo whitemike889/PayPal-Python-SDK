@@ -147,44 +147,6 @@ else:
   print(payment.error) # Error Hash
 ```
 
-### OpenID Connect
-
-```python
-import paypalrestsdk
-from paypalrestsdk.openid_connect import Tokeninfo, Userinfo
-
-paypalrestsdk.configure({
-  "mode": "sandbox",
-  "client_id": "CLIENT_ID",
-  "client_secret": "CLIENT_SECRET",
-  "openid_redirect_uri": "http://example.com" })
-
-# Generate login url
-login_url = Tokeninfo.authorize_url({ "scope": "openid profile"})
-
-# Create tokeninfo with Authorize code
-tokeninfo = Tokeninfo.create("Replace with Authorize code")
-
-# Refresh tokeninfo
-tokeninfo = tokeninfo.refresh()
-
-# Create tokeninfo with refresh_token
-tokeninfo = Tokeninfo.create_with_refresh_token("Replace with refresh_token")
-
-# Get userinfo
-userinfo  = tokeninfo.userinfo()
-
-# Get userinfo with access_token
-userinfo  = Userinfo.get("Replace with access_token")
-
-# Generate logout url
-logout_url = tokeninfo.logout_url()
-```
-
-### Future Payments
-
-Check out this [sample](/samples/payment/create_future_payment.py) for executing [future payments](https://developer.paypal.com/docs/integration/mobile/make-future-payment/) for a customer who has granted consent on a mobile device.
-
 ### Subscription
 
 Create [subscription payments](https://developer.paypal.com/docs/integration/direct/create-billing-plan/) i.e. planned sets of future recurring payments at periodic intervals. Billing plans serve as the template for a subscription while billing agreements can be used to have customers subscribe to the plan.
@@ -247,6 +209,10 @@ print(response)
 Check out [more samples](/samples/subscription/). The [Subscription REST APIs](https://developer.paypal.com/webapps/developer/docs/api/#subscriptions) are fully supported by the sdk.
 
 Also, check out a [flask application](/samples/subscription/ppsubscribe) demonstrating the use of subscription APIs from both merchant and customer points of view.
+
+### Future Payments
+
+Check out this [sample](/samples/payment/create_future_payment.py) for executing [future payments](https://developer.paypal.com/docs/integration/mobile/make-future-payment/) for a customer who has granted consent on a mobile device.
 
 ### Orders
 
@@ -331,6 +297,40 @@ invoice = Invoice({
 
 response = invoice.create()
 print(response)
+```
+
+### OpenID Connect
+
+```python
+import paypalrestsdk
+from paypalrestsdk.openid_connect import Tokeninfo, Userinfo
+
+paypalrestsdk.configure({
+  "mode": "sandbox",
+  "client_id": "CLIENT_ID",
+  "client_secret": "CLIENT_SECRET",
+  "openid_redirect_uri": "http://example.com" })
+
+# Generate login url
+login_url = Tokeninfo.authorize_url({ "scope": "openid profile"})
+
+# Create tokeninfo with Authorize code
+tokeninfo = Tokeninfo.create("Replace with Authorize code")
+
+# Refresh tokeninfo
+tokeninfo = tokeninfo.refresh()
+
+# Create tokeninfo with refresh_token
+tokeninfo = Tokeninfo.create_with_refresh_token("Replace with refresh_token")
+
+# Get userinfo
+userinfo  = tokeninfo.userinfo()
+
+# Get userinfo with access_token
+userinfo  = Userinfo.get("Replace with access_token")
+
+# Generate logout url
+logout_url = tokeninfo.logout_url()
 ```
 
 Check out [more samples](/samples/invoice/). The [Invoicing REST APIs](https://developer.paypal.com/webapps/developer/docs/api/#invoicing) are fully supported by the sdk.

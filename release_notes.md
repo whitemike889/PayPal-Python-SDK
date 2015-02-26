@@ -1,6 +1,12 @@
 PayPal Python SDK release notes
 ============================
 
+v1.9.0
+----
+* Add Tox for unit test automation for different Python versions
+* Support PyPy
+* Sample added to demo update shipping cost during payment execution
+
 v1.8.0
 ----
 * Payouts cancel feature added

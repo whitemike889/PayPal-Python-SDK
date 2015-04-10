@@ -5,7 +5,7 @@ from paypalrestsdk.api import default as default_api
 
 
 class Resource(object):
-    """Base class to_dictall REST services
+    """Base class for all REST services
     """
     convert_resources = {}
 

@@ -5,7 +5,7 @@ from paypalrestsdk.api import default as default_api
 
 
 class Resource(object):
-    """Base class for all REST services
+    """Base class to_dictall REST services
     """
     convert_resources = {}
 
@@ -85,17 +85,12 @@ class Resource(object):
             if isinstance(value, Resource):
                 return value.to_dict()
             elif isinstance(value, list):
-                new_list = []
-                for obj in value:
-                    new_list.append(parse_object(obj))
-                return new_list
+                return map(parse_object, value)
             else:
                 return value
 
-        data = {}
-        for key in self.__data__:
-            data[key] = parse_object(self.__data__[key])
-        return data
+        return {key: parse_object(value)
+                for (key, value) in self.__data__.iteritems()}
 
 
 class Find(Resource):

@@ -85,7 +85,7 @@ class Resource(object):
             if isinstance(value, Resource):
                 return value.to_dict()
             elif isinstance(value, list):
-                return map(parse_object, value)
+                return list(map(parse_object, value))
             else:
                 return value
 

@@ -10,7 +10,7 @@ import platform
 
 import paypalrestsdk.util as util
 from paypalrestsdk import exceptions
-from paypalrestsdk.config import __version__
+from paypalrestsdk.config import __version__, __endpoint_map__
 
 
 class Api(object):
@@ -49,10 +49,7 @@ class Api(object):
         self.options = kwargs
 
     def default_endpoint(self):
-        if self.mode == "live":
-            return "https://api.paypal.com"
-        else:
-            return "https://api.sandbox.paypal.com"
+        return __endpoint_map__.get(self.mode)
 
     def basic_auth(self):
         """Find basic auth, and returns base64 encoded

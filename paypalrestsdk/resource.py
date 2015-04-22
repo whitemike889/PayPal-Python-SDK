@@ -89,8 +89,7 @@ class Resource(object):
             else:
                 return value
 
-        return dict((key, parse_object(value))
-                for (key, value) in self.__data__.items())
+        return dict((key, parse_object(value)) for (key, value) in self.__data__.items())
 
 
 class Find(Resource):

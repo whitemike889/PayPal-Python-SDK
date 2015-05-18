@@ -63,7 +63,7 @@ class WebhookEvent(Find, List, Post):
             print(e)
 
     @classmethod
-    def verify(cls, transmission_id, timestamp, webhook_id, event_body, cert_url, actual_sig, auth_algo='sha1'):
+    def verify(cls, transmission_id, timestamp, webhook_id, event_body, cert_url, actual_sig, auth_algo='sha256'):
         """Verify that the webhook payload received is from PayPal,
         unaltered and targeted towards correct recipient
         """

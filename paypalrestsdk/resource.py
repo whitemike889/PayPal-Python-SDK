@@ -85,17 +85,11 @@ class Resource(object):
             if isinstance(value, Resource):
                 return value.to_dict()
             elif isinstance(value, list):
-                new_list = []
-                for obj in value:
-                    new_list.append(parse_object(obj))
-                return new_list
+                return list(map(parse_object, value))
             else:
                 return value
 
-        data = {}
-        for key in self.__data__:
-            data[key] = parse_object(self.__data__[key])
-        return data
+        return dict((key, parse_object(value)) for (key, value) in self.__data__.items())
 
 
 class Find(Resource):

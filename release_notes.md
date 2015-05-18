@@ -1,6 +1,10 @@
 PayPal Python SDK release notes
 ============================
 
+v1.9.1
+----
+* Webhook default algorithm update
+
 v1.9.0
 ----
 * Add Tox for unit test automation for different Python versions

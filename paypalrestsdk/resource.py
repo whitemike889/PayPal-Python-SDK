@@ -50,6 +50,9 @@ class Resource(object):
         except AttributeError:
             self.__data__[name] = self.convert(name, value)
 
+    def __contains__(self, item):
+        return item in self.__data__
+
     def success(self):
         return self.error is None
 

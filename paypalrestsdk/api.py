@@ -12,6 +12,8 @@ import paypalrestsdk.util as util
 from paypalrestsdk import exceptions
 from paypalrestsdk.config import __version__, __endpoint_map__
 
+log = logging.getLogger(__name__)
+
 
 class Api(object):
 
@@ -132,7 +134,7 @@ class Api(object):
         http_headers = util.merge_dict(self.headers(refresh_token=refresh_token), headers or {})
 
         if http_headers.get('PayPal-Request-Id'):
-            logging.info('PayPal-Request-Id: %s' % (http_headers['PayPal-Request-Id']))
+            log.info('PayPal-Request-Id: %s' % (http_headers['PayPal-Request-Id']))
 
         try:
             return self.http_call(url, method, data=json.dumps(body), headers=http_headers)
@@ -152,16 +154,16 @@ class Api(object):
     def http_call(self, url, method, **kwargs):
         """Makes a http call. Logs response information.
         """
-        logging.info('Request[%s]: %s' % (method, url))
+        log.info('Request[%s]: %s' % (method, url))
         start_time = datetime.datetime.now()
 
         response = requests.request(method, url, proxies=self.proxies, **kwargs)
 
         duration = datetime.datetime.now() - start_time
-        logging.info('Response[%d]: %s, Duration: %s.%ss.' % (response.status_code, response.reason, duration.seconds, duration.microseconds))
+        log.info('Response[%d]: %s, Duration: %s.%ss.' % (response.status_code, response.reason, duration.seconds, duration.microseconds))
         debug_id = response.headers.get('PayPal-Debug-Id')
         if debug_id:
-            logging.debug('debug_id: %s' % debug_id)
+            log.debug('debug_id: %s' % debug_id)
 
         return self.handle_response(response, response.content.decode('utf-8'))
 

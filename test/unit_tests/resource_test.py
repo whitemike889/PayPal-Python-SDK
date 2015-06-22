@@ -139,3 +139,11 @@ class TestResource(unittest.TestCase):
         self.assertEqual(list_.api, default)
 
         api.__api__ = original  # Restore original api object
+
+    def test_contains(self):
+        data = {
+            'name': 'testing'
+        }
+        resource = Resource(data)
+        self.assertEqual('name' in resource, True)
+        self.assertEqual('testing' in resource, False)

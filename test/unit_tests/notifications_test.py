@@ -67,9 +67,20 @@ class TestWebhookEvents(unittest.TestCase):
             webhook_event.api, '/v1/notifications/webhooks-events/' + self.webhook_event_id + '/resend', {}, {'PayPal-Request-Id': ANY})
         self.assertEqual(response, True)
 
+    def test_verify_signature(self):
+        cert = paypal.WebhookEvent._get_cert(self.cert_url)
+        response = paypal.WebhookEvent._verify_signature(
+            self.transmission_id, self.timestamp, self.webhook_id, self.event_body, cert, self.actual_signature, 'sha256')
+        self.assertEqual(response, True)
+
     def test_verify(self):
         response = paypal.WebhookEvent.verify(
-            self.transmission_id, self.timestamp, self.webhook_id, self.event_body, self.cert_url, self.actual_signature)
+            self.transmission_id, self.timestamp, self.webhook_id, self.event_body, self.cert_url, self.actual_signature, 'sha256')
+        self.assertEqual(response, True)
+
+    def test_verify_certificate(self):
+        cert = paypal.WebhookEvent._get_cert(self.cert_url)
+        response = paypal.WebhookEvent._verify_certificate(cert)
         self.assertEqual(response, True)
 
     def test_get_expected_sig(self):
@@ -85,3 +96,18 @@ class TestWebhookEvents(unittest.TestCase):
     def test_get_cert(self):
         cert = paypal.WebhookEvent._get_cert(self.cert_url)
         self.assertNotEqual(cert, None)
+
+    def test_is_common_name_valid(self):
+        cert = paypal.WebhookEvent._get_cert(self.cert_url)
+        response = paypal.WebhookEvent._is_common_name_valid(cert)
+        self.assertEqual(response, True)
+
+    def test_get_certificate_store(self):
+        store = paypal.WebhookEvent._get_certificate_store()
+        from OpenSSL import crypto
+        self.assertTrue(isinstance(store, crypto.X509Store))
+
+    def test_verify_certificate_chain(self):
+        cert = paypal.WebhookEvent._get_cert(self.cert_url)
+        response = paypal.WebhookEvent._verify_certificate_chain(cert)
+        self.assertEqual(response, True)

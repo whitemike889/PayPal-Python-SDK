@@ -4,6 +4,7 @@ import paypalrestsdk.util as util
 import binascii
 from base64 import b64decode
 import requests
+import os
 
 
 class Webhook(Create, Find, List, Delete, Replace):
@@ -27,6 +28,9 @@ class WebhookEvent(Find, List, Post):
     """Exposes REST endpoints for working with subscribed webhooks events
     """
     path = "/v1/notifications/webhooks-events/"
+    __root_cert_path = "data/DigiCertHighAssuranceEVRootCA.crt.pem"
+    __intermediate_cert_path = "data/DigiCertSHA2ExtendedValidationServerCA.crt.pem"
+    __cert_chain_path = [__root_cert_path, __intermediate_cert_path]
 
     def resend(self):
         """Specify a received webhook event-id to resend the event notification
@@ -50,6 +54,53 @@ class WebhookEvent(Find, List, Post):
         return expected_sig
 
     @staticmethod
+    def _is_common_name_valid(cert):
+        """Check that the common name in the certificate refers to paypal"""
+        from OpenSSL import crypto
+        if "paypal" and "messageverificationcerts" in cert.get_subject().commonName.lower():
+            return True
+        else:
+            return False
+
+    @classmethod
+    def _get_certificate_store(cls):
+        """Returns a certificate store with the trust chain loaded
+        """
+        from OpenSSL import crypto
+        store = crypto.X509Store()
+        try:
+            for cert_path in cls.__cert_chain_path:
+                cert_str = open(os.path.join(os.path.dirname(__file__), cert_path)).read()
+                cert = crypto.load_certificate(crypto.FILETYPE_PEM, cert_str)
+                store.add_cert(cert)
+            return store
+        except Exception as e:
+            print(e)
+
+    @classmethod
+    def _verify_certificate_chain(cls, cert):
+        """Verify certificate using chain of trust shipped with sdk
+        """
+        from OpenSSL import crypto
+        store = cls._get_certificate_store()
+        try:
+            store_ctx = crypto.X509StoreContext(store, cert)
+            store_ctx.verify_certificate()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+
+    @classmethod
+    def _verify_certificate(cls, cert):
+        """Verify that certificate is unexpired, has valid common name and is trustworthy
+        """
+        if cls._verify_certificate_chain(cert) and cls._is_common_name_valid(cert) and not cert.has_expired():
+            return True
+        else:
+            return False
+
+    @staticmethod
     def _get_cert(cert_url):
         """Fetches the paypal certificate used to sign the webhook event payload
         """
@@ -63,19 +114,25 @@ class WebhookEvent(Find, List, Post):
             print(e)
 
     @classmethod
-    def verify(cls, transmission_id, timestamp, webhook_id, event_body, cert_url, actual_sig, auth_algo='sha256'):
+    def _verify_signature(cls, transmission_id, timestamp, webhook_id, event_body, cert, actual_sig, auth_algo):
         """Verify that the webhook payload received is from PayPal,
         unaltered and targeted towards correct recipient
         """
         from OpenSSL import crypto
         expected_sig = WebhookEvent._get_expected_sig(transmission_id, timestamp, webhook_id, event_body)
-        cert = WebhookEvent._get_cert(cert_url)
         try:
             crypto.verify(cert, b64decode(actual_sig), expected_sig.encode('utf-8'), auth_algo)
             return True
         except Exception as e:
             print(e)
             return False
+
+    @classmethod
+    def verify(cls, transmission_id, timestamp, webhook_id, event_body, cert_url, actual_sig, auth_algo='sha256'):
+        """Verify certificate and payload
+        """
+        cert = WebhookEvent._get_cert(cert_url)
+        return WebhookEvent._verify_certificate(cert) and WebhookEvent._verify_signature(transmission_id, timestamp, webhook_id, event_body, cert, actual_sig, auth_algo)
 
 
 class WebhookEventType(List):

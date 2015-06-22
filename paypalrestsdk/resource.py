@@ -50,6 +50,9 @@ class Resource(object):
         except AttributeError:
             self.__data__[name] = self.convert(name, value)
 
+    def __contains__(self, item):
+        return item in self.__data__
+
     def success(self):
         return self.error is None
 
@@ -133,7 +136,7 @@ class List(Resource):
         except AttributeError:
             # To handle the case when response is JSON Array
             if isinstance(response, list):
-                new_resp = [cls.list_class(elem) for elem in response]
+                new_resp = [cls.list_class(elem, api=api) for elem in response]
                 return new_resp
 
 

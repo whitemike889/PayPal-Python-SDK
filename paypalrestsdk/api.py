@@ -12,6 +12,8 @@ import paypalrestsdk.util as util
 from paypalrestsdk import exceptions
 from paypalrestsdk.config import __version__, __endpoint_map__
 
+log = logging.getLogger(__name__)
+
 
 class Api(object):
 

@@ -1,6 +1,14 @@
 PayPal Python SDK release notes
 ============================
 
+v1.10.0
+----
+* Webhook certificate chain, common name and expiry validation added
+* Resource conversion syntax more pythonic
+* Endpoint configuration made more flexible for easier custom endpoints
+* __contains__ implemented on Resource object
+* Allow changing of logger level within projects
+
 v1.9.1
 ----
 * Webhook default algorithm update

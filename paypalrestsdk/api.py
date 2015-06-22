@@ -15,8 +15,6 @@ from paypalrestsdk.config import __version__, __endpoint_map__
 log = logging.getLogger(__name__)
 
 
-log = logging.getLogger(__name__)
-
 class Api(object):
 
     # User-Agent for HTTP request

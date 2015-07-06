@@ -21,7 +21,7 @@ setup(
   name=__pypi_packagename__,
   version= __version__,
   author='PayPal',
-  author_email='DL-PP-PYTHON-SDK@ebay.com',
+  author_email='DL-PP-PYTHON-SDK@paypal.com',
   packages=['paypalrestsdk'],
   scripts=[],
   url=url,

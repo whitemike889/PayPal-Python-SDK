@@ -1,4 +1,4 @@
-from paypalrestsdk.resource import Find, Create, Delete, Replace
+from paypalrestsdk.resource import Find, Create, Delete, Replace, List
 
 
 class CreditCard(Find, Create, Delete, Replace, List):

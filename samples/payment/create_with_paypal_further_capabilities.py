@@ -39,7 +39,7 @@ payment = Payment({
                 }
             },
             "description": "This is the payment transaction description.",
-            "custom": "EBAY_EMS_90048630024435",
+            "custom": "PP_EMS_90048630024435",
             "invoice_number": "48787589677",
             "payment_options": {
                 "allowed_payment_method": "INSTANT_FUNDING_SOURCE"

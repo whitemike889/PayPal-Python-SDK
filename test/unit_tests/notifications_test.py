@@ -78,6 +78,28 @@ class TestWebhookEvents(unittest.TestCase):
             self.transmission_id, self.timestamp, self.webhook_id, self.event_body, self.cert_url, self.actual_signature, 'sha256')
         self.assertEqual(response, True)
 
+    def test_verify_with_auth_algo_header(self):
+        # Test digest method mapping works
+        response = paypal.WebhookEvent.verify(
+            self.transmission_id, self.timestamp, self.webhook_id, self.event_body, self.cert_url, self.actual_signature, 'SHA256withRSA')
+        self.assertEqual(response, True)
+
+    def test_verify_with_auth_algo_value(self):
+        # Test digest method mapped value passed in directly works
+        response = paypal.WebhookEvent.verify(
+            self.transmission_id, self.timestamp, self.webhook_id, self.event_body, self.cert_url, self.actual_signature, 'sha256WithRSAEncryption')
+        self.assertEqual(response, True)
+
+    def test_verify_with_invalid_auth_algo_name(self):
+        response = paypal.WebhookEvent.verify(
+            self.transmission_id, self.timestamp, self.webhook_id, self.event_body, self.cert_url, self.actual_signature, 'invalid_digest_method')
+        self.assertEqual(response, False)
+
+    def test_verify_with_incorrect_auth_algo(self):
+        response = paypal.WebhookEvent.verify(
+            self.transmission_id, self.timestamp, self.webhook_id, self.event_body, self.cert_url, self.actual_signature, 'SHA1withRSA')
+        self.assertEqual(response, False)
+
     def test_verify_certificate(self):
         cert = paypal.WebhookEvent._get_cert(self.cert_url)
         response = paypal.WebhookEvent._verify_certificate(cert)

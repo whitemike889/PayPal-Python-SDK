@@ -131,6 +131,16 @@ class WebhookEvent(Find, List, Post):
     def verify(cls, transmission_id, timestamp, webhook_id, event_body, cert_url, actual_sig, auth_algo='sha256'):
         """Verify certificate and payload
         """
+        __auth_algo_map = {
+            'SHA256withRSA': 'sha256WithRSAEncryption',
+            'SHA1withRSA': 'sha1WithRSAEncryption'
+        }
+        try:
+            if auth_algo != 'sha256' and auth_algo not in __auth_algo_map.values():
+                auth_algo = __auth_algo_map[auth_algo]
+        except KeyError as e:
+            print('Authorization algorithm mapping not found in verify method.')
+            return False
         cert = WebhookEvent._get_cert(cert_url)
         return WebhookEvent._verify_certificate(cert) and WebhookEvent._verify_signature(transmission_id, timestamp, webhook_id, event_body, cert, actual_sig, auth_algo)
 

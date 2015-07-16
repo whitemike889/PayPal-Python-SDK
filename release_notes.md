@@ -1,6 +1,11 @@
 PayPal Python SDK release notes
 ============================
 
+v1.10.1
+----
+* Webhook cert patch
+* Support PAYPAL_AUTH_ALGO header for webhook validation
+
 v1.10.0
 ----
 * Webhook certificate chain, common name and expiry validation added

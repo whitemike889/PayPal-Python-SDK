@@ -8,7 +8,7 @@ class Invoice(List, Find, Create, Delete, Update, Post):
 
     Usage::
 
-        >>> invoice_histroy = Invoice.all({"count": 5})
+        >>> invoice_history = Invoice.all({"count": 5})
 
         >>> invoice = Invoice.new({})
         >>> invoice.create()     # return True or False

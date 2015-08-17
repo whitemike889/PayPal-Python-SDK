@@ -1,6 +1,10 @@
 PayPal Python SDK release notes
 ============================
 
+v1.11.0
+----
+* Full request/response logged at DEBUG level for non production environments
+
 v1.10.1
 ----
 * Webhook cert patch

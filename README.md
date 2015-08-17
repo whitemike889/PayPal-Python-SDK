@@ -82,10 +82,6 @@ payment = paypalrestsdk.Payment({...}, api=my_api)
 import paypalrestsdk
 import logging
 
-# Include Headers and Content by setting logging level to DEBUG, particularly for
-# Paypal-Debug-Id if requesting PayPal Merchant Technical Services for support
-logging.basicConfig(level=logging.INFO)
-
 paypalrestsdk.configure({
   "mode": "sandbox", # sandbox or live
   "client_id": "EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM",
@@ -332,5 +328,12 @@ userinfo  = Userinfo.get("Replace with access_token")
 # Generate logout url
 logout_url = tokeninfo.logout_url()
 ```
+### Debugging
+* Include Headers and Content by setting logging level to DEBUG, particularly for
+  Paypal-Debug-Id if requesting PayPal Merchant Technical Services for support
+  logging.basicConfig(level=logging.INFO).
+* Full request and response headers and body is visible at DEBUG level logging only
+  for sandbox or non-production mode. This is done to prevent sensitive information
+  from getting logged in live mode.
 
 Check out [more samples](/samples/invoice/). The [Invoicing REST APIs](https://developer.paypal.com/webapps/developer/docs/api/#invoicing) are fully supported by the sdk.

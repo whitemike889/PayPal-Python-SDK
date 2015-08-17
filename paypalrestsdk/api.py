@@ -155,15 +155,28 @@ class Api(object):
         """Makes a http call. Logs response information.
         """
         log.info('Request[%s]: %s' % (method, url))
+
+        if self.mode.lower() != 'live':
+            request_headers = kwargs.get("headers", {})
+            request_body = kwargs.get("data", {})
+            logging.debug("Level: " + self.mode)
+            logging.debug('Request: \nHeaders: %s\nBody: %s' % (
+                str(request_headers), str(request_body)))
+        else:
+            logging.warning('Not logging full request/response headers and body in live mode for compliance')
+
         start_time = datetime.datetime.now()
-
         response = requests.request(method, url, proxies=self.proxies, **kwargs)
-
         duration = datetime.datetime.now() - start_time
-        log.info('Response[%d]: %s, Duration: %s.%ss.' % (response.status_code, response.reason, duration.seconds, duration.microseconds))
+        log.info('Response[%d]: %s, Duration: %s.%ss.' % (
+            response.status_code, response.reason, duration.seconds, duration.microseconds))
+
         debug_id = response.headers.get('PayPal-Debug-Id')
         if debug_id:
             log.debug('debug_id: %s' % debug_id)
+        if self.mode.lower() != 'live':
+            log.debug('Headers: %s\nBody: %s' % (
+                str(response.headers), str(response.content)))
 
         return self.handle_response(response, response.content.decode('utf-8'))
 

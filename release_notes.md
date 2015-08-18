@@ -4,6 +4,7 @@ PayPal Python SDK release notes
 v1.11.0
 ----
 * Full request/response logged at DEBUG level for non production environments
+* Travis tests gets deployed on new platform
 
 v1.10.1
 ----

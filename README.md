@@ -17,7 +17,9 @@ The PayPal REST SDK provides Python APIs to create, process and manage payment. 
 
 > If deploying on Google appengine and running into issues since requests is a dependency, see [#66](https://github.com/paypal/PayPal-Python-SDK/issues/66) for workaround.
 
-> To verify that your server supports PCI compliant version of TLS, run [this sample](/samples/payment/create_with_paypal_security_test.py) with your credentials.
+> **TLSv1_2 warning: Due to PCI compliance, merchant servers using a version of TLS that does not support TLSv1_2 will receive a warning.
+
+> **To verify that your server supports PCI compliant version of TLS, run [this sample](/samples/payment/create_with_paypal_security_test.py) with your sandbox client_id and client_secret.
 
 ## System Requirements
 PayPal SDK depends on the following system libraries:

@@ -114,7 +114,7 @@ class Api(object):
             duration = (
                 delta.microseconds + (delta.seconds + delta.days * 24 * 3600) * 10 ** 6) / 10 ** 6
             if duration > self.token_hash.get("expires_in"):
-                self.token_hash  = None
+                self.token_hash = None
 
     def get_access_token(self, authorization_code=None, refresh_token=None):
         """Wraps get_token_hash for getting access token

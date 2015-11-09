@@ -7,6 +7,7 @@ import json
 import logging
 import os
 import platform
+import ssl
 
 import paypalrestsdk.util as util
 from paypalrestsdk import exceptions
@@ -18,8 +19,10 @@ log = logging.getLogger(__name__)
 class Api(object):
 
     # User-Agent for HTTP request
-    library_details = "requests %s; python %s" % (requests.__version__, platform.python_version())
-    user_agent = "PayPalSDK/PayPal-Python-SDK %s (%s)" % (__version__, library_details)
+    library_details = "requests %s; python %s; %s" % (
+        requests.__version__, platform.python_version(), ssl.OPENSSL_VERSION)
+    user_agent = "PayPalSDK/PayPal-Python-SDK %s (%s)" % (
+        __version__, library_details)
 
     def __init__(self, options=None, **kwargs):
         """Create API object
@@ -35,8 +38,10 @@ class Api(object):
         self.mode = kwargs.get("mode", "sandbox")
         self.endpoint = kwargs.get("endpoint", self.default_endpoint())
         self.token_endpoint = kwargs.get("token_endpoint", self.endpoint)
-        self.client_id = kwargs["client_id"]              # Mandatory parameter, so not using `dict.get`
-        self.client_secret = kwargs["client_secret"]      # Mandatory parameter, so not using `dict.get`
+        # Mandatory parameter, so not using `dict.get`
+        self.client_id = kwargs["client_id"]
+        # Mandatory parameter, so not using `dict.get`
+        self.client_secret = kwargs["client_secret"]
         self.proxies = kwargs.get("proxies", None)
         self.token_hash = None
         self.token_request_at = None
@@ -46,7 +51,8 @@ class Api(object):
             os.environ["REQUESTS_CA_BUNDLE"] = ssl_options["cert"]
 
         if kwargs.get("token"):
-            self.token_hash = {"access_token": kwargs["token"], "token_type": "Bearer"}
+            self.token_hash = {
+                "access_token": kwargs["token"], "token_type": "Bearer"}
 
         self.options = kwargs
 
@@ -76,7 +82,8 @@ class Api(object):
         payload = "grant_type=client_credentials"
 
         if authorization_code is not None:
-            payload = "grant_type=authorization_code&response_type=token&redirect_uri=urn:ietf:wg:oauth:2.0:oob&code=" + authorization_code
+            payload = "grant_type=authorization_code&response_type=token&redirect_uri=urn:ietf:wg:oauth:2.0:oob&code=" + \
+                authorization_code
 
         elif refresh_token is not None:
             payload = "grant_type=refresh_token&refresh_token=" + refresh_token
@@ -104,7 +111,8 @@ class Api(object):
         """
         if self.token_request_at and self.token_hash and self.token_hash.get("expires_in") is not None:
             delta = datetime.datetime.now() - self.token_request_at
-            duration = (delta.microseconds + (delta.seconds + delta.days * 24 * 3600) * 10 ** 6) / 10 ** 6
+            duration = (
+                delta.microseconds + (delta.seconds + delta.days * 24 * 3600) * 10 ** 6) / 10 ** 6
             if duration > self.token_hash.get("expires_in"):
                 self.token_hash = None
 
@@ -121,6 +129,17 @@ class Api(object):
             Refer to https://developer.paypal.com/docs/integration/mobile/make-future-payment/#get-an-auth-code")
         return self.get_token_hash(authorization_code)["refresh_token"]
 
+    def _check_openssl_version(self):
+        """
+        Check that merchant server has PCI compliant version of TLS
+        Print warning if it does not.
+        """
+        openssl_major = ssl.OPENSSL_VERSION_INFO[0]
+        if openssl_major <= 0:
+            log.warning(
+                'SECURITY WARNING: openssl version ' + ssl.OPENSSL_VERSION + ' detected. Please upgrade to latest OpenSSL \
+                 version to enable TLSv1.2.')
+
     def request(self, url, method, body=None, headers=None, refresh_token=None):
         """Make HTTP call, formats response and does error handling. Uses http_call method in API class.
 
@@ -131,10 +150,14 @@ class Api(object):
 
         """
 
-        http_headers = util.merge_dict(self.headers(refresh_token=refresh_token), headers or {})
+        http_headers = util.merge_dict(
+            self.headers(refresh_token=refresh_token), headers or {})
 
         if http_headers.get('PayPal-Request-Id'):
-            log.info('PayPal-Request-Id: %s' % (http_headers['PayPal-Request-Id']))
+            log.info('PayPal-Request-Id: %s' %
+                     (http_headers['PayPal-Request-Id']))
+
+        self._check_openssl_version()
 
         try:
             return self.http_call(url, method, data=json.dumps(body), headers=http_headers)
@@ -163,10 +186,12 @@ class Api(object):
             logging.debug('Request: \nHeaders: %s\nBody: %s' % (
                 str(request_headers), str(request_body)))
         else:
-            logging.warning('Not logging full request/response headers and body in live mode for compliance')
+            logging.warning(
+                'Not logging full request/response headers and body in live mode for compliance')
 
         start_time = datetime.datetime.now()
-        response = requests.request(method, url, proxies=self.proxies, **kwargs)
+        response = requests.request(
+            method, url, proxies=self.proxies, **kwargs)
         duration = datetime.datetime.now() - start_time
         log.info('Response[%d]: %s, Duration: %s.%ss.' % (
             response.status_code, response.reason, duration.seconds, duration.microseconds))
@@ -209,7 +234,8 @@ class Api(object):
         elif 500 <= status <= 599:
             raise exceptions.ServerError(response, content)
         else:
-            raise exceptions.ConnectionError(response, content, "Unknown response code: #{response.code}")
+            raise exceptions.ConnectionError(
+                response, content, "Unknown response code: #{response.code}")
 
     def headers(self, refresh_token=None):
         """Default HTTP headers
@@ -283,7 +309,8 @@ def default():
             raise exceptions.MissingConfig("Required PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET. \
                 Refer https://github.com/paypal/rest-api-sdk-python#configuration")
 
-        __api__ = Api(mode=os.environ.get("PAYPAL_MODE", "sandbox"), client_id=client_id, client_secret=client_secret)
+        __api__ = Api(mode=os.environ.get(
+            "PAYPAL_MODE", "sandbox"), client_id=client_id, client_secret=client_secret)
     return __api__
 
 

@@ -1,5 +1,5 @@
 from test_helper import unittest, client_id, client_secret, paypal
-from mock import Mock, patch
+from mock import Mock, patch, ANY
 
 
 class Api(unittest.TestCase):
@@ -66,11 +66,23 @@ class Api(unittest.TestCase):
                                                  refresh_token=None)
         self.assertNotEqual(credit_card.get('error'), None)
 
-    def test_expired_time(self):
+    @patch('test_helper.paypal.Api.http_call', autospec=True)
+    def test_expired_time(self, mock):
+        mock.return_value = {
+            'access_token': self.access_token,
+            'expires_in': 900,
+            'refresh_token': self.refresh_token,
+            'scope': self.future_payments_scope,
+            'token_type': 'Bearer'
+        }
         old_token = self.api.get_access_token()
+        mock.assert_called_once_with(self.api, 'https://api.sandbox.paypal.com/v1/oauth2/token', 'POST', headers=ANY, data='grant_type=client_credentials')
+        old_token = self.api.get_access_token()
+        mock.assert_called_once_with(self.api, 'https://api.sandbox.paypal.com/v1/oauth2/token', 'POST', headers=ANY, data='grant_type=client_credentials')
+
         self.api.token_hash["expires_in"] = 0
         new_token = self.api.get_access_token()
-        self.assertNotEqual(new_token, old_token)
+        self.assertEqual(len(mock.call_args_list), 2)
 
     def test_not_found(self):
         self.api.request.side_effect = paypal.ResourceNotFound("error")

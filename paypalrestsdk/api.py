@@ -19,8 +19,10 @@ log = logging.getLogger(__name__)
 class Api(object):
 
     # User-Agent for HTTP request
+    ssl_version = "" if util.older_than_27() else ssl.OPENSSL_VERSION
+    ssl_major = -1 if util.older_than_27() else ssl.OPENSSL_VERSION_INFO[0]
     library_details = "requests %s; python %s; %s" % (
-        requests.__version__, platform.python_version(), ssl.OPENSSL_VERSION)
+        requests.__version__, platform.python_version(), ssl_version)
     user_agent = "PayPalSDK/PayPal-Python-SDK %s (%s)" % (
         __version__, library_details)
 
@@ -134,10 +136,9 @@ class Api(object):
         Check that merchant server has PCI compliant version of TLS
         Print warning if it does not.
         """
-        openssl_major = ssl.OPENSSL_VERSION_INFO[0]
-        if openssl_major <= 0:
+        if self.ssl_major <= 0 and not util.older_than_27():
             log.warning(
-                'SECURITY WARNING: openssl version ' + ssl.OPENSSL_VERSION + ' detected. Please upgrade to latest OpenSSL \
+                'SECURITY WARNING: openssl version ' + self.ssl_version + ' detected. Please upgrade to latest OpenSSL \
                  version to enable TLSv1.2.')
 
     def request(self, url, method, body=None, headers=None, refresh_token=None):

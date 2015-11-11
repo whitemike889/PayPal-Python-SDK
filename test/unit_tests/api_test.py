@@ -107,7 +107,7 @@ class Api(unittest.TestCase):
                                               'Content-Type': 'application/x-www-form-urlencoded',
                                               'Accept': 'application/json',
                                               'Authorization': 'Basic ' + self.api.basic_auth(),
-                                              'User-Agent': self.api.user_agent
+                                              'User-Agent': ANY
                                           }
                                           )
         self.assertEqual(refresh_token, self.refresh_token)
@@ -135,7 +135,7 @@ class Api(unittest.TestCase):
                                               'Content-Type': 'application/x-www-form-urlencoded',
                                               'Accept': 'application/json',
                                               'Authorization': 'Basic ' + self.api.basic_auth(),
-                                              'User-Agent': self.api.user_agent
+                                              'User-Agent': ANY
                                           }
                                           )
         self.assertEqual(access_token, self.access_token)

@@ -1,6 +1,10 @@
 PayPal Python SDK release notes
 ============================
 
+v1.11.2
+----
+* Check OpenSSL version is 1.0.1 or above
+
 v1.11.1
 ----
 * Security test sandbox endpoint avaiable as a configuration

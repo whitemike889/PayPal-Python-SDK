@@ -1,6 +1,10 @@
 PayPal Python SDK release notes
 ============================
 
+v1.11.3
+----
+* Update TLS warning message with [site information](https://github.com/paypal/TLS-update)
+
 v1.11.2
 ----
 * Check OpenSSL version is 1.0.1 or above

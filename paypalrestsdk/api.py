@@ -138,8 +138,8 @@ class Api(object):
         """
         if self.ssl_version_info and self.ssl_version_info < (1, 0, 1, 0, 0):
             log.warning(
-                'SECURITY WARNING: openssl version ' + self.ssl_version + ' detected. Please upgrade to latest OpenSSL \
-                 version to enable TLSv1.2.')
+                'WARNING: openssl version ' + self.ssl_version + ' detected. Per PCI Security Council mandate \
+                (https://github.com/paypal/TLS-update), you MUST update to the latest security library.')
 
     def request(self, url, method, body=None, headers=None, refresh_token=None):
         """Make HTTP call, formats response and does error handling. Uses http_call method in API class.

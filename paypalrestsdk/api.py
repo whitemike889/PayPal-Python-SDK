@@ -183,11 +183,11 @@ class Api(object):
         if self.mode.lower() != 'live':
             request_headers = kwargs.get("headers", {})
             request_body = kwargs.get("data", {})
-            logging.debug("Level: " + self.mode)
-            logging.debug('Request: \nHeaders: %s\nBody: %s' % (
+            log.debug("Level: " + self.mode)
+            log.debug('Request: \nHeaders: %s\nBody: %s' % (
                 str(request_headers), str(request_body)))
         else:
-            logging.warning(
+            log.info(
                 'Not logging full request/response headers and body in live mode for compliance')
 
         start_time = datetime.datetime.now()

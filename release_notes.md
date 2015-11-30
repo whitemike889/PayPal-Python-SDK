@@ -1,6 +1,11 @@
 PayPal Python SDK release notes
 ============================
 
+v1.11.4
+----
+* Change Live Mode Logging Warning to be Info level and use local logger
+  instead of root. See issue [#112](https://github.com/paypal/PayPal-Python-SDK/pull/112)
+
 v1.11.3
 ----
 * Update TLS warning message with [site information](https://github.com/paypal/TLS-update)

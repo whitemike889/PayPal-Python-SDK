@@ -1,6 +1,10 @@
 PayPal Python SDK release notes
 ============================
 
+v1.11.5
+----
+* Additional Webhook Validation Checks
+
 v1.11.4
 ----
 * Change Live Mode Logging Warning to be Info level and use local logger
@@ -121,7 +125,7 @@ v1.2.0
 
 v1.1.0
 -----
-* Invoicing API support added 
+* Invoicing API support added
 * Added tests and samples for using the invoicing api via the sdk
 * PayPal Mobile Backend sample added
 

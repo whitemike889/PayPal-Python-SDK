@@ -57,7 +57,7 @@ class WebhookEvent(Find, List, Post):
     def _is_common_name_valid(cert):
         """Check that the common name in the certificate refers to paypal"""
         from OpenSSL import crypto
-        if "paypal" and "messageverificationcerts" in cert.get_subject().commonName.lower():
+        if cert.get_subject().commonName.lower().endswith(".paypal.com"):
             return True
         else:
             return False

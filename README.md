@@ -11,8 +11,6 @@ PyPI status:
 
 The PayPal REST SDK provides Python APIs to create, process and manage payment. The [Paypal REST APIs](https://developer.paypal.com/webapps/developer/docs/api/) are fully supported by the sdk.
 
-> **Before starting to use the sdk, please be aware of the [existing issues and currently available or upcoming features](https://github.com/paypal/PayPal-Python-SDK/wiki/Existing-Issues-and-Unavailable%5CUpcoming-features) for the REST APIs. (which the sdks are based on)** 
-
 > The REST APIs are getting closer to parity with older merchant APIs. Check out https://github.com/paypal/PayPal-Python-SDK#explore-further-payment-capabilities
 
 > If deploying on Google appengine and running into issues since requests is a dependency, see [#66](https://github.com/paypal/PayPal-Python-SDK/issues/66) for workaround.

@@ -2,6 +2,7 @@
 
 from flask import Flask, session, render_template, url_for, redirect, request, flash, g
 from paypalrestsdk import BillingPlan, BillingAgreement, configure
+from datetime import datetime, timedelta
 import paypal_config
 import logging
 import os
@@ -126,7 +127,7 @@ def subscribe():
         billing_agreement = BillingAgreement({
             "name": "Organization plan name",
             "description": "Agreement for " + request.args.get('name', ''),
-            "start_date": "2015-02-19T00:37:04Z",
+            "start_date": (datetime.now() + timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M:%SZ'),
             "plan": {
                 "id": request.args.get('id', '')
             },

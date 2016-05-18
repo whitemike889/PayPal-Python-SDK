@@ -126,7 +126,9 @@ class Api(unittest.TestCase):
             'token_type': 'Bearer'
         }
         access_token = self.api.get_token_hash(
-            refresh_token=self.refresh_token)['access_token']
+            refresh_token=self.refresh_token, 
+            headers={"test-header" : "test-value"})['access_token']
+
         mock_http.assert_called_once_with(self.api,
                                           'https://api.sandbox.paypal.com/v1/oauth2/token', 'POST',
                                           data='grant_type=refresh_token&refresh_token=' +
@@ -135,7 +137,8 @@ class Api(unittest.TestCase):
                                               'Content-Type': 'application/x-www-form-urlencoded',
                                               'Accept': 'application/json',
                                               'Authorization': 'Basic ' + self.api.basic_auth(),
-                                              'User-Agent': ANY
+                                              'User-Agent': ANY,
+                                              'test-header': 'test-value'
                                           }
                                           )
         self.assertEqual(access_token, self.access_token)

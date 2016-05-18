@@ -67,7 +67,7 @@ class Api(object):
         credentials = "%s:%s" % (self.client_id, self.client_secret)
         return base64.b64encode(credentials.encode('utf-8')).decode('utf-8').replace("\n", "")
 
-    def get_token_hash(self, authorization_code=None, refresh_token=None):
+    def get_token_hash(self, authorization_code=None, refresh_token=None, headers=None):
         """Generate new token by making a POST request
 
             1. By using client credentials if validate_token_hash finds
@@ -100,11 +100,11 @@ class Api(object):
         self.token_hash = self.http_call(
             util.join_url(self.token_endpoint, path), "POST",
             data=payload,
-            headers={
+            headers=util.merge_dict({
                 "Authorization": ("Basic %s" % self.basic_auth()),
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Accept": "application/json", "User-Agent": self.user_agent
-            })
+            }, headers or {}))
 
         return self.token_hash
 
@@ -118,18 +118,18 @@ class Api(object):
             if duration > self.token_hash.get("expires_in"):
                 self.token_hash = None
 
-    def get_access_token(self, authorization_code=None, refresh_token=None):
+    def get_access_token(self, authorization_code=None, refresh_token=None, headers=None):
         """Wraps get_token_hash for getting access token
         """
-        return self.get_token_hash(authorization_code, refresh_token)['access_token']
+        return self.get_token_hash(authorization_code, refresh_token, headers=headers or {})['access_token']
 
-    def get_refresh_token(self, authorization_code=None):
+    def get_refresh_token(self, authorization_code=None, headers=None):
         """Exchange authorization code for refresh token for future payments
         """
         if authorization_code is None:
             raise exceptions.MissingConfig("Authorization code needed to get new refresh token. \
             Refer to https://developer.paypal.com/docs/integration/mobile/make-future-payment/#get-an-auth-code")
-        return self.get_token_hash(authorization_code)["refresh_token"]
+        return self.get_token_hash(authorization_code, headers=headers or {})["refresh_token"]
 
     def _check_openssl_version(self):
         """
@@ -152,7 +152,7 @@ class Api(object):
         """
 
         http_headers = util.merge_dict(
-            self.headers(refresh_token=refresh_token), headers or {})
+            self.headers(refresh_token=refresh_token, headers=headers or {}), headers or {})
 
         if http_headers.get('PayPal-Request-Id'):
             log.info('PayPal-Request-Id: %s' %
@@ -238,10 +238,10 @@ class Api(object):
             raise exceptions.ConnectionError(
                 response, content, "Unknown response code: #{response.code}")
 
-    def headers(self, refresh_token=None):
+    def headers(self, refresh_token=None, headers=None):
         """Default HTTP headers
         """
-        token_hash = self.get_token_hash(refresh_token=refresh_token)
+        token_hash = self.get_token_hash(refresh_token=refresh_token, headers=headers or {})
 
         return {
             "Authorization": ("%s %s" % (token_hash['token_type'], token_hash['access_token'])),

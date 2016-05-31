@@ -341,3 +341,9 @@ logout_url = tokeninfo.logout_url()
   from getting logged in live mode.
 
 Check out [more samples](/samples/invoice/). The [Invoicing REST APIs](https://developer.paypal.com/webapps/developer/docs/api/#invoicing) are fully supported by the sdk.
+
+## License
+Code released under [SDK LICENSE](LICENSE)  
+
+## Contributions 
+ Pull requests and new issues are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for details. 

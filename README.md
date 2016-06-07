@@ -2,12 +2,7 @@
 
 Continuous integration status:
 
-[![Build Status](https://travis-ci.org/paypal/PayPal-Python-SDK.png?branch=master)](https://travis-ci.org/paypal/PayPal-Python-SDK) [![Coverage Status](https://coveralls.io/repos/paypal/PayPal-Python-SDK/badge.png?branch=master)](https://coveralls.io/r/paypal/PayPal-Python-SDK?branch=master) 
-
-PyPI status:
-
-[![PyPi version](https://pypip.in/v/paypalrestsdk/badge.png)](https://crate.io/packages/paypalrestsdk/)
-[![PyPi downloads](https://pypip.in/d/paypalrestsdk/badge.png)](https://crate.io/packages/paypalrestsdk/)
+[![Build Status](https://travis-ci.org/paypal/PayPal-Python-SDK.svg?branch=master)](https://travis-ci.org/paypal/PayPal-Python-SDK) [![Coverage Status](https://coveralls.io/repos/paypal/PayPal-Python-SDK/badge.svg?branch=master)](https://coveralls.io/r/paypal/PayPal-Python-SDK?branch=master) 
 
 The PayPal REST SDK provides Python APIs to create, process and manage payment. The [Paypal REST APIs](https://developer.paypal.com/webapps/developer/docs/api/) are fully supported by the sdk.
 

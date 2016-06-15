@@ -98,7 +98,7 @@ class Resource(object):
 class Find(Resource):
 
     @classmethod
-    def find(cls, resource_id, api=None):
+    def find(cls, resource_id, api=None, refresh_token=None):
         """Locate resource e.g. payment with given id
 
         Usage::
@@ -107,7 +107,7 @@ class Find(Resource):
         api = api or default_api()
 
         url = util.join_url(cls.path, str(resource_id))
-        return cls(api.get(url), api=api)
+        return cls(api.get(url, refresh_token=refresh_token), api=api)
 
 
 class List(Resource):
@@ -218,7 +218,7 @@ class Delete(Resource):
 
 class Post(Resource):
 
-    def post(self, name, attributes=None, cls=Resource, fieldname='id'):
+    def post(self, name, attributes=None, cls=Resource, fieldname='id', refresh_token=None):
         """Constructs url with passed in headers and makes post request via
         post method in api class.
 
@@ -231,7 +231,7 @@ class Post(Resource):
         url = util.join_url(self.path, str(self[fieldname]), name)
         if not isinstance(attributes, Resource):
             attributes = Resource(attributes, api=self.api)
-        new_attributes = self.api.post(url, attributes.to_dict(), attributes.http_headers())
+        new_attributes = self.api.post(url, attributes.to_dict(), attributes.http_headers(), refresh_token)
         if isinstance(cls, Resource):
             cls.error = None
             cls.merge(new_attributes)

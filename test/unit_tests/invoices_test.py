@@ -40,7 +40,7 @@ class TestInvoice(unittest.TestCase):
         invoice = paypal.Invoice.find(self.invoice.id)
 
         mock.assert_called_once_with(
-            self.invoice.api, 'v1/invoicing/invoices/' + self.invoice.id)
+            self.invoice.api, 'v1/invoicing/invoices/' + self.invoice.id, refresh_token=None)
         self.assertTrue(isinstance(invoice, paypal.Invoice))
 
     @patch('test_helper.paypal.Api.get', autospec=True)
@@ -87,7 +87,7 @@ class TestInvoice(unittest.TestCase):
         response = self.invoice.send()
 
         mock.assert_called_once_with(
-            self.invoice.api, 'v1/invoicing/invoices/' + self.invoice.id + '/send', {}, {'PayPal-Request-Id': ANY})
+            self.invoice.api, 'v1/invoicing/invoices/' + self.invoice.id + '/send', {}, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
 
     @patch('test_helper.paypal.Api.post', autospec=True)
@@ -120,7 +120,7 @@ class TestInvoice(unittest.TestCase):
         response = self.invoice.remind(remind_attributes)
 
         mock.assert_called_once_with(self.invoice.api, 'v1/invoicing/invoices/' +
-                                     self.invoice.id + '/remind', remind_attributes, {'PayPal-Request-Id': ANY})
+                                     self.invoice.id + '/remind', remind_attributes, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
 
     @patch('test_helper.paypal.Api.post', autospec=True)
@@ -135,7 +135,7 @@ class TestInvoice(unittest.TestCase):
         response = self.invoice.cancel(cancel_attributes)
 
         mock.assert_called_once_with(self.invoice.api, 'v1/invoicing/invoices/' +
-                                     self.invoice.id + '/cancel', cancel_attributes, {'PayPal-Request-Id': ANY})
+                                     self.invoice.id + '/cancel', cancel_attributes, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
 
     @patch('test_helper.paypal.Api.post', autospec=True)
@@ -149,7 +149,7 @@ class TestInvoice(unittest.TestCase):
         response = self.invoice.record_payment(payment_attributes)
 
         mock.assert_called_once_with(self.invoice.api, 'v1/invoicing/invoices/' +
-                                     self.invoice.id + '/record-payment', payment_attributes, {'PayPal-Request-Id': ANY})
+                                     self.invoice.id + '/record-payment', payment_attributes, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
 
     @patch('test_helper.paypal.Api.post', autospec=True)
@@ -162,5 +162,5 @@ class TestInvoice(unittest.TestCase):
         response = self.invoice.record_refund(refund_attributes)
 
         mock.assert_called_once_with(self.invoice.api, 'v1/invoicing/invoices/' +
-                                     self.invoice.id + '/record-refund', refund_attributes, {'PayPal-Request-Id': ANY})
+                                     self.invoice.id + '/record-refund', refund_attributes, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)

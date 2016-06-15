@@ -250,7 +250,7 @@ class Api(object):
             "User-Agent": self.user_agent
         }
 
-    def get(self, action, headers=None):
+    def get(self, action, headers=None, refresh_token=None):
         """Make GET request
 
         Usage::
@@ -258,7 +258,7 @@ class Api(object):
             >>> api.get("v1/payments/payment?count=1")
             >>> api.get("v1/payments/payment/PAY-1234")
         """
-        return self.request(util.join_url(self.endpoint, action), 'GET', headers=headers or {})
+        return self.request(util.join_url(self.endpoint, action), 'GET', headers=headers or {}, refresh_token=refresh_token)
 
     def post(self, action, params=None, headers=None, refresh_token=None):
         """Make POST request
@@ -289,10 +289,10 @@ class Api(object):
         """
         return self.request(util.join_url(self.endpoint, action), 'PATCH', body=params or {}, headers=headers or {}, refresh_token=refresh_token)
 
-    def delete(self, action, headers=None):
+    def delete(self, action, headers=None, refresh_token=None):
         """Make DELETE request
         """
-        return self.request(util.join_url(self.endpoint, action), 'DELETE', headers=headers or {})
+        return self.request(util.join_url(self.endpoint, action), 'DELETE', headers=headers or {}, refresh_token=refresh_token)
 
 __api__ = None
 

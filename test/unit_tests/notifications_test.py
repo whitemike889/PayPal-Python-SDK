@@ -58,13 +58,13 @@ class TestWebhookEvents(unittest.TestCase):
     def test_find_and_resend(self, mock_post, mock_get):
         webhook_event = paypal.WebhookEvent.find(self.webhook_event_id)
         mock_get.assert_called_once_with(
-            webhook_event.api, '/v1/notifications/webhooks-events/' + self.webhook_event_id)
+            webhook_event.api, '/v1/notifications/webhooks-events/' + self.webhook_event_id, refresh_token=None)
         self.assertTrue(isinstance(webhook_event, paypal.WebhookEvent))
         webhook_event.id = self.webhook_event_id
 
         response = webhook_event.resend()
         mock_post.assert_called_once_with(
-            webhook_event.api, '/v1/notifications/webhooks-events/' + self.webhook_event_id + '/resend', {}, {'PayPal-Request-Id': ANY})
+            webhook_event.api, '/v1/notifications/webhooks-events/' + self.webhook_event_id + '/resend', {}, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
 
     def test_verify_signature(self):

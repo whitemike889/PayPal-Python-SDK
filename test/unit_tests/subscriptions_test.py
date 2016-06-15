@@ -107,7 +107,7 @@ class TestBillingPlan(unittest.TestCase):
         billing_plan = paypal.BillingPlan.find(self.billing_plan_id)
 
         mock.assert_called_once_with(
-            self.billing_plan.api, 'v1/payments/billing-plans/' + self.billing_plan_id)
+            self.billing_plan.api, 'v1/payments/billing-plans/' + self.billing_plan_id, refresh_token=None)
         self.assertTrue(isinstance(billing_plan, paypal.BillingPlan))
 
     @patch('test_helper.paypal.Api.get', autospec=True)
@@ -246,7 +246,7 @@ class TestBillingAgreement(unittest.TestCase):
             self.billing_agreement_id)
 
         mock.assert_called_once_with(
-            self.billing_agreement.api, 'v1/payments/billing-agreements/' + self.billing_agreement_id)
+            self.billing_agreement.api, 'v1/payments/billing-agreements/' + self.billing_agreement_id, refresh_token=None)
         self.assertTrue(isinstance(billing_agreement, paypal.BillingAgreement))
 
     @patch('test_helper.paypal.Api.patch', autospec=True)
@@ -309,7 +309,7 @@ class TestBillingAgreement(unittest.TestCase):
         response = self.billing_agreement.suspend(suspend_attributes)
 
         mock.assert_called_once_with(self.billing_agreement.api, 'v1/payments/billing-agreements/' + self.billing_agreement_id + '/suspend',
-                                     suspend_attributes, {'PayPal-Request-Id': ANY})
+                                     suspend_attributes, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
 
     @patch('test_helper.paypal.Api.post', autospec=True)
@@ -321,7 +321,7 @@ class TestBillingAgreement(unittest.TestCase):
         response = self.billing_agreement.reactivate(reactivate_attributes)
 
         mock.assert_called_once_with(self.billing_agreement.api, 'v1/payments/billing-agreements/' + self.billing_agreement_id + '/re-activate',
-                                     reactivate_attributes, {'PayPal-Request-Id': ANY})
+                                     reactivate_attributes, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
 
     @patch('test_helper.paypal.Api.post', autospec=True)
@@ -333,7 +333,7 @@ class TestBillingAgreement(unittest.TestCase):
         response = self.billing_agreement.cancel(cancel_attributes)
 
         mock.assert_called_once_with(self.billing_agreement.api, 'v1/payments/billing-agreements/' + self.billing_agreement_id + '/cancel',
-                                     cancel_attributes, {'PayPal-Request-Id': ANY})
+                                     cancel_attributes, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
 
     @patch('test_helper.paypal.Api.post', autospec=True)
@@ -346,7 +346,7 @@ class TestBillingAgreement(unittest.TestCase):
         response = self.billing_agreement.set_balance(set_balance_attributes)
 
         mock.assert_called_once_with(self.billing_agreement.api, 'v1/payments/billing-agreements/' + self.billing_agreement_id + '/set-balance',
-                                     set_balance_attributes, {'PayPal-Request-Id': ANY})
+                                     set_balance_attributes, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
 
     @patch('test_helper.paypal.Api.post', autospec=True)
@@ -362,7 +362,7 @@ class TestBillingAgreement(unittest.TestCase):
         response = self.billing_agreement.bill_balance(bill_balance_attributes)
 
         mock.assert_called_once_with(self.billing_agreement.api, 'v1/payments/billing-agreements/' + self.billing_agreement_id + '/bill-balance',
-                                     bill_balance_attributes, {'PayPal-Request-Id': ANY})
+                                     bill_balance_attributes, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
 
     @patch('test_helper.paypal.Api.post', autospec=True)

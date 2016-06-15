@@ -40,7 +40,7 @@ class TestCreditCard(unittest.TestCase):
         card = paypal.CreditCard.find(self.credit_card.id)
         # python 2.6 compatible
         mock.assert_called_once_with(
-            self.credit_card.api, 'v1/vault/credit-card/' + self.credit_card.id)
+            self.credit_card.api, 'v1/vault/credit-card/' + self.credit_card.id, refresh_token=None)
         self.assertTrue(isinstance(card, paypal.CreditCard))
 
     @patch('test_helper.paypal.Api.delete', autospec=True)

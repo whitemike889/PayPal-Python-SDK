@@ -209,6 +209,10 @@ Also, check out a [flask application](/samples/subscription/ppsubscribe) demonst
 
 Check out this [sample](/samples/payment/create_future_payment.py) for executing [future payments](https://developer.paypal.com/docs/integration/mobile/make-future-payment/) for a customer who has granted consent on a mobile device.
 
+### Third Party Invoicing
+
+Check out this [sample](/samples/invoice/third_party_invoicing.py) for executing third party invoicing for a merchant who has granted consent to send invoice on their behalf.
+
 ### Orders
 
 Create and manage [Orders](https://developer.paypal.com/webapps/developer/docs/integration/direct/create-process-order/#create-the-order), i.e. getting consent from buyer for a purchase but only placing the funds on hold when the merchant is ready to fulfill the [order](https://developer.paypal.com/webapps/developer/docs/api/#orders), have a look at [samples](/samples/order)

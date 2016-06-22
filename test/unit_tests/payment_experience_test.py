@@ -51,7 +51,7 @@ class TestWebProfile(unittest.TestCase):
         web_profile = paypal.WebProfile.find(self.profile_id)
         self.assertEqual(web_profile.__class__, paypal.WebProfile)
         mock.assert_called_once_with(
-            web_profile.api, '/v1/payment-experience/web-profiles/' + self.profile_id)
+            web_profile.api, '/v1/payment-experience/web-profiles/' + self.profile_id, refresh_token=None)
 
     @patch('test_helper.paypal.Api.patch', autospec=True)
     def test_replace(self, mock):

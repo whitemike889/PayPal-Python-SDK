@@ -45,7 +45,7 @@ class Api(unittest.TestCase):
     def test_get(self):
         payment_history = self.api.get("/v1/payments/payment?count=1")
         self.api.request.assert_called_once_with(
-            'https://api.sandbox.paypal.com/v1/payments/payment?count=1', 'GET', headers={})
+            'https://api.sandbox.paypal.com/v1/payments/payment?count=1', 'GET', headers={}, refresh_token=None)
 
     def test_post(self):
         self.api.request.return_value = {'id': 'test'}

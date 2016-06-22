@@ -15,8 +15,8 @@ class Invoice(List, Find, Create, Delete, Update, Post):
     """
     path = "v1/invoicing/invoices"
 
-    def send(self):
-        return self.post('send', {}, self)
+    def send(self, refresh_token=None):
+        return self.post('send', {}, self, refresh_token=refresh_token)
 
     def remind(self, attributes):
         return self.post('remind', attributes, self)

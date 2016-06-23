@@ -3,8 +3,7 @@ configatron.product_name = "PayPal Python SDK"
 
 # List of items to confirm from the person releasing.  Required, but empty list is ok.
 configatron.prerelease_checklist_items = [  
-  "Sanity check the master branch.", 
-  "Tests passed."
+  "Sanity check the master branch."
 ]
 
 def validate_version_match()
@@ -35,10 +34,13 @@ configatron.custom_validation_methods = [
 ]
 
 def build_method
-  CommandProcessor.command("source /Library/Frameworks/Python.framework/Versions/2.7/bin/virtualenvwrapper.sh;mkvirtualenv pythonsdk", live_output=true)
-  CommandProcessor.command("source /Library/Frameworks/Python.framework/Versions/2.7/bin/virtualenvwrapper.sh;workon pythonsdk", live_output=true)
-  CommandProcessor.command("pip install -r requirements.txt", live_output=true)
-  CommandProcessor.command("nosetests --with-coverage --cover-package=paypalrestsdk --include=paypalrestsdk/*", live_output=true)
+  command = "source /usr/local/bin/virtualenvwrapper.sh;" 
+  command += "mkvirtualenv pythonsdk;"
+  command += "workon pythonsdk;"
+  command += "pip install -r requirements.txt;"
+  command += "nosetests --with-coverage --cover-package=paypalrestsdk --include=paypalrestsdk/* --exclude=functional*"
+  
+  CommandProcessor.command(command, live_output=true)
 end
 
 # The command that builds the sdk.  Required.
@@ -54,7 +56,7 @@ configatron.publish_to_package_manager_method = method(:publish_to_package_manag
 
 
 def wait_for_package_manager(version)
-  CommandProcessor.wait_for("wget -U \"non-empty-user-agent\" -qO- https://pypi.python.org/pypi/paypalrestsdk/#{version} | cat")
+  CommandProcessor.wait_for("wget -U \"non-empty-user-agent\" -qO- https://pypi.python.org/pypi/paypalrestsdk/#{package_version} | cat")
 end
 
 # The method that waits for the package manager to be done.  Required
@@ -66,7 +68,7 @@ configatron.release_to_github = true
 def package_version()
   f=File.open("paypalrestsdk/config.py", 'r') do |f|
     f.each_line do |line|
-      if line.match (/__version__ = \"\d*\.\d*\.\d*\"/)
+      if line.match (/__version__ = \"\d+\.\d+\.\d+\"/)
         return line.strip.split('=')[1].strip.split('"')[1]
       end
     end

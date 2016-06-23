@@ -1,6 +1,14 @@
 PayPal Python SDK release notes
 ============================
 
+v1.11.6
+-------
+* Enabled Third Party Invoicing [#138](https://github.com/paypal/PayPal-Python-SDK/pull/138).
+* Enabled Headers in Oauth calls [#134](https://github.com/paypal/PayPal-Python-SDK/pull/134).
+* Updated requirements [#126](https://github.com/paypal/PayPal-Python-SDK/pull/126).
+* Make sure the subscription start_date is in the future [#125](https://github.com/paypal/PayPal-Python-SDK/pull/125).
+* Fix variable name typo in payment test [#117](https://github.com/paypal/PayPal-Python-SDK/pull/117).
+
 v1.11.5
 ----
 * Additional Webhook Validation Checks

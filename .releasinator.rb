@@ -47,7 +47,8 @@ end
 configatron.build_method = method(:build_method)
 
 def publish_to_package_manager(version)
-  CommandProcessor.command("python setup.py register", live_output=true)
+  # you need to run 'python setup.py register' first time. it's one time activity  
+  #CommandProcessor.command("python setup.py register", live_output=true)
   CommandProcessor.command("python setup.py sdist upload", live_output=true)
 end
 

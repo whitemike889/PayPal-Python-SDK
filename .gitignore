@@ -10,3 +10,4 @@ MANIFEST
 .ipynb
 .cache
 .tox/
+.DS_Store

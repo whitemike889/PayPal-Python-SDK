@@ -4,7 +4,7 @@ import paypalrestsdk.util as util
 from paypalrestsdk import exceptions
 
 
-class Payment(List, Find, Create, Post):
+class Payment(List, Find, Create, Post, Replace):
     """Payment class wrapping the REST v1/payments/payment endpoint
 
     Usage::

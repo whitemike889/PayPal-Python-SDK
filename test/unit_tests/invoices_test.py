@@ -43,6 +43,13 @@ class TestInvoice(unittest.TestCase):
             self.invoice.api, 'v1/invoicing/invoices/' + self.invoice.id, refresh_token=None)
         self.assertTrue(isinstance(invoice, paypal.Invoice))
 
+    @patch('test_helper.paypal.Api.post', autospec=True)
+    def test_next_invoice_number(self, mock):
+        response = self.invoice.next_invoice_number()
+
+        mock.assert_called_once_with(
+            self.invoice.api, 'v1/invoicing/invoices/next-invoice-number')
+
     @patch('test_helper.paypal.Api.get', autospec=True)
     def test_get_qr_code(self, mock):
         height = "400"

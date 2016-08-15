@@ -104,8 +104,8 @@ def redirect_uri():
     return api.default().options.get("openid_redirect_uri")
 
 
-start_session_path = "/webapps/auth/protocol/openidconnect/v1/authorize"
-end_session_path = "/webapps/auth/protocol/openidconnect/v1/endsession"
+start_session_path = "/signin/authorize"
+end_session_path = "/signin/endsession"
 
 
 def session_url(path, options=None):

@@ -1,13 +1,14 @@
-# Create Payment Using PayPal Sample against endpoint 
+# Create Payment Using PayPal Sample against endpoint
 # that only allows an acceptable highest TLS version
-from paypalrestsdk as paypal
+import paypalrestsdk as paypal
 import logging
 logging.basicConfig(level=logging.INFO)
 
 paypal.configure({
-  "mode": "security-test-sandbox", # sandbox or live
-  "client_id": "<CLIENT_ID>",
-  "client_secret": "<CLIENT_SECRET>" })
+    "mode": "security-test-sandbox",  # sandbox or live
+    "client_id": "<CLIENT_ID>",
+    "client_secret": "<CLIENT_SECRET>"
+})
 
 # Payment
 # A Payment Resource; create one using

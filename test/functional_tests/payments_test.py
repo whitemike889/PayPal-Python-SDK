@@ -11,9 +11,9 @@ class TestPayment(unittest.TestCase):
                 "funding_instruments": [{
                     "credit_card": {
                         "type": "visa",
-                        "number": "4417119669820331",
-                        "expire_month": "11",
-                        "expire_year": "2018",
+                        "number": "4032034389224968",
+                        "expire_month": "09",
+                        "expire_year": "2021",
                         "cvv2": "874",
                         "first_name": "Joe",
                         "last_name": "Shopper"}}]},
@@ -84,9 +84,9 @@ class TestSale(unittest.TestCase):
                 "funding_instruments": [{
                     "credit_card": {
                         "type": "visa",
-                        "number": "4417119669820331",
-                        "expire_month": "11",
-                        "expire_year": "2018",
+                        "number": "4032034389224968",
+                        "expire_month": "09",
+                        "expire_year": "2021",
                         "cvv2": "874",
                         "first_name": "Joe",
                         "last_name": "Shopper"}}]},
@@ -125,9 +125,9 @@ class TestAuthorization(unittest.TestCase):
                 "funding_instruments": [{
                     "credit_card": {
                         "type": "visa",
-                        "number": "4417119669820331",
-                        "expire_month": "11",
-                        "expire_year": "2018",
+                        "number": "4032034389224968",
+                        "expire_month": "09",
+                        "expire_year": "2021",
                         "cvv2": "874",
                         "first_name": "Joe",
                         "last_name": "Shopper"}}]},

@@ -57,10 +57,10 @@ class Api(unittest.TestCase):
         self.assertEqual(payment_history['count'], 1)
 
     def test_expired_time(self):
-        old_token = self.api.get_access_token()
+        self.api.token_hash["access_token"] = "ExpiredToken"
         self.api.token_hash["expires_in"] = 0
         new_token = self.api.get_access_token()
-        self.assertNotEqual(new_token, old_token)
+        self.assertNotEqual(new_token, "ExpiredToken")
 
     def test_not_found(self):
         self.assertRaises(

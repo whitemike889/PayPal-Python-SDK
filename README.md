@@ -258,7 +258,7 @@ For [exploring additional payment capabilites](https://developer.paypal.com/docs
 
 ### Customizing a PayPal payment experience
 
-Customizing a [PayPal payment experience](https://developer.paypal.com/webapps/developer/docs/integration/direct/rest-experience-overview/) is available as of version 1.5.0 enabling merchants to provide a customized experience to consumers from the merchant’s website to the PayPal payment. Get started with the [supported rest methods](https://developer.paypal.com/webapps/developer/docs/api/#payment-experience) and [samples](/samples/payment_experience/web_profile).
+Customizing a [PayPal payment experience](https://developer.paypal.com/docs/integration/direct/rest-payment-experience/) is available as of version 1.5.0 enabling merchants to provide a customized experience to consumers from the merchant’s website to the PayPal payment. Get started with the [supported rest methods](https://developer.paypal.com/docs/api/payment-experience/) and [samples](/samples/payment_experience/web_profile).
 
 ### Webhooks - Receive notifications about PayPal Payments
 

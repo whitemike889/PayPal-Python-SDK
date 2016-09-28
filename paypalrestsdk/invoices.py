@@ -30,6 +30,16 @@ class Invoice(List, Find, Create, Delete, Update, Post):
     def record_refund(self, attributes):
         return self.post('record-refund', attributes, self)
 
+    def delete_external_payment(self, transactionId):
+        # /invoicing/invoices/<INVOICE-ID>/payment-records/<TRANSACTION-ID>
+        endpoint = util.join_url(self.path, str(self['id']), 'payment-records', str(transactionId))
+        return Resource(self.api.delete(endpoint), api=self.api)
+
+    def delete_external_refund(self, transactionId):
+        # /invoicing/invoices/<INVOICE-ID>/refund-records/<TRANSACTION-ID>
+        endpoint = util.join_url(self.path, str(self['id']), 'refund-records', str(transactionId))
+        return Resource(self.api.delete(endpoint), api=self.api)
+
     def get_qr_code(self, height=500, width=500, api=None):
 
         # height and width have default value of 500 as in the APIs

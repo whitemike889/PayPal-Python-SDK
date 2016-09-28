@@ -3,6 +3,7 @@ from paypalrestsdk.payments import Payment, Sale, Refund, Authorization, Capture
 from paypalrestsdk.payment_experience import WebProfile
 from paypalrestsdk.notifications import Webhook, WebhookEvent, WebhookEventType
 from paypalrestsdk.invoices import Invoice
+from paypalrestsdk.invoice_templates import InvoiceTemplate
 from paypalrestsdk.vault import CreditCard
 from paypalrestsdk.openid_connect import Tokeninfo, Userinfo
 from paypalrestsdk.exceptions import ResourceNotFound, UnauthorizedAccess, MissingConfig

@@ -11,3 +11,4 @@ MANIFEST
 .cache
 .tox/
 .DS_Store
+.idea

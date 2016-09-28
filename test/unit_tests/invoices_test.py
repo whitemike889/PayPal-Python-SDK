@@ -171,3 +171,15 @@ class TestInvoice(unittest.TestCase):
         mock.assert_called_once_with(self.invoice.api, 'v1/invoicing/invoices/' +
                                      self.invoice.id + '/record-refund', refund_attributes, {'PayPal-Request-Id': ANY}, None)
         self.assertEqual(response, True)
+
+    @patch('test_helper.paypal.Api.delete', autospec=True)
+    def test_delete_external_payment(self, mock):
+        response = self.invoice.delete_external_payment('1')
+
+        mock.assert_called_once_with(self.invoice.api, 'v1/invoicing/invoices/' + self.invoice.id + '/payment-records/1')
+
+    @patch('test_helper.paypal.Api.delete', autospec=True)
+    def test_delete_external_refund(self, mock):
+        response = self.invoice.delete_external_refund('1')
+
+        mock.assert_called_once_with(self.invoice.api, 'v1/invoicing/invoices/' + self.invoice.id + '/refund-records/1')

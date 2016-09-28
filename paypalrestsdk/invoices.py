@@ -44,6 +44,12 @@ class Invoice(List, Find, Create, Delete, Update, Post):
         return Resource(self.api.get(url), api=api)
 
     @classmethod
+    def next_invoice_number(cls, api=None):
+        api = api or default_api()
+        url = util.join_url(cls.path, 'next-invoice-number')
+        return Resource(api.post(url), api=api)
+
+    @classmethod
     def search(cls, params=None, api=None):
         api = api or default_api()
         params = params or {}

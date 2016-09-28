@@ -1,6 +1,10 @@
 PayPal Python SDK release notes
 ============================
 
+Coming Soon
+-------
+* Updated Invoicing APIs.
+
 v1.11.7
 -------
 * Enabled Replace for Payment [#144](https://github.com/paypal/PayPal-Python-SDK/pull/144).

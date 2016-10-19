@@ -4,7 +4,7 @@ import string
 
 def sample_invoice_template():
     return InvoiceTemplate({
-        "name": "Hours Template_".join([random.choice(string.letters) for i in xrange(10)]),
+        "name": "Hours Template_".join([random.choice(string.letters) for i in range(10)]),
         "default": True,
         "unit_of_measure": "HOURS",
         "template_data": {

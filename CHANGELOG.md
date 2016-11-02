@@ -1,9 +1,10 @@
 PayPal Python SDK release notes
 ============================
 
-Coming Soon
+v1.12.0
 -------
-* Updated Invoicing APIs.
+* Updated Invoicing APIs [145](https://github.com/paypal/PayPal-Python-SDK/pull/145).
+* Fixed syntax error & pep8 formatting [#152](https://github.com/paypal/PayPal-Python-SDK/pull/152).
 
 v1.11.7
 -------

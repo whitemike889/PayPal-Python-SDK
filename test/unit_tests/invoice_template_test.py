@@ -8,7 +8,7 @@ class TestInvoiceTemplate(unittest.TestCase):
 
     def setUp(self):
         self.invoice_template_attributes = {
-            "name": "Hours Template_".join([random.choice(string.letters) for i in xrange(5)]),
+            "name": "Hours Template_".join([random.choice(string.letters) for i in range(5)]),
             "default": True,
             "unit_of_measure": "HOURS",
             "template_data": {

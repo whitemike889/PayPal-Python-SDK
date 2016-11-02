@@ -18,19 +18,10 @@ def validate_paths
   @validator.validate_in_path("pip")
   @validator.validate_in_path("virtualenv")
 end
-
-def validate_virtualenvwrapper
-  if !File.exist?("/Library/Frameworks/Python.framework/Versions/2.7/bin/virtualenvwrapper.sh")
-    Printer.fail("mkvirtualenv is not setup in this system")
-    abort()
-  end 
-    Printer.success("mkvirtualenv setup properly in this system")
-end 
  
 configatron.custom_validation_methods = [
   method(:validate_paths),
-  method(:validate_version_match),
-  method(:validate_virtualenvwrapper)
+  method(:validate_version_match)
 ]
 
 def build_method

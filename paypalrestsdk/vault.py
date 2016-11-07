@@ -13,6 +13,6 @@ class CreditCard(Find, Create, Delete, Replace, List):
 
         >>> credit_card.create()  # return True or False
     """
-    path = "v1/vault/credit-card"
+    path = "v1/vault/credit-cards"
 
 CreditCard.convert_resources['credit_card'] = CreditCard

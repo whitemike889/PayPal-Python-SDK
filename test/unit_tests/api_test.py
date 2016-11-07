@@ -50,16 +50,16 @@ class Api(unittest.TestCase):
     def test_post(self):
         self.api.request.return_value = {'id': 'test'}
         credit_card = self.api.post(
-            "v1/vault/credit-card", self.card_attributes)
+            "v1/vault/credit-cards", self.card_attributes)
 
         self.assertEqual(credit_card.get('error'), None)
         self.assertNotEqual(credit_card.get('id'), None)
 
     def test_bad_request(self):
         self.api.request.return_value = {'error': 'test'}
-        credit_card = self.api.post("v1/vault/credit-card", {})
+        credit_card = self.api.post("v1/vault/credit-cards", {})
 
-        self.api.request.assert_called_once_with('https://api.sandbox.paypal.com/v1/vault/credit-card',
+        self.api.request.assert_called_once_with('https://api.sandbox.paypal.com/v1/vault/credit-cards',
                                                  'POST',
                                                  body={},
                                                  headers={},

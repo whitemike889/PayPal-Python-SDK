@@ -5,6 +5,7 @@ import binascii
 from base64 import b64decode
 import requests
 import os
+import sys
 
 
 class Webhook(Create, Find, List, Delete, Replace):
@@ -50,7 +51,11 @@ class WebhookEvent(Find, List, Post):
     def _get_expected_sig(transmission_id, timestamp, webhook_id, event_body):
         """Get the input string to generate the HMAC signature
         """
-        expected_sig = transmission_id + "|" + timestamp + "|" + webhook_id + "|" + str(binascii.crc32(event_body.decode('utf-8').encode('utf-8')) & 0xffffffff)
+        if sys.version_info[0] == 2:
+            data = str(binascii.crc32(event_body.decode('utf-8').encode('utf-8')) & 0xffffffff)
+        else:
+            data = str(binascii.crc32(event_body.encode('utf-8')) & 0xffffffff)
+        expected_sig = transmission_id + "|" + timestamp + "|" + webhook_id + "|" + data
         return expected_sig
 
     @staticmethod

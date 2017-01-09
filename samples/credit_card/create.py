@@ -6,7 +6,7 @@
 # The following code demonstrates how
 # can save a Credit Card on PayPal using
 # the Vault API.
-# API used: POST /v1/vault/credit-card
+# API used: POST /v1/vault/credit-cards
 from paypalrestsdk import CreditCard
 import logging
 logging.basicConfig(level=logging.INFO)

@@ -2,7 +2,7 @@
 # This sample code demonstrates how you
 # retrieve a previously saved
 # Credit Card using the 'vault' API.
-# API used: GET /v1/vault/credit-card/{id}
+# API used: GET /v1/vault/credit-cards/{id}
 from paypalrestsdk import CreditCard, ResourceNotFound
 import logging
 logging.basicConfig(level=logging.INFO)

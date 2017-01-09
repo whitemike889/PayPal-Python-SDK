@@ -32,7 +32,7 @@ class Api(unittest.TestCase):
         self.assertEqual(payment_history['count'], 1)
 
     def test_post(self):
-        credit_card = self.api.post("v1/vault/credit-card", {
+        credit_card = self.api.post("v1/vault/credit-cards", {
             "type": "visa",
             "number": "4417119669820331",
             "expire_month": "11",
@@ -44,7 +44,7 @@ class Api(unittest.TestCase):
         self.assertNotEqual(credit_card.get('id'), None)
 
     def test_bad_request(self):
-        credit_card = self.api.post("v1/vault/credit-card", {})
+        credit_card = self.api.post("v1/vault/credit-cards", {})
         self.assertNotEqual(credit_card.get('error'), None)
 
     def test_expired_token(self):

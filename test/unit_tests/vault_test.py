@@ -25,7 +25,7 @@ class TestCreditCard(unittest.TestCase):
 
         response = self.credit_card.create()
         self.assertNotEqual(self.credit_card.request_id, None)
-        mock.assert_called_once_with(self.credit_card.api, 'v1/vault/credit-card',
+        mock.assert_called_once_with(self.credit_card.api, 'v1/vault/credit-cards',
                                      self.credit_card_attributes, {'PayPal-Request-Id': self.credit_card.request_id}, None)
         self.assertEqual(response, True)
 
@@ -40,7 +40,7 @@ class TestCreditCard(unittest.TestCase):
         card = paypal.CreditCard.find(self.credit_card.id)
         # python 2.6 compatible
         mock.assert_called_once_with(
-            self.credit_card.api, 'v1/vault/credit-card/' + self.credit_card.id, refresh_token=None)
+            self.credit_card.api, 'v1/vault/credit-cards/' + self.credit_card.id, refresh_token=None)
         self.assertTrue(isinstance(card, paypal.CreditCard))
 
     @patch('test_helper.paypal.Api.delete', autospec=True)
@@ -53,7 +53,7 @@ class TestCreditCard(unittest.TestCase):
         self.credit_card.id = 'CARD-6KP075290X361673LKLKB24A'
         response = self.credit_card.delete()
         mock.assert_called_once_with(
-            self.credit_card.api, 'v1/vault/credit-card/' + self.credit_card.id)
+            self.credit_card.api, 'v1/vault/credit-cards/' + self.credit_card.id)
         self.assertEqual(response, True)
 
     @patch('test_helper.paypal.Api.post', autospec=True)
@@ -65,7 +65,7 @@ class TestCreditCard(unittest.TestCase):
         '''
 
         response = self.credit_card.create()
-        mock.assert_called_once_with(self.credit_card.api, 'v1/vault/credit-card',
+        mock.assert_called_once_with(self.credit_card.api, 'v1/vault/credit-cards',
                                      self.credit_card_attributes, {'PayPal-Request-Id': self.credit_card.request_id}, None)
         self.assertEqual(response, True)
 
@@ -73,7 +73,7 @@ class TestCreditCard(unittest.TestCase):
         duplicate_card.request_id = self.credit_card.request_id
         duplicate_card_response = duplicate_card.create()
 
-        mock.assert_called_with(self.credit_card.api, 'v1/vault/credit-card',
+        mock.assert_called_with(self.credit_card.api, 'v1/vault/credit-cards',
                                 self.credit_card_attributes, {'PayPal-Request-Id': self.credit_card.request_id}, None)
         self.assertEqual(mock.call_count, 2)
         self.assertEqual(duplicate_card_response, True)

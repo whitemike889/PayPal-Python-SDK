@@ -93,11 +93,10 @@ class Api(object):
         else:
             self.validate_token_hash()
             if self.token_hash is not None:
+                # return cached copy
                 return self.token_hash
-            else:
-                self.token_request_at = datetime.datetime.now()
 
-        self.token_hash = self.http_call(
+        token = self.http_call(
             util.join_url(self.token_endpoint, path), "POST",
             data=payload,
             headers=util.merge_dict({
@@ -106,7 +105,11 @@ class Api(object):
                 "Accept": "application/json", "User-Agent": self.user_agent
             }, headers or {}))
 
-        return self.token_hash
+        if refresh_token is None and authorization_code is None:
+            # cache token for re-use in normal case
+            self.token_request_at = datetime.datetime.now()
+            self.token_hash = token
+        return token
 
     def validate_token_hash(self):
         """Checks if token duration has expired and if so resets token

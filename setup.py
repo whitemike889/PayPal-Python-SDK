@@ -12,8 +12,6 @@ long_description="""
   """
 
 license='PayPal SDK License'
-if os.path.exists('LICENSE.md'):
-  license = open('LICENSE.md').read()
 
 url='https://github.com/' + __github_username__ + '/' + __github_reponame__
 

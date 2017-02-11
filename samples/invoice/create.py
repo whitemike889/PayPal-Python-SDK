@@ -51,6 +51,12 @@ invoice = Invoice({
             "postal_code": "97216",
             "country_code": "US"
         }
+    },
+    "shipping_cost": {
+        "amount": {
+            "currency": "USD",
+            "value": 10
+        }
     }
 })
 

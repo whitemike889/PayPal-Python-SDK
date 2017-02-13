@@ -63,8 +63,9 @@ class Invoice(List, Find, Create, Delete, Update, Post):
     def search(cls, params=None, api=None):
         api = api or default_api()
         params = params or {}
+        path = "v1/invoicing"
 
-        url = util.join_url(cls.path, 'search')
+        url = util.join_url(path, 'search')
 
         return Resource(api.post(url, params), api=api)
 

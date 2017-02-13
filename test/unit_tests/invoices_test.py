@@ -112,7 +112,7 @@ class TestInvoice(unittest.TestCase):
         history = paypal.Invoice.search(search_attributes)
 
         mock.assert_called_once_with(
-            self.invoice.api, 'v1/invoicing/invoices/search', search_attributes)
+            self.invoice.api, 'v1/invoicing/search', search_attributes)
         self.assertEqual(history.total_count, 1)
         self.assertTrue(isinstance(history.invoices[0], paypal.Invoice))
 

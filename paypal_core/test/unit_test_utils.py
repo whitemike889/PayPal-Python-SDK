@@ -1,6 +1,6 @@
 import responses
+import requests
 import json
-from core import *
 
 OAUTH_PATH = "/v1/oauth2/token"
 OPENID_CONNECT_PATH = "/v1/identity/openidconnect/tokenservice"

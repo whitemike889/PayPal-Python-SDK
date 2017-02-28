@@ -1,7 +1,8 @@
 import unittest
 from unit_test_utils import *
+from paypal_core import *
 
-env = Environment("clientId", "clientSecret", "http://localhost")
+env = PayPalEnvironment("clientId", "clientSecret", "http://localhost")
 
 
 class PayPalHttpClientTest(unittest.TestCase):
@@ -31,11 +32,11 @@ class PayPalHttpClientTest(unittest.TestCase):
     def testPayPalHttpClient_execute_setsBaseUrl(self):
         self.request = requests.Request(method="GET", url="/special")
 
-        stub_request_with_empty_reponse(requests.Request(method="GET", url=env.base_url + "/special"))
+        stub_request_with_empty_reponse(requests.Request(method="GET", url=env.base_url() + "/special"))
         self.client.execute(self.request)
 
         self.assertEqual(len(responses.calls), 2)
-        self.assertTrue(self.request.url.startswith(env.base_url))
+        self.assertTrue(self.request.url.startswith(env.base_url()))
 
 
 if __name__ == '__main__':

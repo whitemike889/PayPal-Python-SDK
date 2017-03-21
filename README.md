@@ -31,12 +31,6 @@ apt-get install libssl-dev libffi-dev
 
 ## Installation
 
-Install using `easy_install`:
-
-```sh
-easy_install paypalrestsdk
-```
-
 Install using `pip`:
 
 ```sh

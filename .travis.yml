@@ -14,12 +14,4 @@ install:
 - openssl version -a
 script:
 - nosetests --with-coverage --cover-package=paypalrestsdk --include=paypalrestsdk/* --exclude=functional*
-after_success:
-- coveralls
-notifications:
-  webhooks:
-    urls:
-     - secure: AQB+jHDVe3JuypMbSFxIObXIlB87ft2zqgVjXctmMu1qfybn9FzL6azrhL+rnVYb9O2paoETKX73jiJTcaN4yu/l92XG3qqinzISu1rhAE0Nx0uBnZD8VAKq7synCRqSuGvhe1PRT7HnqimJU4OjBtkXd20rRkJd0LhNf+PvXAU=
-    on_success: change
-    on_failure: always
 

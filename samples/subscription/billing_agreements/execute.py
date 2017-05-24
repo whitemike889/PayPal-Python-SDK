@@ -26,7 +26,7 @@ billing_agreement = BillingAgreement({
 })
 
 # After creating the agreement, redirect user to the url provided in links array
-# entry with method field set to REDIRECT
+# entry designated as "approval_url"
 if billing_agreement.create():
     print("Billing Agreement created successfully")
     for link in billing_agreement.links:

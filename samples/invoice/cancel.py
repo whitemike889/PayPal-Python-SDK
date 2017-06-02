@@ -1,8 +1,9 @@
 from paypalrestsdk import Invoice
 import logging
+import json
 logging.basicConfig(level=logging.INFO)
 
-invoice = Invoice.find("INV2-CJL7-PF4G-BLQF-5FWG")
+invoice = Invoice.find("INV2-V2QW-LCUV-RNRL-AQUE")
 options = {
     "subject": "Past due",
     "note": "Canceling invoice",
@@ -11,6 +12,6 @@ options = {
 }
 
 if invoice.cancel(options):  # return True or False
-    print("Invoice[%s] cancel successfully" % (invoice.id))
+    print(json.dumps(invoice.to_dict(), sort_keys=False, indent=4))
 else:
     print(invoice.error)

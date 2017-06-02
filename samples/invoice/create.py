@@ -1,11 +1,12 @@
 from paypalrestsdk import Invoice
 import logging
+import json
 
 logging.basicConfig(level=logging.INFO)
 
 invoice = Invoice({
     "merchant_info": {
-        "email": "jaypatel512-facilitator@hotmail.com",
+        "email": "jaypatel512-facilitator@hotmail.com",  # You must change this to your sandbox email account
         "first_name": "Dennis",
         "last_name": "Doctor",
         "business_name": "Medical Professionals, LLC",
@@ -61,6 +62,6 @@ invoice = Invoice({
 })
 
 if invoice.create():
-    print("Invoice[%s] created successfully" % (invoice.id))
+    print(json.dumps(invoice.to_dict(), sort_keys=False, indent=4))
 else:
     print(invoice.error)

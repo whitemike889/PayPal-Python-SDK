@@ -1,4 +1,4 @@
-# This class was generated on Wed, 07 Jun 2017 14:36:02 PDT by version 0.01 of Braintree SDK Generator
+# This class was generated on Wed, 07 Jun 2017 14:53:47 PDT by version 0.01 of Braintree SDK Generator
 # webhooks_get_all_request.py
 # DO NOT EDIT
 # @type request
@@ -16,6 +16,6 @@ class WebhooksGetAllRequest (HttpRequest):
         self.headers["Content-Type"] = "application/json"
 
     def anchorType(self, anchorType):
-        self.url += self.path + "anchor_type=" + str(anchorType) + "&"
+        self.path += self.path + "anchor_type=" + str(anchorType) + "&"
         return self
     

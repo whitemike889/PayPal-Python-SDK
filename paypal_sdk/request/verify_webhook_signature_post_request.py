@@ -1,4 +1,4 @@
-# This class was generated on Wed, 07 Jun 2017 14:36:02 PDT by version 0.01 of Braintree SDK Generator
+# This class was generated on Wed, 07 Jun 2017 14:53:47 PDT by version 0.01 of Braintree SDK Generator
 # verify_webhook_signature_post_request.py
 # DO NOT EDIT
 # @type request

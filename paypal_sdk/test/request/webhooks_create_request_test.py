@@ -1,4 +1,4 @@
-# This class was generated on Wed, 07 Jun 2017 14:36:02 PDT by version 0.01 of Braintree SDK Generator
+# This class was generated on Wed, 07 Jun 2017 14:53:47 PDT by version 0.01 of Braintree SDK Generator
 # webhooks_create_request_test.py
 # DO NOT EDIT
 # @type request-test
@@ -19,7 +19,7 @@ class WebhooksCreateRequestTest(TestHarness):
         body = Webhook()
         request.body(body)
 
-        response = self.client().execute(request)
+        response = self.client.execute(request)
         self.assertEqual(200, response.status_code)
 
 if __name__ == "__main__":

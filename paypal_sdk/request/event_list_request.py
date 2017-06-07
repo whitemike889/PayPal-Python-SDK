@@ -1,4 +1,4 @@
-# This class was generated on Wed, 07 Jun 2017 14:36:02 PDT by version 0.01 of Braintree SDK Generator
+# This class was generated on Wed, 07 Jun 2017 14:53:47 PDT by version 0.01 of Braintree SDK Generator
 # event_list_request.py
 # DO NOT EDIT
 # @type request
@@ -16,22 +16,22 @@ class EventListRequest (HttpRequest):
         self.headers["Content-Type"] = "application/json"
 
     def endTime(self, endTime):
-        self.url += self.path + "end_time=" + str(endTime) + "&"
+        self.path += self.path + "end_time=" + str(endTime) + "&"
         return self
 
     def eventType(self, eventType):
-        self.url += self.path + "event_type=" + str(eventType) + "&"
+        self.path += self.path + "event_type=" + str(eventType) + "&"
         return self
 
     def pageSize(self, pageSize):
-        self.url += self.path + "page_size=" + str(pageSize) + "&"
+        self.path += self.path + "page_size=" + str(pageSize) + "&"
         return self
 
     def startTime(self, startTime):
-        self.url += self.path + "start_time=" + str(startTime) + "&"
+        self.path += self.path + "start_time=" + str(startTime) + "&"
         return self
 
     def transactionId(self, transactionId):
-        self.url += self.path + "transaction_id=" + str(transactionId) + "&"
+        self.path += self.path + "transaction_id=" + str(transactionId) + "&"
         return self
     

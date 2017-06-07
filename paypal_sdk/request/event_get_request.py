@@ -1,4 +1,4 @@
-# This class was generated on Wed, 07 Jun 2017 14:36:02 PDT by version 0.01 of Braintree SDK Generator
+# This class was generated on Wed, 07 Jun 2017 14:53:47 PDT by version 0.01 of Braintree SDK Generator
 # event_get_request.py
 # DO NOT EDIT
 # @type request
@@ -16,6 +16,6 @@ class EventGetRequest (HttpRequest):
         self.headers["Content-Type"] = "application/json"
 
     def eventId(self, eventId):
-        self.url = self.path.replace("{event_id}", str(eventId))
+        self.path = self.path.replace("{event_id}", str(eventId))
         return self
     

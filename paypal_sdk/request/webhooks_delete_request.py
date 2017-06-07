@@ -1,4 +1,4 @@
-# This class was generated on Wed, 07 Jun 2017 14:36:02 PDT by version 0.01 of Braintree SDK Generator
+# This class was generated on Wed, 07 Jun 2017 14:53:47 PDT by version 0.01 of Braintree SDK Generator
 # webhooks_delete_request.py
 # DO NOT EDIT
 # @type request
@@ -16,6 +16,6 @@ class WebhooksDeleteRequest (HttpRequest):
         self.headers["Content-Type"] = "application/json"
 
     def webhookId(self, webhookId):
-        self.url = self.path.replace("{webhook_id}", str(webhookId))
+        self.path = self.path.replace("{webhook_id}", str(webhookId))
         return self
     

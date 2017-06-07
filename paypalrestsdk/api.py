@@ -38,6 +38,10 @@ class Api(object):
         kwargs = util.merge_dict(options or {}, kwargs)
 
         self.mode = kwargs.get("mode", "sandbox")
+        
+        if self.mode != "live" and self.mode != "sandbox":
+            raise exceptions.InvalidConfig("Configuration Mode Invalid", "Received: %s" % (self.mode), "Required: live or sandbox")
+
         self.endpoint = kwargs.get("endpoint", self.default_endpoint())
         self.token_endpoint = kwargs.get("token_endpoint", self.endpoint)
         # Mandatory parameter, so not using `dict.get`

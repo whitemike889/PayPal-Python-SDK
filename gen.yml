@@ -2,3 +2,5 @@
 language: py
 sourcePath: paypal_sdk
 testPath: paypal_sdk/test
+extras:
+  packageName: paypal_sdk

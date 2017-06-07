@@ -6,7 +6,7 @@ import json
 from braintreehttp import HttpRequest
 from braintreehttp import HttpResponse
 from paypal_sdk.core import PayPalHttpClient
-from paypal_sdk.core.test import PayPalTestHarness
+from paypaltestharness import PayPalTestHarness
 
 
 class PayPalHttpClientTest(PayPalTestHarness):

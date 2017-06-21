@@ -1,6 +1,14 @@
 PayPal Python SDK release notes
 ============================
 
+v1.13.0
+-------
+* Proper formatting for CJK characters [#169](https://github.com/paypal/PayPal-Python-SDK/issues/169).
+* Fix caching issues when refresh token is set [#176](https://github.com/paypal/PayPal-Python-SDK/issues/176).
+* Fix decoding issues for different Python versions [#180](https://github.com/paypal/PayPal-Python-SDK/issues/180).
+* Update OpenIdConnect to accept API instance [#208](https://github.com/paypal/PayPal-Python-SDK/pull/208).
+* Added samples, and other minor bug fixes.
+
 v1.12.0
 -------
 * Updated Invoicing APIs [145](https://github.com/paypal/PayPal-Python-SDK/pull/145).

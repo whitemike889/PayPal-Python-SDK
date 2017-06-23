@@ -33,6 +33,9 @@ class MissingParam(TypeError):
 class MissingConfig(Exception):
     pass
 
+class InvalidConfig(ValueError):
+    pass
+
 
 class ClientError(ConnectionError):
     """4xx Client Error

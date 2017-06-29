@@ -18,7 +18,7 @@ class Base(Resource):
             'User-Agent': cls.user_agent,
             'Content-Type': 'application/x-www-form-urlencoded'}, headers or {})
         data = api.http_call(url, 'POST', data=body, headers=headers)
-        return cls(data)
+        return cls(data, api=api)
 
 
 class Tokeninfo(Base):

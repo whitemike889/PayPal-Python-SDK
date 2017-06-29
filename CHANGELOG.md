@@ -1,6 +1,10 @@
 PayPal Python SDK release notes
 ============================
 
+v1.13.1
+-------
+* Pass API instance in OpenIdConnect through to the base class.
+
 v1.13.0
 -------
 * Proper formatting for CJK characters [#169](https://github.com/paypal/PayPal-Python-SDK/issues/169).

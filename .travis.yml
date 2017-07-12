@@ -1,0 +1,16 @@
+sudo: required
+dist: trusty
+addons:
+  apt:
+    packages:
+      - openssl
+language: python
+python:
+- '2.7'
+- '3.3'
+- '3.4'
+install:
+- pip install -r requirements.txt
+- openssl version -a
+script:
+- python -m unittest paypalrestsdk paypalrestsdk.test

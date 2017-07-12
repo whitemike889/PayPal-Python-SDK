@@ -13,4 +13,4 @@ install:
 - pip install -r requirements.txt
 - openssl version -a
 script:
-- python -W ignore -m unittest paypalrestsdk paypalrestsdk.tests
+- python -W ignore -m unittest paypalrestsdk tests

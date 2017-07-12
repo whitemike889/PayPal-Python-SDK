@@ -1,1 +1,1 @@
-from request import *
+from paypalrestsdk.invoices.request import *

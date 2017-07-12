@@ -1,7 +1,4 @@
-import json
-
-from testutils import TestHarness
-from braintreehttp import HttpResponse
+from braintreehttp.testutils import TestHarness
 from paypalrestsdk.core.access_token import AccessToken
 from paypalrestsdk.core.environment import PayPalEnvironment
 from paypalrestsdk.core.access_token_request import AccessTokenRequest

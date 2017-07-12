@@ -1,15 +1,12 @@
 import json
-
 import ssl
 import platform
 import requests
 
+from braintreehttp import HttpClient, Injector
 from paypalrestsdk.config import __version__
 from paypalrestsdk.core.util import older_than_27
-from braintreehttp import HttpClient
-from braintreehttp import Injector
-from access_token_request import AccessTokenRequest
-from access_token import AccessToken
+from paypalrestsdk.core import AccessTokenRequest, AccessToken
 
 
 USER_AGENT = "PayPalSDK/PayPal-Python-SDK %s (%s)" % \

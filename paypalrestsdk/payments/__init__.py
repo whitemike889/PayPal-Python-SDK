@@ -1,1 +1,1 @@
-from request import *
+from paypalrestsdk.payments.request import *

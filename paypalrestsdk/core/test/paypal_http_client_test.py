@@ -3,9 +3,8 @@ import responses
 import base64
 import json
 
-from braintreehttp import HttpResponse
 from paypalrestsdk.core import PayPalHttpClient
-from paypaltestharness import PayPalTestHarness
+from paypalrestsdk.core.test.paypaltestharness import PayPalTestHarness
 
 
 class SimpleRequest:
@@ -35,7 +34,7 @@ class PayPalHttpClientTest(PayPalTestHarness):
         self.assertEqual(self.environment().base_url() + "/v1/oauth2/token", accesstokenrequest.url)
         self.assertEqual("application/x-www-form-urlencoded", accesstokenrequest.headers["Content-Type"])
 
-        expectedauthheader ="Basic {0}".format(base64.b64encode("{0}:{1}".format(self.environment().client_id, self.environment().client_secret)))
+        expectedauthheader ="Basic {0}".format(base64.b64encode(("{0}:{1}".format(self.environment().client_id, self.environment().client_secret)).encode()).decode())
         self.assertEqual(expectedauthheader, accesstokenrequest.headers["Authorization"])
         self.assertEqual("grant_type=client_credentials", accesstokenrequest.body)
 
@@ -73,7 +72,7 @@ class PayPalHttpClientTest(PayPalTestHarness):
         self.assertEqual(self.environment().base_url() + "/v1/identity/openidconnect/tokenservice", accesstokenrequest.url)
         self.assertEqual("application/x-www-form-urlencoded", accesstokenrequest.headers["Content-Type"])
 
-        expectedauthheader ="Basic {0}".format(base64.b64encode("{0}:{1}".format(self.environment().client_id, self.environment().client_secret)))
+        expectedauthheader ="Basic {0}".format(base64.b64encode(("{0}:{1}".format(self.environment().client_id, self.environment().client_secret)).encode()).decode())
         self.assertEqual(expectedauthheader, accesstokenrequest.headers["Authorization"])
         self.assertEqual("grant_type=client_credentials&refresh_token=refresh-token", accesstokenrequest.body)
 
@@ -89,8 +88,8 @@ class PayPalHttpClientTest(PayPalTestHarness):
         self.assertEqual(len(responses.calls), 1)
 
         actualrequest = responses.calls[0].request
-        self.assertEquals(actualrequest.headers["Accept-Encoding"], "gzip")
-        self.assertEquals(actualrequest.headers["Authorization"], "Bearer sample-access-token")
+        self.assertEqual(actualrequest.headers["Accept-Encoding"], "gzip")
+        self.assertEqual(actualrequest.headers["Authorization"], "Bearer sample-access-token")
 
     @responses.activate
     def testPayPalHttpClient_execute_serializesDataWhenPresentAndContentTypeSet(self):
@@ -123,7 +122,7 @@ class PayPalHttpClientTest(PayPalTestHarness):
             self.client.execute(request)
             self.fail("expected IOError")
         except IOError as ioe:
-            self.assertTrue("Unable to serialize content" in ioe.message)
+            self.assertTrue("Unable to serialize content" in str(ioe))
 
     @responses.activate
     def testPayPalHttpClient_execute_withRequestBody_contentTypeNotJson(self):
@@ -139,7 +138,7 @@ class PayPalHttpClientTest(PayPalTestHarness):
             self.client.execute(request)
             self.fail("expected IOError")
         except IOError as ioe:
-            self.assertTrue("Unable to serialize content" in ioe.message)
+            self.assertTrue("Unable to serialize content" in str(ioe))
 
     @responses.activate
     def testPayPalHttpClient_execute_whenResponseBodyAndContentTypePresent_deserializesResponse(self):
@@ -164,7 +163,7 @@ class PayPalHttpClientTest(PayPalTestHarness):
             self.client.execute(request)
             self.fail("expected IOError")
         except IOError as ioe:
-            self.assertTrue("Unsupported Content-Type" in ioe.message)
+            self.assertTrue("Unsupported Content-Type" in str(ioe))
 
     @responses.activate
     def testPayPalHttpClient_execute_whenResponseBodyAndContentTypeNotJson_throws(self):
@@ -180,7 +179,7 @@ class PayPalHttpClientTest(PayPalTestHarness):
             self.client.execute(request)
             self.fail("expected IOError")
         except IOError as ioe:
-            self.assertTrue("Unsupported Content-Type: application/xml" in ioe.message)
+            self.assertTrue("Unsupported Content-Type: application/xml" in str(ioe))
 
 if __name__ == '__main__':
     unittest.main()

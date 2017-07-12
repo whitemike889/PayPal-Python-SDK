@@ -17,4 +17,5 @@ class PayPalEnvironment(Environment):
         return self._base_url
 
     def authorization_string(self):
-        return "Basic {0}".format(base64.b64encode(self.client_id + ":" + self.client_secret))
+        return "Basic {0}".format(base64.b64encode((self.client_id + ":" + self.client_secret).encode()).decode())
+

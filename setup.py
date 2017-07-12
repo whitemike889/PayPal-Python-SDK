@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'paypalrestsdk'))
@@ -20,7 +20,7 @@ setup(
   version= __version__,
   author='PayPal',
   author_email='DL-PP-PYTHON-SDK@paypal.com',
-  packages=[__pypi_packagename__],
+  packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
   scripts=[],
   url=url,
   license=license,

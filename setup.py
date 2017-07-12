@@ -27,7 +27,7 @@ setup(
   description='The PayPal REST SDK provides Python APIs to create, process and manage payments.',
   long_description=long_description,
   package_data={__pypi_packagename__: ['data/*.crt.pem']},
-  install_requires=['braintreehttp>=1.1.4'],
+  install_requires=['braintreehttp>=1.2.0'],
   classifiers=[
     'Intended Audience :: Developers',
     'Natural Language :: English',

@@ -5,7 +5,6 @@
 For e.g. 
 - **Retries** are currently not working as expected. Developers are not allowed to have full control over retry logic.
 - **[PayPal-Request-Id](https://developer.paypal.com/docs/api/auth-headers/)** are auto-generated internally and are not working as expected. Developer can set a requestId but is not handled correctly, if you were to make the same call again yourself.
-- **Thread-safety** is not perfect in SDK 1.x. `ApiContext` object currently is shared amongst multiple calls, and may cause weird behaviors when using in multi-threaded environment.
 - **HTTPClient** is not accessible for advanced users who wish to use their own implementation for making calls to PayPal.
 - **PayPal-Debug-Id** from a response is almost impossible to access. This id is used by PayPal to relate internal logs in case of any issues.    
 
@@ -25,7 +24,7 @@ For e.g.
 > NOTE: We highly recommend using a request id as shown above when performing retries, to prevent duplicate transactions.
 > Retries are now much more simple. If your request fails for some reason and you want to try again, just resubmit the same HttpRequest object.
 
-> ```py
+```py
 import paypalrestsdk
 
 env = paypalrestsdk.PayPalEnvironment(client_id="AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS",

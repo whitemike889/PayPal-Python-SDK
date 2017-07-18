@@ -8,26 +8,30 @@
 
 import unittest
 
-from tests.payments.request.order_get_request_test import ID
+from tests.payments.request.order_get_request_test import FAKE_ID
 
+from braintreehttp.http_exception import HttpException
 from paypalrestsdk.payments.request import OrderAuthorizeRequest
 from tests.testharness import TestHarness
 
 class OrderAuthorizeRequestTest(TestHarness):
 
     def testOrderAuthorizeRequestTest(self):
-        self.skipTest("Tests that use this class must be ignored when run in an automated environment because executing an order will require approval via the executed payment's approval_url")
 
-        request = OrderAuthorizeRequest(ID)
-        request.body({
+        request = OrderAuthorizeRequest(FAKE_ID)
+        request.requestBody({
             "amount": {
                 "currency": "USD",
                 "total": "10"
             }
         })
 
-        response = self.client.execute(request)
-        self.assertEqual(200, response.status_code)
+        try:
+            self.client.execute(request)
+            self.fail()
+        except HttpException as he:
+            # Fails with an internal service error, order does not exist
+            self.assertTrue("debug_id" in he.message)
 
 if __name__ == "__main__":
     unittest.main()

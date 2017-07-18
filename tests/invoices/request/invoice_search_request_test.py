@@ -20,7 +20,7 @@ class InvoiceSearchRequestTest(TestHarness):
         invoice_send_response = createInvoice(self.client)
 
         request = InvoiceSearchRequest()
-        request.body({
+        request.requestBody({
             "number": invoice_send_response.result.number
         })
 

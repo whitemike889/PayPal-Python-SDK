@@ -91,3 +91,6 @@ ENV/
 .idea/*.xml
 .idea/*.iml
 .idea/*
+
+# JetBrains
+.idea

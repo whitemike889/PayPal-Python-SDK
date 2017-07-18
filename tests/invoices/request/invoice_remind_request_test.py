@@ -21,7 +21,7 @@ class InvoiceRemindRequestTest(TestHarness):
         self.assertEqual(202, invoice_response.status_code)
 
         request = InvoiceRemindRequest(id)
-        request.body({
+        request.requestBody({
             "subject": "Past due",
             "note": "Please pay soon",
             "send_to_merchant": True

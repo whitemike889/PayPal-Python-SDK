@@ -8,18 +8,24 @@
 
 import unittest
 
+from braintreehttp.http_exception import HttpException
 from paypalrestsdk.payments.request.order_get_request import OrderGetRequest
 from tests.testharness import TestHarness
 
 
-ID = "O-2HT09787H36911800"
+FAKE_ID = "O-2FK09787H36911800"
 
 
 class OrderGetRequestTest(TestHarness):
 
-    def testOrderGetRequestTest(self):
-        orderGetResponse = self.client.execute(OrderGetRequest(ID))
-        self.assertEqual(200, orderGetResponse.status_code)
+    def testOrderGetRequestTest_failsForNonexistentOrder(self):
+        try:
+            orderGetResponse = self.client.execute(OrderGetRequest(FAKE_ID))
+            self.fail()
+        except HttpException as he:
+            # Fails with invalid resource ID, order does not exist
+            self.assertTrue("INVALID_RESOURCE_ID" in he.message)
+
 
 if __name__ == "__main__":
     unittest.main()

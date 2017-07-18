@@ -27,7 +27,7 @@ class AuthorizationReauthorizeRequestTest(TestHarness):
                 "currency": "USD"
             }
         }
-        request.body(body)
+        request.requestBody(body)
 
         try:
             response = self.client.execute(request)

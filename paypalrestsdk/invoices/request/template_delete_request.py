@@ -1,4 +1,4 @@
-# This class was generated on Thu, 06 Jul 2017 16:03:37 PDT by version 0.01 of Braintree SDK Generator
+# This class was generated on Tue, 18 Jul 2017 12:56:42 PDT by version 0.01 of Braintree SDK Generator
 # template_delete_request.py
 # DO NOT EDIT
 # @type request
@@ -15,5 +15,6 @@ class TemplateDeleteRequest:
         self.verb = "DELETE"
         self.path = "/v1/invoicing/templates/{template_id}?".replace("{template_id}", str(template_id))
         self.headers = {}
+        self.headers["Content-Type"] = "application/json"
 
     

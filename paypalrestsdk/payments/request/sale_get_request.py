@@ -1,4 +1,4 @@
-# This class was generated on Thu, 06 Jul 2017 16:03:30 PDT by version 0.01 of Braintree SDK Generator
+# This class was generated on Tue, 18 Jul 2017 12:57:03 PDT by version 0.01 of Braintree SDK Generator
 # sale_get_request.py
 # DO NOT EDIT
 # @type request
@@ -15,5 +15,6 @@ class SaleGetRequest:
         self.verb = "GET"
         self.path = "/v1/payments/sale/{sale_id}?".replace("{sale_id}", str(sale_id))
         self.headers = {}
+        self.headers["Content-Type"] = "application/json"
 
     

@@ -22,9 +22,9 @@ class InvoiceUpdateRequestTest(TestHarness):
         request = InvoiceUpdateRequest(response.result.id)
         request.notifyMerchant(True)
 
-        request.body({
+        request.requestBody({
             "merchant_info": {
-                "email": "stevendcoffey-facilitator@gmail.com"
+                "email": "team-dx-clients-facilitator@getbraintree.com"
             },
             "terms": "Upon receipt of this invoice, Steve owes Sasha a soda."
         })

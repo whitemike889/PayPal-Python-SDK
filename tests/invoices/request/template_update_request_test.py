@@ -20,7 +20,7 @@ class TemplateUpdateRequestTest(TestHarness):
         create_response, cleanup = createTemplate(self.client)
 
         request = TemplateUpdateRequest(create_response.result.template_id)
-        request.body(invoice_template_attributes())
+        request.requestBody(invoice_template_attributes())
 
         response = self.client.execute(request)
         self.assertEqual(200, response.status_code)

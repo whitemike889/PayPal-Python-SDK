@@ -1,4 +1,4 @@
-# This class was generated on Thu, 06 Jul 2017 16:03:37 PDT by version 0.01 of Braintree SDK Generator
+# This class was generated on Tue, 18 Jul 2017 12:56:42 PDT by version 0.01 of Braintree SDK Generator
 # invoice_update_request.py
 # DO NOT EDIT
 # @type request
@@ -15,6 +15,7 @@ class InvoiceUpdateRequest:
         self.verb = "PUT"
         self.path = "/v1/invoicing/invoices/{invoice_id}?".replace("{invoice_id}", str(invoice_id))
         self.headers = {}
+        self.headers["Content-Type"] = "application/json"
 
     def notifyMerchant(self, notifyMerchant):
         self.path += self.path + "notify_merchant=" + str(notifyMerchant) + "&"
@@ -22,6 +23,6 @@ class InvoiceUpdateRequest:
 
     
     
-    def body(self, body):
+    def requestBody(self, body):
         self.body = body
-        self.headers["Content-Type"] = "application/json"
+        return self

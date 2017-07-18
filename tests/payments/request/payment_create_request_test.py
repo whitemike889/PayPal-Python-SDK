@@ -18,7 +18,7 @@ class PaymentCreateRequestTest(TestHarness):
 
 def createPayment(client, intent, payment_method="credit_card", invoice_number=None):
     request = PaymentCreateRequest()
-    request.body({
+    body = {
         "intent": intent,
         "transactions": [{
             "amount": {
@@ -30,13 +30,13 @@ def createPayment(client, intent, payment_method="credit_card", invoice_number=N
             "cancel_url": "http://paypal.com/cancel",
             "return_url": "http://paypal.com/return"
         }
-    })
+    }
 
     if invoice_number:
-        request.body["transactions"][0]["invoice_number"] = invoice_number
+        body["transactions"][0]["invoice_number"] = invoice_number
 
     if payment_method is "credit_card":
-        request.body["payer"] = {
+        body["payer"] = {
             "payment_method": "credit_card",
             "funding_instruments": [{
                 "credit_card": {
@@ -59,10 +59,11 @@ def createPayment(client, intent, payment_method="credit_card", invoice_number=N
             }]
         }
     else:
-        request.body["payer"] = {
+        body["payer"] = {
             "payment_method": "paypal"
         }
 
+    request.requestBody(body)
     return client.execute(request)
 
 

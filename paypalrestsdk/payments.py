@@ -9,7 +9,7 @@ class Payment(List, Find, Create, Post, Replace):
 
     Usage::
 
-        >>> payment_histroy = Payment.all({"count": 5})
+        >>> payment_history = Payment.all({"count": 5})
         >>> payment = Payment.find("<PAYMENT_ID>")
         >>> payment = Payment.new({"intent": "sale"})
         >>> payment.create()     # return True or False

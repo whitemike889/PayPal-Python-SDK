@@ -20,7 +20,7 @@ def invoice_template_attributes():
             }
             ],
             "merchant_info": {
-                "email": "stevendcoffey-facilitator@gmail.com"
+                "email": "team-dx-clients-facilitator@getbraintree.com"
             },
             "tax_calculated_after_discount": False,
             "tax_inclusive": False,
@@ -60,7 +60,7 @@ def createInvoice(client):
     invoice_request = paypalrestsdk.InvoiceCreateRequest()
     invoice_request.body({
         "merchant_info": {
-            "email": "stevendcoffey-facilitator@gmail.com"
+            "email": "team-dx-clients-facilitator@getbraintree.com"
         }
     })
 

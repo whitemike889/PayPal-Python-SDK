@@ -1,4 +1,3 @@
-import json
 import ssl
 import platform
 import requests
@@ -25,19 +24,6 @@ class PayPalHttpClient(HttpClient, Injector):
 
     def get_user_agent(self):
         return USER_AGENT
-
-    def serialize_request(self, request):
-        if self.content_type(request.headers) == "application/json":
-            return json.dumps(request.body)
-
-        raise IOError("Unable to serialize content {0} with Content-Type: {1}".format(request.body, self.content_type(
-            request.headers)))
-
-    def deserialize_response(self, response_body, headers):
-        if self.content_type(headers) == "application/json":
-            return json.loads(response_body)
-
-        raise IOError("Unsupported Content-Type: {0}".format(self.content_type(headers)))
 
     def __call__(self, request):
         if "Accept-Encoding" not in request.headers:

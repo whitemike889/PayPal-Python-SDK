@@ -18,6 +18,8 @@ ID = "O-2HT09787H36911800"
 class OrderGetRequestTest(TestHarness):
 
     def testOrderGetRequestTest(self):
+        self.skipTest("Tests that use this class must be ignored when run in an automated environment because executing an order will require approval via the executed payment's approval_url")
+
         orderGetResponse = self.client.execute(OrderGetRequest(ID))
         self.assertEqual(200, orderGetResponse.status_code)
 

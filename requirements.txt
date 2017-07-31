@@ -1,2 +1,2 @@
-braintreehttp==1.2.3
+braintreehttp==1.4.0
 responses==0.5.1

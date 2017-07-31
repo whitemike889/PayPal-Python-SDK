@@ -20,7 +20,7 @@ class PaymentUpdateRequestTest(TestHarness):
         payment_response = createPayment(self.client, "sale", payment_method="paypal")
 
         request = PaymentUpdateRequest(payment_response.result.id)
-        request.body([{
+        request.requestBody([{
             "path": "/transactions/0/amount",
             "op": "replace",
             "value": {

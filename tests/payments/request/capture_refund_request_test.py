@@ -26,7 +26,7 @@ class CaptureRefundRequestTest(TestHarness):
                 "currency": "USD"
             }
         }
-        request.body(body)
+        request.requestBody(body)
 
         response = self.client.execute(request)
         self.assertEqual(201, response.status_code)

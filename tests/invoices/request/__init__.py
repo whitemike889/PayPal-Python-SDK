@@ -3,7 +3,6 @@ from tests.invoices.request.invoice_create_request_test import *
 from tests.invoices.request.invoice_delete_external_payment_request_test import *
 from tests.invoices.request.invoice_delete_external_refund_request_test import *
 from tests.invoices.request.invoice_delete_request_test import *
-from tests.invoices.request.invoice_delete_request_test import *
 from tests.invoices.request.invoice_get_all_request_test import *
 from tests.invoices.request.invoice_get_request_test import *
 from tests.invoices.request.invoice_next_invoice_number_request_test import *
@@ -19,3 +18,4 @@ from tests.invoices.request.template_delete_request_test import *
 from tests.invoices.request.template_get_request_test import *
 from tests.invoices.request.template_get_templates_request_test import *
 from tests.invoices.request.template_update_request_test import *
+from tests.invoices.request.test_util import *

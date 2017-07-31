@@ -37,7 +37,7 @@ retry = 0
 result = None
 
 request = paypalrestsdk.PaymentCreateRequest()
-request.body({})
+request.body({ ... })
 
 while not result and retry < 3: 
     try:

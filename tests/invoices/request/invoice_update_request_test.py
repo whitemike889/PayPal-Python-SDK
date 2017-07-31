@@ -22,7 +22,7 @@ class InvoiceUpdateRequestTest(TestHarness):
         request = InvoiceUpdateRequest(response.result.id)
         request.notifyMerchant(True)
 
-        request.body({
+        request.requestBody({
             "merchant_info": {
                 "email": "team-dx-clients-facilitator@getbraintree.com"
             },

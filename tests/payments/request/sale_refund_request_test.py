@@ -19,7 +19,7 @@ def createRefund(client):
 
     saleId = response.result.transactions[0].related_resources[0].sale.id
     request = SaleRefundRequest(saleId)
-    request.body({})
+    request.requestBody({})
 
     return client.execute(request)
 

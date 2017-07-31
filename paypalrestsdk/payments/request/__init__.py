@@ -6,7 +6,7 @@ from paypalrestsdk.payments.request.capture_get_request import *
 from paypalrestsdk.payments.request.capture_refund_request import *
 from paypalrestsdk.payments.request.order_authorize_request import *
 from paypalrestsdk.payments.request.order_capture_request import *
-from paypalrestsdk.payments.request.order_get_request import OrderGetRequest
+from paypalrestsdk.payments.request.order_get_request import *
 from paypalrestsdk.payments.request.order_void_request import *
 from paypalrestsdk.payments.request.payment_create_request import *
 from paypalrestsdk.payments.request.payment_execute_request import *

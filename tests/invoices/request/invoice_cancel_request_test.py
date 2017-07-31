@@ -21,7 +21,7 @@ class InvoiceCancelRequestTest(TestHarness):
         self.assertEqual(202, invoice_response.status_code)
 
         request = InvoiceCancelRequest(id)
-        request.body({
+        request.requestBody({
             "subject": "Past Due",
             "note": "Nevermind!",
             "send_to_merchant": True,

@@ -50,7 +50,7 @@ def deleteTemplate(client, template_id):
 
 def createTemplate(client):
     request = paypalrestsdk.TemplateCreateRequest()
-    request.body(invoice_template_attributes())
+    request.requestBody(invoice_template_attributes())
 
     response = client.execute(request)
     return response, lambda: deleteTemplate(client, response.result.template_id)
@@ -58,7 +58,7 @@ def createTemplate(client):
 
 def createInvoice(client):
     invoice_request = paypalrestsdk.InvoiceCreateRequest()
-    invoice_request.body({
+    invoice_request.requestBody({
         "merchant_info": {
             "email": "team-dx-clients-facilitator@getbraintree.com"
         }
@@ -84,7 +84,7 @@ def createInvoicePayment(client, invoice_id=None, method="CASH"):
         invoice_send_response, invoice_id = sendInvoice(client)
 
     request = paypalrestsdk.InvoiceRecordPaymentRequest(invoice_id)
-    request.body({
+    request.requestBody({
         "method": method,
         "date": "2017-07-11 00:01:00 PST",
         "amount": {
@@ -101,7 +101,7 @@ def createInvoiceRefund(client):
     createInvoicePayment(client, invoice_id=id)
 
     request = paypalrestsdk.InvoiceRecordRefundRequest(id)
-    request.body({
+    request.requestBody({
         "amount": {
             "currency": "USD",
             "value": "10"

@@ -12,7 +12,7 @@ from paypalrestsdk.payments.request.order_get_request import OrderGetRequest
 from tests.testharness import TestHarness
 
 
-ID = "O-2HT09787H36911800"
+FAKE_ID = "O-2FK09787H36911800"
 
 
 class OrderGetRequestTest(TestHarness):
@@ -20,7 +20,7 @@ class OrderGetRequestTest(TestHarness):
     def testOrderGetRequestTest(self):
         self.skipTest("Tests that use this class must be ignored when run in an automated environment because executing an order will require approval via the executed payment's approval_url")
 
-        orderGetResponse = self.client.execute(OrderGetRequest(ID))
+        orderGetResponse = self.client.execute(OrderGetRequest(FAKE_ID))
         self.assertEqual(200, orderGetResponse.status_code)
 
 if __name__ == "__main__":

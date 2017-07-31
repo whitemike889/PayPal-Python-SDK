@@ -24,7 +24,7 @@ def createAuthorizationCapture(client):
     }
 
     request = AuthorizationCaptureRequest(authId)
-    request.body(capture)
+    request.requestBody(capture)
 
     return client.execute(request)
 

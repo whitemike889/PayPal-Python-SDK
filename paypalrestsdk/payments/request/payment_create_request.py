@@ -1,4 +1,4 @@
-# This class was generated on Thu, 06 Jul 2017 16:03:30 PDT by version 0.01 of Braintree SDK Generator
+# This class was generated on Tue, 18 Jul 2017 12:57:03 PDT by version 0.01 of Braintree SDK Generator
 # payment_create_request.py
 # DO NOT EDIT
 # @type request
@@ -15,9 +15,10 @@ class PaymentCreateRequest:
         self.verb = "POST"
         self.path = "/v1/payments/payment?"
         self.headers = {}
+        self.headers["Content-Type"] = "application/json"
 
     
     
-    def body(self, body):
+    def requestBody(self, body):
         self.body = body
-        self.headers["Content-Type"] = "application/json"
+        return self

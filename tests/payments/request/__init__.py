@@ -16,5 +16,3 @@ from tests.payments.request.payment_update_request_test import *
 from tests.payments.request.refund_get_request_test import *
 from tests.payments.request.sale_get_request_test import *
 from tests.payments.request.sale_refund_request_test import *
-
-

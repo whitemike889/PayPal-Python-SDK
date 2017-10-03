@@ -108,10 +108,10 @@ else:
 
 ### Authorize Payment
 
-```pythong
+```python
 for link in payment.links:
     if link.rel == "approval_url":
-        # Convert to str to avoid google appengine unicode issue
+        # Convert to str to avoid Google App Engine Unicode issue
         # https://github.com/paypal/rest-api-sdk-python/pull/58
         approval_url = str(link.href)
         print("Redirect for approval: %s" % (approval_url))

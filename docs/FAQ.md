@@ -37,14 +37,15 @@ retry = 0
 result = None
 
 request = paypalrestsdk.PaymentCreateRequest()
+request.headers['PayPal-Request-ID"] = "abcd-request-id"
 request.body({ ... })
 
-while not result and retry < 3: 
+while not result and retry < 3:
     try:
         result = client.execute(request).result
         print result.id
     except IOError as ioe:
-        print ioe 
+        print ioe
     finally:
         retry += 1
 ```

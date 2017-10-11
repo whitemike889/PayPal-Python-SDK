@@ -2,7 +2,7 @@ import ssl
 import platform
 import requests
 
-from braintreehttp import HttpClient, Injector
+from braintreehttp import HttpClient
 from paypalrestsdk.config import __version__
 from paypalrestsdk.core.util import older_than_27
 from paypalrestsdk.core import AccessTokenRequest, AccessToken
@@ -13,7 +13,7 @@ USER_AGENT = "PayPalSDK/PayPal-Python-SDK %s (%s)" % \
               (requests.__version__, platform.python_version(), "" if older_than_27() else ssl.OPENSSL_VERSION))
 
 
-class PayPalHttpClient(HttpClient, Injector):
+class PayPalHttpClient(HttpClient):
     def __init__(self, environment, refresh_token=None):
         HttpClient.__init__(self, environment)
         self._refresh_token = refresh_token

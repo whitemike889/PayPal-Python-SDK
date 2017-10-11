@@ -39,7 +39,7 @@ try:
     payment = payment_create_response.result
     print payment.id
 except IOError as ioe:
-    if isinstance(ioe, braintreehttp.HttpException):
+    if isinstance(ioe, braintreehttp.HttpError):
         # Something went wrong server-side
         print ioe.status_code
         print ioe.headers["PayPal-Debug-Id"]

@@ -10,7 +10,7 @@ import unittest
 
 from tests.payments.request.order_get_request_test import FAKE_ID
 
-from braintreehttp.http_exception import HttpException
+from braintreehttp.http_error import HttpError
 from paypalrestsdk.payments.request import OrderVoidRequest
 from tests.testharness import TestHarness
 
@@ -23,7 +23,7 @@ class OrderVoidRequestTest(TestHarness):
         try:
             self.client.execute(request)
             self.fail()
-        except HttpException as he:
+        except HttpError as he:
             self.assertTrue("debug_id" in he.message)
 
 if __name__ == "__main__":

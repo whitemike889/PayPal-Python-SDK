@@ -10,7 +10,7 @@ import unittest
 
 from tests.payments.request.order_get_request_test import FAKE_ID
 
-from braintreehttp.http_exception import HttpException
+from braintreehttp.http_error import HttpError
 from paypalrestsdk.payments.request import OrderCaptureRequest
 from tests.testharness import TestHarness
 
@@ -31,7 +31,7 @@ class OrderCaptureRequestTest(TestHarness):
         try:
             self.client.execute(request)
             self.fail()
-        except HttpException as he:
+        except HttpError as he:
             # Fails with an internal service error, order does not exist
             self.assertTrue("debug_id" in he.message)
 

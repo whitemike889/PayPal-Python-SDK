@@ -10,7 +10,7 @@ import unittest
 
 from tests.payments.request.payment_create_request_test import createPayment
 
-from braintreehttp.http_exception import HttpException
+from braintreehttp.http_error import HttpError
 from paypalrestsdk.payments.request import PaymentExecuteRequest
 from tests.testharness import TestHarness
 
@@ -28,7 +28,7 @@ class PaymentExecuteRequestTest(TestHarness):
         try:
             response = self.client.execute(request)
             self.fail()
-        except HttpException as he:
+        except HttpError as he:
             self.assertTrue("PAYMENT_NOT_APPROVED_FOR_EXECUTION" in he.message)
 
 if __name__ == "__main__":

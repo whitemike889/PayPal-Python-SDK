@@ -3,7 +3,7 @@ import responses
 import base64
 import json
 
-from paypalrestsdk.core import PayPalHttpClient
+from paypalrestsdk.core import PayPalHttpClient, RefreshTokenRequest
 from paypalrestsdk.core.test.paypaltestharness import PayPalTestHarness
 
 
@@ -69,7 +69,7 @@ class PayPalHttpClientTest(PayPalTestHarness):
         self.assertEqual(2, len(responses.calls))
 
         accesstokenrequest = responses.calls[0].request
-        self.assertEqual(self.environment().base_url + "/v1/identity/openidconnect/tokenservice", accesstokenrequest.url)
+        self.assertEqual(self.environment().base_url + "/v1/oauth2/token", accesstokenrequest.url)
         self.assertEqual("application/x-www-form-urlencoded", accesstokenrequest.headers["Content-Type"])
 
         expectedauthheader ="Basic {0}".format(base64.b64encode(("{0}:{1}".format(self.environment().client_id, self.environment().client_secret)).encode()).decode())
@@ -77,7 +77,7 @@ class PayPalHttpClientTest(PayPalTestHarness):
         self.assertEqual("grant_type=client_credentials&refresh_token=refresh-token", accesstokenrequest.body)
 
     @responses.activate
-    def testPayPalHttpClient_execute_setsCommonHeaders_and_signsRequest(self):
+    def testPayPalHttpClient_execute_setsCommonHeaders_signsRequest(self):
         self.client._access_token = self.simpleaccesstoken()
 
         request = SimpleRequest("/", "POST")
@@ -90,6 +90,22 @@ class PayPalHttpClientTest(PayPalTestHarness):
         actualrequest = responses.calls[0].request
         self.assertEqual(actualrequest.headers["Accept-Encoding"], "gzip")
         self.assertEqual(actualrequest.headers["Authorization"], "Bearer sample-access-token")
+
+    @responses.activate
+    def testPayPalHttpClient_execute_refreshTokenRequest(self):
+        refresh_token_request = RefreshTokenRequest(self.environment(), "auth-code")
+        self.stub_request_with_response(refresh_token_request)
+
+        self.client.execute(refresh_token_request)
+
+        self.assertEqual(len(responses.calls), 1)
+
+        actualrequest = responses.calls[0].request
+        expectedauthheader ="Basic {0}".format(base64.b64encode(("{0}:{1}".format(self.environment().client_id, self.environment().client_secret)).encode()).decode())
+        self.assertEqual(actualrequest.url, self.environment().base_url + "/v1/identity/openidconnect/tokenservice")
+        self.assertEqual(actualrequest.headers["Authorization"], expectedauthheader)
+        self.assertEqual(actualrequest.headers["Content-Type"], "application/x-www-form-urlencoded")
+        self.assertEqual(actualrequest.body, "grant_type=authorization_code&code=auth-code")
 
 if __name__ == '__main__':
     unittest.main()

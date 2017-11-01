@@ -5,7 +5,7 @@ import requests
 from braintreehttp import HttpClient
 from paypalrestsdk.config import __version__
 from paypalrestsdk.core.util import older_than_27
-from paypalrestsdk.core import AccessTokenRequest, AccessToken
+from paypalrestsdk.core import AccessTokenRequest, AccessToken, RefreshTokenRequest
 
 
 USER_AGENT = "PayPalSDK/PayPal-Python-SDK %s (%s)" % \
@@ -29,7 +29,7 @@ class PayPalHttpClient(HttpClient):
         if "Accept-Encoding" not in request.headers:
             request.headers["Accept-Encoding"] = "gzip"
 
-        if not isinstance(request, AccessTokenRequest):
+        if not isinstance(request, AccessTokenRequest) and not isinstance(request, RefreshTokenRequest):
             if not self._access_token or self._access_token.is_expired():
                 accesstokenresult = self.execute(AccessTokenRequest(self.environment, self._refresh_token)).result
                 self._access_token = AccessToken(access_token=accesstokenresult.access_token,
@@ -38,9 +38,3 @@ class PayPalHttpClient(HttpClient):
 
             request.headers["Authorization"] = self._access_token.authorization_string()
 
-    @staticmethod
-    def content_type(headers):
-        if "Content-Type" in headers:
-            return headers["Content-Type"]
-
-        return None

@@ -10,9 +10,8 @@ to serve as an example and early beta of the API going forward.
 import paypalrestsdk
 import braintreehttp
 
-env = paypalrestsdk.PayPalEnvironment(client_id="AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS",
-                                      client_secret="EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL",
-                                      mode=paypalrestsdk.PayPalEnvironment.SANDBOX)
+env = paypalrestsdk.SandboxEnvrironment(client_id="AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS",
+                                      client_secret="EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL")
 
 client = paypalrestsdk.PayPalHttpClient(environment=env)
 

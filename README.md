@@ -59,7 +59,7 @@ Please feel free to create an issue in this repo with any feedback, questions, o
 
 To run integration tests using your client id and secret, clone this repository and run the following command:
 ```sh
-$ PAYPAL_CLIENT_ID=your_client_id PAYPAL_CLIENT_SECRET=your_client_secret python -m unittest paypalrestsdk tests
+$ PAYPAL_CLIENT_ID=your_client_id PAYPAL_CLIENT_SECRET=your_client_secret python -m unittest paypalrestsdk.core.test tests
 ```
 
 You may use the client id and secret above for demonstration purposes.

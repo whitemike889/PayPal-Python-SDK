@@ -6,4 +6,3 @@ from tests.webhooks.webhook_delete_test import *
 from tests.webhooks.webhook_get_test import *
 from tests.webhooks.webhook_list_test import *
 from tests.webhooks.webhook_update_test import *
-from tests.webhooks.webhook_verify_signature_test import *

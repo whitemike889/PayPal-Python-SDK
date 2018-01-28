@@ -5,4 +5,5 @@ from tests.invoices import *
 from tests.payment_experience import *
 from tests.payments import *
 from tests.testharness import *
+from tests.vault import *
 from tests.webhooks import *

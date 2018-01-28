@@ -6,4 +6,5 @@ from paypalrestsdk.core import *
 from paypalrestsdk.invoices import *
 from paypalrestsdk.payment_experience import *
 from paypalrestsdk.payments import *
+from paypalrestsdk.vault import *
 from paypalrestsdk.webhooks import *

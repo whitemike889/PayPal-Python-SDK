@@ -148,6 +148,43 @@ class TestPayment(unittest.TestCase):
                                 'payer_id': 'HZH2W8NPXUE5W'}, {'PayPal-Request-Id': ANY}, None)
 
 
+class TestBillingPlan(unittest.TestCase):
+
+    def setUp(self):
+        super(TestBillingPlan, self).setUp()
+        self.billing_plan = paypal.BillingPlan()
+
+    @patch('test_helper.paypal.Api.post', autospec=True)
+    @patch('test_helper.paypal.Api.patch', autospec=True)
+    def test_activate_inactivate(self, patch_mock, post_mock):
+        post_mock.return_value = {
+            "id": "P-7DC96732KA7763723UOPKETA",
+            "state": "CREATED",
+        }
+        patch_mock.side_effect =[
+            {
+                "id": "P-7DC96732KA7763723UOPKETA",
+                "state": "ACTIVE",
+            },
+            {
+                "id": "P-7DC96732KA7763723UOPKETA",
+                "state": "INACTIVE",
+            },
+        ]
+
+        response = self.billing_plan.create()
+        self.assertTrue(response)
+        self.assertEqual(self.billing_plan['state'], 'CREATED')
+
+        response = self.billing_plan.activate()
+        self.assertTrue(response)
+        self.assertEqual(self.billing_plan['state'], 'ACTIVE')
+
+        response = self.billing_plan.inactivate()
+        self.assertTrue(response)
+        self.assertEqual(self.billing_plan['state'], 'INACTIVE')
+
+
 class TestSale(unittest.TestCase):
 
     def setUp(self):
@@ -180,10 +217,23 @@ class TestSale(unittest.TestCase):
 
     @patch('test_helper.paypal.Api.post', autospec=True)
     def create_sale(self, mock):
-        mock.return_value = {'id': 'PAY-888868365Y436124EKLKW6JA', 'update_time': '2014-01-14T17:09:00Z', 'links': [], 'payer': {}, 'transactions': [{'related_resources': [{'sale': {'update_time': '2014-01-14T17:09:00Z',
-                                                                                                                                                                                      'links': [], 'state': 'completed', 'id': '5VX40080GX603650',
-                                                                                                                                                                                      'amount': {'currency': 'USD', 'total': '1.00'}}}],
-                                                                                                                                                      }]}
+        mock.return_value = {
+            'id': 'PAY-888868365Y436124EKLKW6JA',
+            'update_time': '2014-01-14T17:09:00Z',
+            'links': [],
+            'payer': {},
+            'transactions': [{
+                'related_resources': [{
+                    'sale': {
+                        'update_time': '2014-01-14T17:09:00Z',
+                        'links': [],
+                        'state': 'completed',
+                        'id': '5VX40080GX603650',
+                        'amount': {'currency': 'USD', 'total': '1.00'},
+                    },
+                }],
+            }]
+        }
         response = self.payment.create()
         self.assertEqual(response, True)
         return self.payment.transactions[0].related_resources[0].sale

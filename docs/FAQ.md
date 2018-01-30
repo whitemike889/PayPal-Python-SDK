@@ -39,7 +39,7 @@ result = None
 
 request = payments.PaymentCreateRequest()
 request.headers['PayPal-Request-ID"] = "abcd-request-id"
-request.body({ ... })
+request.request_body({ ... })
 
 while not result and retry < 3:
     try:

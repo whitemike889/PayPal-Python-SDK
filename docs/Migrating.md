@@ -42,7 +42,7 @@ else:
 import paypalrestsdk.v1.payments as payments
 
 payment_create_request = payments.PaymentCreateRequest()
-payment_create_request.body({
+payment_create_request.request_body({
     "payer": {
         "payment_method": "paypal"
     },

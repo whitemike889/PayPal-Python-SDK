@@ -12,6 +12,7 @@ class PayPalEnvironment(Environment):
         super(PayPalEnvironment, self).__init__(mode)
         self.client_id = client_id
         self.client_secret = client_secret
+        self.web_url = mode.replace('api', 'www')
 
     def authorization_string(self):
         return "Basic {0}".format(base64.b64encode((self.client_id + ":" + self.client_secret).encode()).decode())

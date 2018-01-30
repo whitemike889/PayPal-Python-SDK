@@ -7,5 +7,5 @@ import os
 class TestHarness(unittest.TestCase):
 
     def setUp(self):
-        environment = PayPalEnvironment(os.getenv("PAYPAL_CLIENT_ID"), os.getenv("PAYPAL_CLIENT_SECRET"), PayPalEnvironment.SANDBOX)
-        self.client = PayPalHttpClient(environment)
+        self.environment = PayPalEnvironment(os.getenv("PAYPAL_CLIENT_ID"), os.getenv("PAYPAL_CLIENT_SECRET"), PayPalEnvironment.SANDBOX)
+        self.client = PayPalHttpClient(self.environment)

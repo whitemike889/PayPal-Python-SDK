@@ -74,7 +74,8 @@ class PayPalHttpClientTest(PayPalTestHarness):
 
         expectedauthheader ="Basic {0}".format(base64.b64encode(("{0}:{1}".format(self.environment().client_id, self.environment().client_secret)).encode()).decode())
         self.assertEqual(expectedauthheader, accesstokenrequest.headers["Authorization"])
-        self.assertEqual("grant_type=refresh_token&refresh_token=refresh-token", accesstokenrequest.body)
+        self.assertTrue("grant_type=refresh_token" in accesstokenrequest.body)
+        self.assertTrue("refresh_token=refresh-token" in accesstokenrequest.body)
 
     @responses.activate
     def testPayPalHttpClient_execute_setsCommonHeaders_signsRequest(self):
@@ -105,7 +106,8 @@ class PayPalHttpClientTest(PayPalTestHarness):
         self.assertEqual(actualrequest.url, self.environment().base_url + "/v1/identity/openidconnect/tokenservice")
         self.assertEqual(actualrequest.headers["Authorization"], expectedauthheader)
         self.assertEqual(actualrequest.headers["Content-Type"], "application/x-www-form-urlencoded")
-        self.assertEqual(actualrequest.body, "grant_type=authorization_code&code=auth-code")
+        self.assertTrue("grant_type=authorization_code" in actualrequest.body)
+        self.assertTrue("code=auth-code" in actualrequest.body)
 
 if __name__ == '__main__':
     unittest.main()

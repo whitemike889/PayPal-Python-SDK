@@ -10,7 +10,7 @@ OPENID_CONNECT_PATH = "/v1/identity/openidconnect/tokenservice"
 class PayPalTestHarness(TestHarness):
 
     def environment(self):
-        return PayPalEnvironment("client-id", "client-secret", "http://localhost")
+        return PayPalEnvironment("client-id", "client-secret", "http://localhost", "http://localhost/web")
 
     def stubaccesstokenrequest(self, refresh_token=None, access_token_json=None):
         if not access_token_json:

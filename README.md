@@ -7,16 +7,18 @@ to serve as an example and early beta of the API going forward.
 ### Creating a Payment
 
 ```python
-import paypalrestsdk
+import paypalrestsdk.core as paypal
+import paypalrestsdk.v1.payments as payments
 import braintreehttp
 
-env = paypalrestsdk.SandboxEnvrironment(client_id="AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS",
-                                      client_secret="EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL")
+env = paypal.PayPalEnvironment(client_id="AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS",
+                                      client_secret="EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL",
+                                      mode=paypalrestsdk.PayPalEnvironment.SANDBOX)
 
-client = paypalrestsdk.PayPalHttpClient(environment=env)
+client = payments.PayPalHttpClient(environment=env)
 
-payment_create_request = paypalrestsdk.PaymentCreateRequest()
-payment_create_request.body({
+payment_create_request = payments.PaymentCreateRequest()
+payment_create_request.request_body({
     "payer": {
         "payment_method": "paypal"
     },
@@ -59,7 +61,8 @@ Please feel free to create an issue in this repo with any feedback, questions, o
 
 To run integration tests using your client id and secret, clone this repository and run the following command:
 ```sh
-$ PAYPAL_CLIENT_ID=your_client_id PAYPAL_CLIENT_SECRET=your_client_secret python -m unittest paypalrestsdk.core.test tests
+$ pip install nose # if not already installed
+$ PAYPAL_CLIENT_ID=your_client_id PAYPAL_CLIENT_SECRET=your_client_secret nosetests --exe
 ```
 
 You may use the client id and secret above for demonstration purposes.

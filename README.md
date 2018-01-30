@@ -11,8 +11,9 @@ import paypalrestsdk.core as paypal
 import paypalrestsdk.v1.payments as payments
 import braintreehttp
 
-env = paypal.SandboxEnvrironment(client_id="AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS",
-                                      client_secret="EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL")
+env = paypal.PayPalEnvironment(client_id="AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS",
+                                      client_secret="EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL",
+                                      mode=paypalrestsdk.PayPalEnvironment.SANDBOX)
 
 client = payments.PayPalHttpClient(environment=env)
 

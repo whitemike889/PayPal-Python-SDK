@@ -53,7 +53,7 @@ If you're migrating from v1, check out our [Migration Guide](./docs/Migrating.md
 
 ## Building
 
-To try this out, update the version of `paypalrestsdk` in your `requirements.txt` to `2.0.0b1`:
+To try this out, update the version of `paypalrestsdk` in your `requirements.txt` to `2.0.0rc1`:
 
 Please feel free to create an issue in this repo with any feedback, questions, or concerns you have.
 

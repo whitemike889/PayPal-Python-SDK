@@ -11,11 +11,11 @@ import paypalrestsdk.core as paypal
 import paypalrestsdk.v1.payments as payments
 import braintreehttp
 
-env = paypal.PayPalEnvironment(client_id="AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS",
-                                      client_secret="EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL",
-                                      mode=paypalrestsdk.PayPalEnvironment.SANDBOX)
+client_id = "AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS"
+client_secret = "EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL"
+env = paypal.environment.SandboxEnvironment(client_id, client_secret)
 
-client = payments.PayPalHttpClient(environment=env)
+client = paypal.paypal_http_client.PayPalHttpClient(environment=env)
 
 payment_create_request = payments.PaymentCreateRequest()
 payment_create_request.request_body({
@@ -30,8 +30,8 @@ payment_create_request.request_body({
         }
     }],
     "redirect_urls": {
-        "cancel_url": "http://paypal.com/cancel",
-        "return_url": "http://paypal.com/return"
+        "cancel_url": "https://example.com/cancel",
+        "return_url": "https://example.com/return"
     }
 })
 

@@ -28,17 +28,17 @@ For e.g.
 import paypalrestsdk.core as paypal
 import paypalrestsdk.v1.payments as payments
 
-env = paypal.PayPalEnvironment(client_id="AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS",
-                                      client_secret="EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL",
-                                      mode=paypalrestsdk.PayPalEnvironment.SANDBOX)
+client_id = "AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS"
+client_secret = "EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL"
+env = paypal.environment.SandboxEnvironment(client_id, client_secret)
 
-client = paypal.PayPalHttpClient(environment=env)
+client = paypal.paypal_http_client.PayPalHttpClient(environment=env)
 
 retry = 0
 result = None
 
 request = payments.PaymentCreateRequest()
-request.headers['PayPal-Request-ID"] = "abcd-request-id"
+request.headers['PayPal-Request-ID'] = "abcd-request-id"
 request.request_body({ ... })
 
 while not result and retry < 3:

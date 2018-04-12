@@ -4,6 +4,10 @@ This is a preview of how PayPal SDKs will look in the next major version. We've 
 simple model objects and blueprints for HTTP calls. This repo currently only contains functionality for working with payments and invoices
 to serve as an example and early beta of the API going forward.
 
+## What's New
+
+Please see the [CHANGELOG.md](./CHANGELOG.md) for the latest changes.
+
 ### Creating a Payment
 
 ```python
@@ -53,7 +57,7 @@ If you're migrating from v1, check out our [Migration Guide](./docs/Migrating.md
 
 ## Building
 
-To try this out, update the version of `paypalrestsdk` in your `requirements.txt` to `2.0.0rc1`:
+To try this out, update the version of `paypalrestsdk` in your `requirements.txt` to `2.0.0rc2`:
 
 Please feel free to create an issue in this repo with any feedback, questions, or concerns you have.
 
